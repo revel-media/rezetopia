@@ -15,6 +15,7 @@ public class VolleyCustomRequest extends Request {
     private Gson gson;
     private Class responseClass;
 
+    //todo
     public VolleyCustomRequest(int method, String url,Class responseClass, Response.Listener listener, Response.ErrorListener errorListener) {
         super(method, url, errorListener);
         gson = new Gson();
