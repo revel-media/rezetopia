@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/gray"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+
+
+
+            <EditText android:id="@+id/etEventName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textAutoComplete"
+                android:hint="Event Name"
+                android:imeOptions="actionNext"
+                android:textColorHint="@color/green4"
+                android:textColor="@color/green4"
+                android:background="@drawable/rect_white"
+                android:padding="@dimen/medium_margin"
+                />
+
+
+
+            <EditText android:id="@+id/etEventDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textAutoComplete"
+                android:hint="Event Description"
+                android:ems="6"
+                android:maxLines="6"
+                android:lines="6"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:textColorHint="@color/green4"
+                android:textColor="@color/green4"
+                android:imeOptions="actionNext"
+                android:background="@drawable/rect_white"
+                android:padding="@dimen/medium_margin"/>
+
+
+
+
+
+
+            <EditText android:id="@+id/etEventStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:hint="Event Start Date"
+                android:textColor="@color/green4"
+                android:textColorHint="@color/green4"
+                android:imeOptions="actionNext"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:background="@drawable/rect_white"
+                android:padding="@dimen/medium_margin"/>
+
+
+
+
+
+            <EditText android:id="@+id/etEventEndDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:hint="Event End Date"
+                android:textColor="@color/green4"
+                android:textColorHint="@color/green4"
+                android:imeOptions="actionNext"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:background="@drawable/rect_white"
+                android:padding="@dimen/medium_margin"
+                />
+
+        <!-- Address Label -->
+
+            <EditText android:id="@+id/etEventAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:hint="Event Address"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:textColor="@color/green4"
+                android:textColorHint="@color/green4"
+                android:imeOptions="actionDone"
+                android:background="@drawable/rect_white"
+                android:padding="@dimen/medium_margin"/>
+
+
+        <FrameLayout
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profilePic"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/circle"
+                android:layout_gravity="bottom|center_horizontal" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_camera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/photo_camera"
+                android:layout_gravity="top|right"
+                android:background="@drawable/circle"
+                android:scaleType="center"
+                />
+        </FrameLayout>
+
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_signup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Create Event"
+            android:background="@drawable/round_green_btn"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/medium_margin"
+            android:layout_marginRight="@dimen/medium_margin"/>
+
+
+    </LinearLayout>
+</ScrollView>

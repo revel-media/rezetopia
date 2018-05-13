@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <RelativeLayout
+            android:id="@+id/GroupNavHeader"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/backArrow"
+                android:padding="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dimen_10"
+                android:src="@drawable/ic_back_arrow"/>
+
+            <LinearLayout
+                android:id="@+id/searchLeft"
+                android:layout_toEndOf="@id/backArrow"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:layout_centerVertical="true"
+                android:background="@drawable/search_dark_left"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/search"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/searchRight"
+                android:layout_marginStart="1dp"
+                android:layout_toEndOf="@id/searchLeft"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:background="@drawable/search_dark_right">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_search_ico"
+                    android:padding="5dp"
+                    android:layout_marginEnd="5dp"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_fir_ball"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/horzLine"
+            android:layout_below="@id/GroupNavHeader"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="@color/green5"
+            />
+
+        <LinearLayout
+            android:layout_margin="@dimen/dimen_10"
+            android:id="@+id/createHeader"
+            android:gravity="end"
+            android:layout_below="@id/horzLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:text="@string/create_team"
+                android:textSize="15sp"
+                android:textColor="@color/green7"
+                android:id="@+id/createTeamView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_plus_dark"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/pagerHeader"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/createHeader"
+            android:orientation="horizontal"
+            android:background="@color/holo_gray"
+            android:gravity="center"
+            >
+            <android.support.design.widget.TabLayout
+                android:id="@+id/teamTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@null"
+                app:tabTextAppearance="@style/TabText"
+                app:tabTextColor="#848484">
+            </android.support.design.widget.TabLayout>
+        </LinearLayout>
+
+        <app.reze1.ahmed.reze1.helper.CustomViewPager
+            android:id="@+id/teamViewPager"
+            android:layout_below="@+id/pagerHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</ScrollView>
+

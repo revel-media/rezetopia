@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_post_edit"
+        android:title="@string/edit" />
+
+    <item
+        app:actionLayout="@layout/menu_image_custom"
+        android:id="@+id/menu_post_save_post"
+        android:title="@string/save_post" />
+
+    <item
+        android:id="@+id/menu_remove_post"
+        android:title="@string/remove" />
+
+</menu>

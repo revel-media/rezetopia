@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rezetopia.ahmed.reze1.app.rezetopia.ahmed.reze1.StoresListActivity">
+
+    <LinearLayout
+        android:layout_margin="@dimen/dimen_10"
+        android:id="@+id/createHeader"
+        android:gravity="end"
+        android:layout_below="@id/horzLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="@string/create_store"
+            android:textSize="15sp"
+            android:textColor="@color/green7"
+            android:id="@+id/createStoreView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus_dark"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/pagerHeader"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/createHeader"
+        android:orientation="horizontal"
+        android:background="@color/holo_gray"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dimen_10"
+        >
+        <android.support.design.widget.TabLayout
+            android:id="@+id/vendorTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@null"
+            app:tabTextAppearance="@style/TabText"
+            app:tabTextColor="#848484">
+        </android.support.design.widget.TabLayout>
+    </LinearLayout>
+
+    <app.reze1.ahmed.reze1.helper.CustomViewPager
+        android:id="@+id/vendorViewPager"
+        android:layout_below="@+id/pagerHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

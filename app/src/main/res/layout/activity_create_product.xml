@@ -1,0 +1,136 @@
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/post_background">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10">
+
+            <FrameLayout
+                android:id="@+id/imageHolder"
+                android:layout_width="match_parent"
+                android:layout_height="208dp"
+                android:layout_margin="@dimen/dimen_10">
+
+                <ImageView
+                    android:id="@+id/dummy"
+                    android:layout_width="match_parent"
+                    android:layout_height="208dp"
+                    android:background="@color/grey" />
+
+                <ImageView
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/productImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="@string/upload"
+                    android:layout_margin="@dimen/dimen_20"
+                    android:layout_gravity="end|bottom"/>
+
+            </FrameLayout>
+
+
+            <app.reze1.ahmed.reze1.views.CustomEditText
+                android:inputType="text"
+                android:textSize="15sp"
+                android:id="@+id/productTitleView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/imageHolder"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:hint="@string/title"
+                android:background="@android:color/white"
+                android:paddingStart="@dimen/dimen_10"/>
+
+            <app.reze1.ahmed.reze1.views.CustomEditText
+                android:inputType="text"
+                android:textSize="15sp"
+                android:id="@+id/productDescriptionView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/productTitleView"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:hint="@string/description"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:background="@android:color/white"
+                android:paddingStart="@dimen/dimen_10"/>
+
+            <app.reze1.ahmed.reze1.views.CustomEditText
+                android:inputType="numberDecimal"
+                android:textSize="15sp"
+                android:id="@+id/productPriceView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/productDescriptionView"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:hint="@string/price"
+                android:background="@android:color/white"
+                android:paddingStart="@dimen/dimen_10"/>
+
+            <app.reze1.ahmed.reze1.views.CustomEditText
+                android:inputType="number"
+                android:textSize="15sp"
+                android:id="@+id/productDiscountView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/productPriceView"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:hint="@string/discount"
+                android:background="@android:color/white"
+                android:paddingStart="@dimen/dimen_10"/>
+
+            <app.reze1.ahmed.reze1.views.CustomEditText
+                android:inputType="number"
+                android:textSize="15sp"
+                android:id="@+id/productAmountView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/productDiscountView"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:hint="@string/amount"
+                android:background="@android:color/white"
+                android:paddingStart="@dimen/dimen_10"/>
+
+            <app.reze1.ahmed.reze1.views.CustomButton
+                android:id="@+id/createProductButton"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_below="@id/productAmountView"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:background="@color/green7"
+                android:layout_centerHorizontal="true"
+                android:text="@string/post"
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

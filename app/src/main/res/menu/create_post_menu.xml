@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        app:actionLayout="@layout/menu_image_custom"
+        android:id="@+id/menu_create_post_image"
+        android:title="@string/image" />
+
+    <item
+        app:actionLayout="@layout/menu_video_custom"
+        android:id="@+id/menu_create_post_video"
+        android:title="@string/video" />
+
+    <item
+        app:actionLayout="@layout/menu_check_in_custom"
+        android:id="@+id/menu_create_post_check_in"
+        android:title="@string/check_in" />
+
+    <item
+        app:actionLayout="@layout/menu_tag_custom"
+        android:id="@+id/menu_create_post_tag"
+        android:title="@string/tag" />
+</menu>

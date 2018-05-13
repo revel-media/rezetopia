@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="app.reze1.ahmed.reze1.activities.Language"
+    android:background="@drawable/splash_back">
+
+
+    <Button
+        android:id="@+id/Ar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/En"
+        android:layout_alignBottom="@+id/En"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
+        android:onClick="onClickTextView"
+        android:background="@color/remove_back"
+        android:textSize="30dp"
+        android:text="عربي" />
+    <Button
+        android:id="@+id/En"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="30dp"
+        android:onClick="onClickTextView"
+        android:background="@color/remove_back"
+        android:textSize="30dp"
+        android:text="English" />
+
+
+</RelativeLayout>

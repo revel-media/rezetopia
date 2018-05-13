@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.rezetopia.ahmed.reze1.app.rezetopia.ahmed.reze1.BuildProfile">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:paddingTop="70dp"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+      <TextView
+          android:layout_width="match_parent"
+          android:text="Height"
+          android:textAlignment="center"
+          android:textSize="20dp"
+          android:layout_height="wrap_content" />
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:weightSum="3">
+      <EditText
+          android:id="@+id/height_player"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/dimen_10"
+          android:background="@drawable/roundtwoltr"
+          android:hint="your height"
+          android:imeOptions="actionNext"
+          android:inputType="number"
+          android:maxLength="200"
+          android:paddingBottom="7dp"
+          android:paddingLeft="@dimen/kasb_margin_top"
+          android:paddingRight="7dp"
+          android:paddingTop="7dp"
+          android:textColor="#fff"
+          android:layout_weight="1"
+          android:text="100"
+          android:textColorHint="@color/colorPrimaryDark" />
+      <TextView
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:textSize="20dp"
+          android:layout_gravity="center"
+          android:layout_height="wrap_content"
+          android:text="CM"/>
+      <Button
+          android:id="@+id/hplus"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.5"
+          android:layout_gravity="center"
+          android:elevation="20dp"
+          android:textSize="30dp"
+          android:background="@color/colorPrimary"
+          android:text="+" />
+      <Button
+          android:id="@+id/hminus"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.5"
+          android:layout_gravity="center"
+          android:elevation="20dp"
+          android:textSize="30dp"
+          android:textColor="#464646"
+          android:background="@color/colorPrimary"
+          android:text="-" />
+
+   </LinearLayout>
+      <TextView
+          android:layout_width="match_parent"
+          android:text="Weight"
+          android:textAlignment="center"
+          android:textSize="20dp"
+          android:layout_height="wrap_content" />
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:weightSum="3">
+         <EditText
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_margin="@dimen/dimen_10"
+             android:background="@drawable/roundtwoltr"
+             android:hint="your weight"
+             android:id="@+id/weight_player"
+             android:imeOptions="actionNext"
+             android:inputType="number"
+             android:paddingBottom="7dp"
+             android:maxLength="80"
+             android:paddingLeft="@dimen/kasb_margin_top"
+             android:paddingRight="7dp"
+             android:paddingTop="7dp"
+             android:textColor="#fff"
+             android:layout_weight="1"
+             android:text="20"
+             android:textColorHint="@color/colorPrimaryDark" />
+         <TextView
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:textSize="20dp"
+             android:layout_gravity="center"
+             android:layout_height="wrap_content"
+             android:text="KG"/>
+         <Button
+             android:id="@+id/wplus"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="0.5"
+             android:layout_gravity="center"
+             android:elevation="20dp"
+             android:textSize="30dp"
+             android:background="@color/colorPrimary"
+             android:text="+" />
+         <Button
+             android:id="@+id/wminus"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="0.5"
+             android:layout_gravity="center"
+             android:elevation="20dp"
+             android:textSize="30dp"
+             android:textColor="#464646"
+             android:background="@color/colorPrimary"
+             android:text="-" />
+
+      </LinearLayout>
+
+
+      <Spinner
+          android:id="@+id/spinner_nag"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:prompt="@string/spinner_playerPosition"
+          android:paddingTop="7dp"
+          android:paddingBottom="7dp"
+          android:paddingRight="7dp"
+          android:paddingLeft="18dp"
+          android:spinnerMode="dropdown"
+          android:background="@drawable/roundtwoltr"
+          android:layout_margin="@dimen/dimen_10"
+          />
+      <Spinner
+          android:id="@+id/spinner_playerPosition"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:prompt="@string/spinner_playerPosition"
+          android:paddingTop="7dp"
+          android:paddingBottom="7dp"
+          android:paddingRight="7dp"
+          android:paddingLeft="18dp"
+          android:spinnerMode="dropdown"
+          android:background="@drawable/roundtwoltr"
+          android:layout_margin="@dimen/dimen_10"
+          />
+      <Spinner
+          android:id="@+id/spinner_foot"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:prompt="@string/spinner_foot"
+          android:paddingTop="7dp"
+          android:paddingBottom="7dp"
+          android:paddingRight="7dp"
+          android:paddingLeft="18dp"
+          android:spinnerMode="dropdown"
+          android:background="@drawable/roundtwoltr"
+          android:layout_margin="@dimen/dimen_10"
+          />
+
+   </LinearLayout>
+</RelativeLayout>

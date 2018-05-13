@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wrong_login">خطأ فى البريد الالكترونى او كلمة المرور</string>
+    <string name="mail_prompt">ادخل البريد الالكترونى</string>
+    <string name="password_prompt">ادخل كلمة المرور</string>
+
+    <string name="username">اسم المستخدم</string>
+    <string name="password">كلمة المرور</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="sign_up">حساب جديد</string>
+    <string name="forget_password">نسيت كلمة المرور</string>
+    <string name="ef_ok">ارسال</string>
+    <string name="terms">اوافق على شروط التسجيل</string>
+    <string name="name">الاسم</string>
+    <string name="date_of_birth">تاريخ الميلاد</string>
+    <string name="phone">رقم الهاتف</string>
+    <string name="email">البريد الاكترونى</string>
+    <string name="repassword">تأكيد كلمة المرور</string>
+
+</resources>

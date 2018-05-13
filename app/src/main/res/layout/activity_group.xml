@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/GroupNavHeader"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/backArrow"
+                android:padding="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dimen_10"
+                android:src="@drawable/ic_back_arrow"/>
+
+            <LinearLayout
+                android:id="@+id/searchLeft"
+                android:layout_toEndOf="@id/backArrow"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:layout_centerVertical="true"
+                android:background="@drawable/search_dark_left"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/search"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/searchRight"
+                android:layout_marginStart="1dp"
+                android:layout_toEndOf="@id/searchLeft"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:background="@drawable/search_dark_right">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_search_ico"
+                    android:padding="5dp"
+                    android:layout_marginEnd="5dp"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_fir_ball"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/horzLine"
+            android:layout_below="@id/GroupNavHeader"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="@color/green5"
+            />
+
+        <ImageView
+            android:id="@+id/coverView"
+            android:layout_below="@id/horzLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cover_height"
+            android:background="@color/colorPrimary"
+            />
+
+        <RelativeLayout
+            android:id="@+id/vendorDataLayout"
+            android:layout_below="@id/coverView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_marginStart="@dimen/dimen_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/dimen_10">
+
+                <LinearLayout
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/groupNameView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:text="Nadi El jazera"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/groupStatusView"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_13sp"
+                    android:text="Closed"
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/memberNumberView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/medium_margin20"
+                android:layout_marginEnd="@dimen/dimen_20"
+                android:text="@string/member"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_size_13sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/dimen_10"
+            android:id="@+id/pagerHeader"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/vendorDataLayout"
+            android:orientation="horizontal"
+            android:background="@color/holo_gray"
+            android:gravity="center"
+            >
+            <android.support.design.widget.TabLayout
+                android:id="@+id/groupTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@null"
+                app:tabTextAppearance="@style/TabText"
+                app:tabTextColor="#848484">
+            </android.support.design.widget.TabLayout>
+        </LinearLayout>
+
+        <app.reze1.ahmed.reze1.helper.CustomViewPager
+            android:id="@+id/groupViewPager"
+            android:layout_below="@+id/pagerHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ProgressBar
+            android:layout_below="@id/groupViewPager"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/groupProgressBar"
+            android:layout_width="@dimen/dimen_20"
+            android:layout_height="@dimen/dimen_20" />
+
+    </RelativeLayout>
+</ScrollView>
