@@ -119,7 +119,6 @@ public class Home extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    String name;
     private OnCallback mListener;
 
     public Home() {
