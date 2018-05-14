@@ -33,6 +33,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import app.reze1.ahmed.reze1.fragments.Home;
 import app.reze1.ahmed.reze1.fragments.Notification;
@@ -45,6 +50,7 @@ import app.reze1.ahmed.reze1.model.pojo.search.SearchResponse;
 import app.reze1.ahmed.reze1.app.AppConfig;
 import app.reze1.ahmed.reze1.helper.ResizeWidthAnimation;
 import app.reze1.ahmed.reze1.helper.VolleyCustomRequest;
+import app.reze1.ahmed.reze1.model.pojo.user.User;
 
 import org.json.JSONObject;
 
@@ -55,7 +61,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements Home.OnCallback,Notification.OnFragmentInteractionListener,Requests.OnFragmentInteractionListener,Profile.OnFragmentInteractionListener {
     private static final int VIEW_HEADER = 1;
     private static final int VIEW_ITEM = 2;
-
+    private FirebaseAuth mAuth;
+    private DatabaseReference mUserRef;
     EditText searchBox;
     ImageView backView;
     Bundle savedBundle;
@@ -81,14 +88,19 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mAuth = FirebaseAuth.getInstance();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
       //  Toast.makeText(getBaseContext(),SocketConnect.socket+"",Toast.LENGTH_LONG).show();
         EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
         EmojiCompat.init(config);
         userId = getBaseContext().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+        if (mAuth.getCurrentUser() != null) {
+            User user = new User();
 
+            mUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(String.valueOf(user.getId()));
+
+        }
         savedBundle = savedInstanceState;
         SharedPreferences.Editor editor = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit();
         editor.putString(AppConfig.LOGGED_IN_FIRE_ID_SHARED,"fireAuthed").apply();
@@ -115,7 +127,9 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+           //  Intent chatIntent=new Intent(MainActivity.this,FriendsActivity.class);
+           //  startActivity(chatIntent);
+           //  finish();
             }
         });
     }
@@ -676,7 +690,45 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     protected void onResume() {
         super.onResume();
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        if(currentUser == null){
+
+            sendToStart();
+
+        } else {
+
+            mUserRef.child("online").setValue("true");
+
+        }
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if(currentUser != null) {
+
+            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
+
+        }
+
+    }
+
+    private void sendToStart() {
+
+        Intent startIntent = new Intent(MainActivity.this, Login.class);
+        startActivity(startIntent);
+        finish();
+
+    }
 
 }
 

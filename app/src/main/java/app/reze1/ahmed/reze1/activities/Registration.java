@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -37,8 +46,8 @@ import org.json.JSONObject;
 
 public class Registration extends AppCompatActivity {
     private static final String TAG = Registration.class.getSimpleName();
-    private CustomButton btnRegister;
 
+    private CustomButton btnRegister;
     private CustomEditText inputFullName;
     private CustomEditText inputMobile;
     private CustomEditText inputEmail;
@@ -50,15 +59,20 @@ public class Registration extends AppCompatActivity {
     private  CustomButton btnLogin;
     private CheckBox checkBox;
     private Calendar myCalendar;
+
+
     RequestQueue requestQueue;
     public static String URL_REGISTER = "https://rezetopia.com/app/register.php";
     public ProgressDialog progress;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         //Spinner spinner = (Spinner) findViewById(R.eventId.spinner);
+        mAuth = FirebaseAuth.getInstance();
 
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.object_array, R.layout.spinner_item);
 
@@ -151,6 +165,13 @@ public class Registration extends AppCompatActivity {
                         }
                     });
                 }
+
+                String display_name = inputFullName.getText().toString();
+                String email = inputEmail.getText().toString();
+                String password = inputPassword.getText().toString();
+
+
+                register_user(display_name, email, password);
             }
         });
 
@@ -249,5 +270,60 @@ public class Registration extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void register_user(final String display_name, String email, String password) {
+
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if(task.isSuccessful()){
+
+                    User user = new User();
+                    FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+                    String uid = current_user.getUid();
+
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(String.valueOf(user.getId()));
+
+                    String device_token = FirebaseInstanceId.getInstance().getToken();
+
+                    HashMap<String, String> userMap = new HashMap<>();
+
+
+                    userMap.put("name", display_name);
+                   // userMap.put("id", String.valueOf(user.getId()));
+                    userMap.put("device_token", device_token);
+
+
+                    mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if(task.isSuccessful()){
+
+                                pDialog.dismiss();
+
+                                Intent mainIntent = new Intent(Registration.this, MainActivity.class);
+                                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(mainIntent);
+                                finish();
+
+                            }
+
+                        }
+                    });
+
+
+                } else {
+
+                    pDialog.hide();
+                    Toast.makeText(Registration.this, "Cannot Sign in. Please check the form and try again.", Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+        });
+
     }
 }
