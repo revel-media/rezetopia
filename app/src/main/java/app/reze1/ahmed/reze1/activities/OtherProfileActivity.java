@@ -63,6 +63,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
     boolean searchUsers = false;
     boolean searchGroups = false;
+    public OtherProfileActivity otherProfileActivity;
 
     ArrayList<SearchItem> searchItems;
 
@@ -80,7 +81,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     int searchBoxWidth = 300;
     String userId;
     String guestUserId;
-
+    TextView usernamePView;
 
     private RecyclerView.Adapter postsAdapter;
     RecyclerView postsRecyclerView;
@@ -172,7 +173,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     }
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder{
-        TextView usernamePView;
+
 
         public HeaderViewHolder(View itemView) {
             super(itemView);

@@ -50,7 +50,7 @@ public class RequestsAdapter extends ArrayAdapter<JSONObject> {
 
         userId = context.getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);;
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         rowView = inflater.inflate(R.layout.request_row, null, true);
         TextView textView = (TextView)rowView.findViewById(R.id.sugName);
         //button = (Button)rowView.findViewById(R.id.accept);

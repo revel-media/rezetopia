@@ -19,8 +19,8 @@
     <string name="arabic">Arabic</string>
     <string name="terms">i accept the terms of rezetopia</string>
     <string name="search">search</string>
-    <string name="slide_1_title">Hello Food!</string>
-    <string name="slide_1_desc">The easiest way to order food from your favourite restaurant!</string>
+    <string name="slide_1_title">about us</string>
+    <string name="slide_1_desc">RezeTopia has also launched the initiative"play with the lights on" in marketing for the professional players in the Egyptian and European clubs who can not promote their skills</string>
     <string name="sign_up_with_facebook">sign up with facebook</string>
 
 
@@ -28,13 +28,13 @@
 
 
     <string name="slide_2_title">Movie Tickets</string>
-    <string name="slide_2_desc">Book movie tickets for your family and friends!</string>
+    <string name="slide_2_desc">On Rezetopia ,you find a whole network that is only designed for footballers , so you can sign your weight, height,and position up</string>
 
-    <string name="slide_3_title">Great Discounts</string>
-    <string name="slide_3_desc">Best discounts on every single service we offer!</string>
+    <string name="slide_3_title">we will launch!!</string>
+    <string name="slide_3_desc">The website is currently in beta ,in this way you can sign up ,and stay tuned! It will be launched on May 8th , works like Facebook, thoroughly advanced for Football players </string>
 
-    <string name="slide_4_title">World Travel</string>
-    <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
+    <string name="slide_4_title">know more!</string>
+    <string name="slide_4_desc"> For more information, watch this episode on "On TV" goo.gl/c76LPa</string>
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
@@ -53,6 +53,11 @@
     <string name="comment">Comment</string>
     <string name="share">Share</string>
     <string name="replay">Replay</string>
+    <string name="matches">Matches</string>
+    <string name="points">points</string>
+    <string name="add">add+</string>
+    <string name="message">message</string>
+    <string name="invite">invite</string>
     <string name="tell_something">Tell something to your team&#8230;</string>
 
     <string name="follow">Follow</string>
@@ -135,7 +140,9 @@
     <string name="wrong_login">Invalid Credentials</string>
     <string name="mail_prompt">Enter your mail Address</string>
     <string name="password_prompt">More Than 4 alphanumeric characters</string>
-
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="accept_friend_request">accept</string>
+    <string name="cancel_request">remove</string>
     <string-array name="object_array">
 
         <item>010</item>
