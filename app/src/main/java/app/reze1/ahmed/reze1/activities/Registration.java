@@ -291,7 +291,7 @@ public class Registration extends AppCompatActivity {
 
 
                     userMap.put("name", display_name);
-                   // userMap.put("id", String.valueOf(user.getId()));
+                    userMap.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
                     userMap.put("device_token", device_token);
 
 

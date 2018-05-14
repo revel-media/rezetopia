@@ -14,13 +14,14 @@ import app.reze1.ahmed.reze1.utils.Constants;
 
 public class ChatActivity extends AppCompatActivity {
     private Toolbar mToolbar;
-
+    String name;
     public static void startActivity(Context context,
-                                     String receiver,
+                                     String name,
                                      String receiverUid,
                                      String firebaseToken) {
         Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra(Constants.ARG_RECEIVER, receiver);
+       //String mChatUser = getIntent().getStringExtra("user_id");
+        intent.putExtra(name,Constants.ARG_RECEIVER);
         intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
         intent.putExtra(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
         context.startActivity(intent);
@@ -30,7 +31,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        bindViews();
+        //bindViews();
         init();
     }
 
@@ -40,10 +41,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private void init() {
         // set the toolbar
-        setSupportActionBar(mToolbar);
+        //setSupportActionBar(mToolbar);
 
         // set toolbar title
-        mToolbar.setTitle(getIntent().getExtras().getString(Constants.ARG_RECEIVER));
+        //mToolbar.setTitle(getIntent().getExtras().getString(name));
 
         // set the register screen fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
