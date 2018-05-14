@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 import app.reze1.ahmed.reze1.fragments.AlertFragment;
 import app.reze1.ahmed.reze1.model.operations.UserOperations;
+import app.reze1.ahmed.reze1.models.User;
 import app.reze1.ahmed.reze1.views.CustomButton;
 import app.reze1.ahmed.reze1.views.CustomEditText;
 import app.reze1.ahmed.reze1.views.CustomTextView;
@@ -45,6 +47,14 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class Login extends AppCompatActivity{
     CustomButton btnSignUp;
@@ -63,14 +73,16 @@ public class Login extends AppCompatActivity{
     PackageInfo info;
 
     private static final int REQUEST_SIGNUP = 0;
+    private FirebaseAuth mAuth;
 
+    private DatabaseReference mUserDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(app.reze1.ahmed.reze1.R.layout.activity_login);
-
+        mAuth = FirebaseAuth.getInstance();
 
         fblogin = (LoginButton) findViewById(R.id.login_button);
         fblogin.setReadPermissions("public_profile");
@@ -89,7 +101,7 @@ public class Login extends AppCompatActivity{
         requestQueue = Volley.newRequestQueue(this);
         CustomTextView tvForgetPassword = findViewById(R.id.forgetPassword);
         tvForgetPassword.setPaintFlags(tvForgetPassword.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         btnSignUp.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -138,6 +150,9 @@ public class Login extends AppCompatActivity{
                         }
                     });
                 }
+                String userName = name.getText().toString();
+                String Password = password.getText().toString();
+                loginUser(userName, Password);
             }
         });
     }
@@ -286,6 +301,52 @@ public class Login extends AppCompatActivity{
                     });
             return null;
         }
+    }
+    private void loginUser(String userName,String Password) {
+
+
+        mAuth.signInWithEmailAndPassword(userName, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if(task.isSuccessful()){
+
+                    pDialog.dismiss();
+
+                    app.reze1.ahmed.reze1.model.pojo.user.User user = new app.reze1.ahmed.reze1.model.pojo.user.User();
+                    String current_user_id = mAuth.getCurrentUser().getUid();
+                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                    mUserDatabase.child(String.valueOf(user.getId())).child("device_token").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                            Intent mainIntent = new Intent(Login.this, MainActivity.class);
+                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(mainIntent);
+                            finish();
+
+
+                        }
+                    });
+
+
+
+
+                } else {
+
+                    pDialog.hide();
+
+                    String task_result = task.getException().getMessage().toString();
+
+                    Toast.makeText(Login.this, "Error : " + task_result, Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+        });
+
+
     }
 }
 

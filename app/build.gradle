@@ -17,7 +17,7 @@ android {
         }
     }
     repositories {
-        maven { url "https://dl.bintray.com/hani-momanii/maven"}
+        maven { url "https://dl.bintray.com/hani-momanii/maven" }
     }
 }
 
@@ -68,6 +68,12 @@ dependencies {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
+
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+
+//event bus
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

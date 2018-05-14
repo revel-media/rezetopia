@@ -59,6 +59,9 @@
     <string name="message">message</string>
     <string name="invite">invite</string>
     <string name="tell_something">Tell something to your team&#8230;</string>
+    <string name="add">Add +</string>
+    <string name="unfriend">Unfriend</string>
+    <string name="cancel_request">Cancel Request</string>
 
     <string name="follow">Follow</string>
     <string name="schedule">Schedule</string>
@@ -325,5 +328,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading">Loading</string>
+    <string name="please_wait">Please wait...</string>
 
 </resources>

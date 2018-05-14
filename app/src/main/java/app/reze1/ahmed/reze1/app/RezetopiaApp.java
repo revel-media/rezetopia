@@ -32,11 +32,20 @@ public class RezetopiaApp extends Application {
 
 	public static final String TAG = RezetopiaApp.class.getSimpleName();
 
+	private static boolean sIsChatActivityOpen = false;
 	private RequestQueue mRequestQueue;
 	private ConnectivityReceiver receiver;
 	private static RezetopiaApp mInstance;
 
-	@Override
+
+	public static boolean isChatActivityOpen() {
+		return sIsChatActivityOpen;
+	}
+
+	public static void setChatActivityOpen(boolean isChatActivityOpen) {
+		sIsChatActivityOpen = isChatActivityOpen;
+	}
+		@Override
 	protected void attachBaseContext(Context base) {
 		super.attachBaseContext(base);
 		MultiDex.install(this);
