@@ -20,7 +20,7 @@ import app.reze1.ahmed.reze1.utils.SharedPrefUtil;
  * Created on: 9/2/2016 , 10:08 PM
  * Project: FirebaseChat
  */
-
+//;hdsfkhldk
 public class ChatInteractor implements ChatContract.Interactor {
     private static final String TAG = "ChatInteractor";
 
