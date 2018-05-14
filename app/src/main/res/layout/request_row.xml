@@ -24,7 +24,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:gravity="start|center"
+            android:layout_marginStart="5dp"
             android:layout_weight="4"
             android:textColor="@color/colorPrimary"
             android:textSize="15dp"
@@ -39,11 +40,11 @@
             android:textAllCaps="false"
             android:background="@drawable/roundone_green"/>
         <Button
-            android:layout_width="50dp"
+            android:layout_width="70dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:id="@+id/refuse"
-            android:text="no"
+            android:text="remove"
             android:textAllCaps="false"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
