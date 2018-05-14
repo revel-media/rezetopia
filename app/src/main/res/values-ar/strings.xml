@@ -15,7 +15,10 @@
     <string name="slide_3_title">هنبدا امتي !!</string>
     <string name="slide_3_desc">الموقع شغال حاليا بشكل تجريبي سجل بياناتك و خليك متابع علشان يوم 8 مايو الموقع هينطلق و هيكون زي فيسبوك لكن بشكل متطور خاص بالرياضيين... </string>
     <string name="posting">جاري النشر&#8230;</string>
-
+    <string name="image">صورة</string>
+    <string name="video">فيديو</string>
+    <string name="check_in">مكان</string>
+    <string name="tag">الاشارة لصديق</string>
     <string name="slide_4_title">اعرف اكتر </string>
     <string name="slide_4_desc">ممكن تتفرج على الحلقة دي من اون تي في  علشان تعرف اكتر عن المبادرة... goo.gl/c76LPa</string>
     <string name="replay">رد</string>
@@ -41,7 +44,7 @@
     <string name="my_coins">نقودي</string>
     <string name="my_orders">طلباتي</string>
     <string name="setting">الاعدادت</string>
-    <string name="report_to_rezetopia">بلاغ الي ريزيتوبيا</string>
+    <string name="report_to_rezetopia">بلاغ لريزيتوبيا</string>
     <string name="log_out">خروج</string>
     <string name="english">English</string>
     <string name="saved_posts">العناصر المحفوظة</string>
