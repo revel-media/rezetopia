@@ -1,69 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rezetopia.ahmed.reze1.app.rezetopia.ahmed.reze1.CreatePostActivity">
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/createPostHeaderLayout"
-        android:layout_alignParentStart="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!--<ImageView-->
-            <!--android:layout_gravity="center"-->
-            <!--android:id="@+id/createPostPpView"-->
-            <!--android:layout_width="60dp"-->
-            <!--android:layout_height="60dp"-->
-            <!--android:background="@drawable/circle"-->
-            <!--android:layout_marginTop="@dimen/dimen_10"-->
-            <!--android:layout_marginStart="@dimen/dimen_10"-->
-            <!--android:layout_marginBottom="@dimen/dimen_10"-->
-            <!--android:layout_marginEnd="5dp" />-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/green7">
 
         <TextView
-            android:visibility="gone"
-            android:layout_toEndOf="@+id/createPostPpView"
-            android:id="@+id/usernameView"
-            android:layout_gravity="center"
+            android:id="@+id/post_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:text="@string/share"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/usernameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@+id/createPostPpView"
             android:text="عمرو طارق"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:layout_marginBottom="5dp"
             android:textStyle="bold"
-            android:layout_centerVertical="true"/>
+            android:visibility="gone" />
+    </LinearLayout>
 
-        <Button
-            android:layout_alignParentEnd="true"
-            android:layout_weight="1"
-            android:id="@+id/post_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/green7"
-            android:padding="16dp"
-            android:text="Done"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"/>
+    <app.reze1.ahmed.reze1.views.CustomEditText
 
-    </RelativeLayout>
-
-    <EditText
-        android:layout_below="@id/createPostHeaderLayout"
         android:id="@+id/new_post_desc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="post description"
         android:inputType="textMultiLine"
@@ -209,8 +188,6 @@
 
 
     </LinearLayout>
-
-
     <ProgressBar
         android:id="@+id/new_post_progress"
         style="?android:attr/progressBarStyleHorizontal"
@@ -218,4 +195,5 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:visibility="invisible" />
-</RelativeLayout>
+
+</LinearLayout>

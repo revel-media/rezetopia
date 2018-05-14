@@ -53,4 +53,6 @@
     <string name="accept_friend_request">تاكيد</string>
     <string name="cancel_request">حذف</string>
     <string name="unfriend">حذف</string>
+    <string name="booking">حجز</string>
+
 </resources>

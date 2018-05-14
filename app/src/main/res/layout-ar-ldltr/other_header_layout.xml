@@ -25,7 +25,7 @@
                 android:id="@+id/profile_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="left"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="-25dp"
                 android:src="@drawable/ic_profile_dotted" />
@@ -227,8 +227,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_gravity="left"
-                android:layout_marginEnd="40dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dividerlist"
                 android:background="@drawable/round_green_btn"
                 android:weightSum="8">

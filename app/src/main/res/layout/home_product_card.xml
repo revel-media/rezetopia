@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    android:layout_margin="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:background="@drawable/post_background"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/ppView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/post_pp_circle"
-        android:layout_marginStart="@dimen/dimen_20"
-        android:layout_marginEnd="@dimen/dimen_10"
-        android:layout_marginTop="@dimen/dimen_10"
-        android:layout_marginBottom="@dimen/dimen_10"/>
+    <ImageView
+        android:id="@+id/postSideMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dimen_20"
+        android:layout_weight="0.1"
+        android:src="@drawable/ic_more_horz" />
 
     <LinearLayout
-        android:id="@+id/headerLayout"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/ppView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_weight="1.9"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/dimen_10">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ppView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:layout_marginEnd="@dimen/dimen_10"
+                android:layout_marginStart="@dimen/dimen_20"
+                android:background="@drawable/post_pp_circle" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/imageView4"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="18dp"
-                android:layout_marginEnd="22dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/postUserName"
@@ -51,165 +50,133 @@
                     android:textColor="@android:color/black"
                     android:textSize="14sp" />
 
-                <!--<ImageView-->
-                <!--android:layout_marginStart="5dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_width="8dp"-->
-                <!--android:layout_height="8dp"-->
-                <!--android:background="@drawable/online_circle"/>-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:id="@+id/postDateView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dimen_10"
+                        android:text="2 hrs ago"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+
+
+                    <TextView
+                        android:id="@+id/productSponsorView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sponsor"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
             </LinearLayout>
 
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/post_background">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="105dp"
+                android:layout_height="105dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="9dp"
+                android:background="@color/grey" />
+
+            <ImageView
+                android:id="@+id/productImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignEnd="@+id/imageView3"
+                android:layout_centerVertical="true"
+                android:background="@color/white" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/productImageView">
 
-                <TextView
-                    android:id="@+id/postDateView"
-                    android:textSize="10sp"
+                <LinearLayout
+                    android:id="@+id/linew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2 hrs ago"
-                    android:layout_marginEnd="@dimen/dimen_10"/>
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:layout_marginTop="@dimen/dimen_10"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/productSponsorView"
-                    android:textSize="10sp"
+                    <TextView
+                        android:id="@+id/productTitleView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="7"
+                        android:text="@string/slide_4_title"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/productDetailView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="9"
+                        android:text="@string/slide_4_title"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/line5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sponsor"/>
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:layout_marginTop="@dimen/dimen_10"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/priceView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10"
+                        android:text="@string/pound"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/avilView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10"
+                        android:text="@string/available"
+                        android:textSize="12sp"></TextView>
+
+
+                </LinearLayout>
             </LinearLayout>
 
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/postSideMenu"
-            android:layout_marginEnd="@dimen/dimen_20"
-            android:layout_weight="0.1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_more_horz"/>
+            <app.reze1.ahmed.reze1.views.CustomButton
+                android:id="@+id/productBuyNow"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="14dp"
+                android:background="@drawable/dark_button"
+                android:text="@string/booking"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+        </RelativeLayout>
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_below="@id/ppView"
-        android:id="@+id/productContent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:background="@drawable/post_background"
-        android:layout_height="120dp"
-        android:layout_marginBottom="@dimen/dimen_10">
-
-        <ImageView
-            android:layout_width="105dp"
-            android:layout_height="105dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="9dp"
-            android:background="@color/grey"
-            android:id="@+id/imageView3" />
-
-        <ImageView
-            android:layout_width="103dp"
-            android:layout_height="103dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="9dp"
-            android:background="@color/grey"
-            android:id="@+id/imageView4" />
-
-        <ImageView
-            android:id="@+id/productImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignEnd="@+id/imageView3"
-            android:layout_alignTop="@+id/productTitleView"
-            android:background="@color/white" />
-
-        <TextView
-            android:id="@+id/productTitleView"
-            android:layout_toEndOf="@id/productImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_10"
-            android:layout_marginStart="@dimen/dimen_10"
-            android:textColor="@color/black"
-            android:text="@string/slide_4_title"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:ems="7"
-            />
-
-        <TextView
-            android:id="@+id/productDetailView"
-            android:layout_toEndOf="@id/productImageView"
-            android:layout_below="@id/productTitleView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_10"
-            android:text="@string/slide_4_title"
-            android:textSize="12sp"
-            android:ems="9"
-            />
-
-
-        <LinearLayout
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/dimen_10"
-            android:id="@+id/priceHeader"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimen_40">
-
-            <TextView
-                android:id="@+id/priceView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10"
-                android:text="@string/pound"
-                android:textSize="12sp"
-                />
-
-            <TextView
-                android:id="@+id/avilView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10"
-                android:textSize="12sp"
-                android:text="@string/available"
-                />
-        </LinearLayout>
-
-        <app.reze1.ahmed.reze1.views.CustomButton
-            android:id="@+id/productBuyNow"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignBottom="@+id/productImageView"
-            android:layout_marginStart="14dp"
-            android:layout_toEndOf="@+id/productDetailView"
-            android:background="@drawable/dark_button"
-            android:text="@string/booking"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
-
-    </RelativeLayout>
-
-
-    <ImageView
-        android:id="@+id/lineView"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@id/productContent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
 
 
 </RelativeLayout>
+
+
