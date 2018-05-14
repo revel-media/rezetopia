@@ -1,6 +1,7 @@
 package app.reze1.ahmed.reze1.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import app.reze1.ahmed.reze1.R;
+import app.reze1.ahmed.reze1.activities.OtherProfileActivity;
 import app.reze1.ahmed.reze1.app.AppConfig;
 import app.reze1.ahmed.reze1.helper.VolleyCustomRequest;
 import app.reze1.ahmed.reze1.model.pojo.user.ApiResponse;
@@ -103,6 +105,13 @@ public class Requests extends Fragment {
                     users = new ArrayList<>(users);
                     adapter.notifyItemRemoved(position);
                     adapter.notifyItemRangeChanged(position, users.size());
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = OtherProfileActivity.createIntent(String.valueOf(user.getId()), user.getName(), getActivity());
                 }
             });
         }

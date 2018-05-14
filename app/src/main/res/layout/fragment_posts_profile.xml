@@ -3,8 +3,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rezetopia.ahmed.reze1.app.rezetopia.ahmed.reze1.Home"
     >
+
+    <ProgressBar
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:id="@+id/postsProgress"
+        android:layout_width="@dimen/dimen_20"
+        android:layout_height="@dimen/dimen_20" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/profilePostsRecyclerView"

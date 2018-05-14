@@ -44,11 +44,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="post description"
+        android:hint="@string/postHeader"
         android:inputType="textMultiLine"
         android:maxLength="125"
         android:padding="16dp"
-        android:background="@android:color/transparent"
         android:textColor="@color/black"/>
 
     <LinearLayout
@@ -120,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:text="coming soon"
+                android:textColor="@color/green7"
                 android:layout_gravity="center"/>
 
         </LinearLayout>
@@ -157,6 +157,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_40"
                 android:text="coming soon"
+                android:textColor="@color/green7"
+
                 android:layout_gravity="center"/>
 
         </LinearLayout>
@@ -193,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:text="coming soon"
+                android:textColor="@color/green7"
                 android:layout_gravity="center"/>
         </LinearLayout>
         <view
@@ -203,7 +206,6 @@
     </LinearLayout>
     <ProgressBar
         android:id="@+id/new_post_progress"
-        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"

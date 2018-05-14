@@ -1,11 +1,434 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <LinearLayout
-        android:layout_height="wrap_content"
+        android:id="@+id/overviewLayout"
+        android:background="@drawable/post_background"
+        android:layout_margin="@dimen/dimen_10"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="5dp"
+        android:paddingBottom="70dp"
         android:orientation="vertical">
+
+        <ProgressBar
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:id="@+id/overviewProgress"
+            android:layout_width="@dimen/dimen_20"
+            android:layout_height="@dimen/dimen_20" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Attack :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+
+            <TextView
+                android:id="@+id/perval1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Defense :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stamina :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Speed :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ball control :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low pass :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lofted pass :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shoot accuracy :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shoot power :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Free kicks :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Header :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jump :"
+                android:textSize="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"/>
+            <TextView
+                android:id="@+id/perval12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0 %"
+                android:layout_weight="2.5"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/discrete12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_progressColor="@color/colorPrimaryDark"
+            app:dsb_indicatorColor="@color/white"
+            app:dsb_rippleColor="#e1e1e1"
+            app:dsb_trackColor="#fff"
+            app:dsb_value="5"
+            />
 
     </LinearLayout>
 </ScrollView>

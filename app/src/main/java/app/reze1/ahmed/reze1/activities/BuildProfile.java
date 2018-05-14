@@ -95,6 +95,7 @@ public class BuildProfile extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         //btnSkip = (Button) findViewById(R.eventId.btn_skip);
         btnNext = (Button) findViewById(R.id.btn_next);
+        btnNext.setEnabled(false);
         progress = new ProgressDialog(BuildProfile.this);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -418,8 +419,10 @@ public class BuildProfile extends AppCompatActivity {
                 public void onResponse(String response) {
                     //Toast.makeText(getBaseContext(),"test",Toast.LENGTH_LONG).show();
                    // Toast.makeText(getBaseContext(),response,Toast.LENGTH_LONG).show();
+                    Log.i("ImageUpload", "onResponse: " + response);
 
                     //hideDialog();
+                    btnNext.setEnabled(true);
                     try {
                         JSONObject jsonObject;
                         jsonObject = new JSONObject(response);
@@ -434,6 +437,7 @@ public class BuildProfile extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                    // Toast.makeText(getBaseContext(),error.toString(),Toast.LENGTH_LONG).show();
+                    Log.i("ImageUpload", "onResponse: ");
 
                 }
             }) {

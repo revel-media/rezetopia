@@ -44,11 +44,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="post description"
+        android:hint="@string/postHeader"
         android:inputType="textMultiLine"
         android:maxLength="125"
         android:padding="16dp"
-        android:background="@android:color/transparent"
         android:textColor="@color/black"/>
 
     <LinearLayout
@@ -120,6 +119,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:text="قريبا"
+                android:textColor="@color/green7"
+
                 android:layout_gravity="center"/>
 
         </LinearLayout>
@@ -157,6 +158,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_40"
                 android:text="قريبا"
+                android:textColor="@color/green7"
+
                 android:layout_gravity="center"/>
 
         </LinearLayout>
@@ -193,6 +196,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:text="قريبا"
+                android:textColor="@color/green7"
                 android:layout_gravity="center"/>
         </LinearLayout>
         <view

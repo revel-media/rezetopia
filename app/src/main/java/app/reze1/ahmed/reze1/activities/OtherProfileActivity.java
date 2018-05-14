@@ -219,50 +219,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    AlertFragment fragment = AlertFragment.createFragment("coming soon");
-//                    fragment.show(getFragmentManager(), null);
-                    final String user_id = getIntent().getStringExtra("user_id");
-                    User user = new User();
-                    if(mCurrent_state.equals("req_received")){
 
-                        final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
-
-                        Map friendsMap = new HashMap();
-                        friendsMap.put("Friends/" +user.getId() + "/" + user.getId()+ "/date", currentDate);
-                        friendsMap.put("Friends/" + user.getId() + "/"  +user.getId() + "/date", currentDate);
-
-
-                        friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
-                        friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
-
-
-                        mRootRef.updateChildren(friendsMap, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-
-                                if(databaseError == null){
-
-                                    addBtn.setEnabled(true);
-                                    mCurrent_state = "friends";
-                                    //  addBtn.setText("Unfriend this Person");
-
-                                    //  mDeclineBtn.setVisibility(View.INVISIBLE);
-                                    //  mDeclineBtn.setEnabled(false);
-
-                                } else {
-
-                                    String error = databaseError.getMessage();
-
-                                    Toast.makeText(OtherProfileActivity.this, error, Toast.LENGTH_SHORT).show();
-
-
-                                }
-
-                            }
-                        });
-
-                    }
                     if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.add))){
                         performAddFriend();
                     } else if(addBtn.getText().toString().contentEquals(getResources().getString(R.string.unfriend))) {
@@ -271,6 +228,46 @@ public class OtherProfileActivity extends AppCompatActivity {
                         performUnFriend();
                     }
 
+//                    AlertFragment fragment = AlertFragment.createFragment("coming soon");
+//                    fragment.show(getFragmentManager(), null);
+                    final String user_id = getIntent().getStringExtra("user_id");
+                    User user = new User();
+                    final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
+
+                    Map friendsMap = new HashMap();
+                    friendsMap.put("Friends/" +user.getId() + "/" + user.getId()+ "/date", currentDate);
+                    friendsMap.put("Friends/" + user.getId() + "/"  +user.getId() + "/date", currentDate);
+
+
+                    friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
+                    friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
+
+
+                    mRootRef.updateChildren(friendsMap, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+
+                            if(databaseError == null){
+
+                                addBtn.setEnabled(true);
+                                mCurrent_state = "friends";
+                                //  addBtn.setText("Unfriend this Person");
+
+                                //  mDeclineBtn.setVisibility(View.INVISIBLE);
+                                //  mDeclineBtn.setEnabled(false);
+
+                            } else {
+
+                                String error = databaseError.getMessage();
+
+                                Toast.makeText(OtherProfileActivity.this, error, Toast.LENGTH_SHORT).show();
+
+
+                            }
+
+                        }
+                    });
                 }
             });
         }

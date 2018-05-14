@@ -2,6 +2,7 @@ package app.reze1.ahmed.reze1.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -29,7 +30,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import app.reze1.ahmed.reze1.activities.BuildProfile;
+import app.reze1.ahmed.reze1.activities.ImageActivity;
 import app.reze1.ahmed.reze1.activities.NetworkList;
+import app.reze1.ahmed.reze1.activities.UserImageActivity;
 import app.reze1.ahmed.reze1.helper.ProfilePagerAdapter;
 import app.reze1.ahmed.reze1.R;
 import app.reze1.ahmed.reze1.app.AppConfig;
@@ -78,6 +82,7 @@ public class Profile extends Fragment {
     private TextView posts;
     private TextView videos;
     private TextView photos;
+    private ImageView settingView;
     private ImageView playerImg;
     public RequestQueue requestQueue;
     public static PopupMenu popupMenu;
@@ -139,6 +144,7 @@ public class Profile extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
          viewPager = (ViewPager)v.findViewById(R.id.pager);
+        settingView = v.findViewById(R.id.settingView);
 
         View profile_menu = v.findViewById(R.id.profile_menu);
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
@@ -167,6 +173,8 @@ public class Profile extends Fragment {
                 fragment.show(getActivity().getFragmentManager(), null);
             }
         });
+
+
 
        // Toast.makeText(getContext(),wraper.getHeight()+"",Toast.LENGTH_LONG).show();
         //params.height = 200;
@@ -330,7 +338,7 @@ public class Profile extends Fragment {
 
                 //Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
                 try {
-                    JSONObject jsonObject;
+                    final JSONObject jsonObject;
                     jsonObject = new JSONObject(response);
                     //Toast.makeText(getApplicationContext(),jsonObject.getString("msg"),Toast.LENGTH_LONG).show();
                     if(jsonObject.getString("msg").equals("succ")){
@@ -344,6 +352,38 @@ public class Profile extends Fragment {
                         Picasso.with(getApplicationContext())
                                 .load("https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG")
                                 .placeholder(R.drawable.circle).into(playerImg);
+
+                        settingView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getActivity(), BuildProfile.class);
+                                try {
+                                    intent.putExtra("fbname", jsonObject.getString("name"));
+                                    intent.putExtra("fbpicurl", "https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG");
+                                    intent.putExtra("id", id);
+                                    startActivity(intent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        playerImg.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String url = null;
+                                try {
+                                    if (jsonObject.getString("img") != null && !jsonObject.getString("img").contentEquals("")){
+                                        url = "https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG";
+                                        Intent intent = UserImageActivity.createIntent(url, getActivity());
+                                        startActivityForResult(intent, 2002);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
                         probar.setVisibility(View.GONE);
                        // new DownloadImage(playerImg).execute("https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG");
                     }
@@ -410,11 +450,15 @@ public class Profile extends Fragment {
                 }
             });
         }
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-
-
-
+        if (requestCode == 2002){
+            getUser(userId, requestQueue);
+        }
     }
 }
 

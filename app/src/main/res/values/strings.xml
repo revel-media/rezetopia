@@ -19,6 +19,7 @@
     <string name="arabic">Arabic</string>
     <string name="terms">i accept the terms of rezetopia</string>
     <string name="search">search</string>
+    <string name="postHeader">what are you thinking about?</string>
     <string name="slide_1_title">about us</string>
     <string name="slide_1_desc">RezeTopia has also launched the initiative"play with the lights on" in marketing for the professional players in the Egyptian and European clubs who can not promote their skills</string>
     <string name="sign_up_with_facebook">sign up with facebook</string>
@@ -159,47 +160,47 @@
         <item>cairo</item>
         <item>Helwan</item>
         <item>Nasr City</item>
-            <item>Cairo</item>
-            <item>Alexandria</item>
-            <item>Giza</item>
-            <item >Shubra El-Kheima</item>
-            <item >Port Said</item>
-            <item >Suez</item>
-            <item >Luxor</item>
-            <item >al-Mansura</item>
-            <item >El-Mahalla El-Kubra</item>
-            <item >Tanta</item>
-            <item >Asyut</item>
-            <item >Ismailia</item>
-            <item >Fayyum</item>
-            <item >Zagazig</item>
-            <item >Aswan</item>
-            <item >Damietta</item>
-            <item >Damanhur</item>
-            <item >al-Minya</item>
-            <item >Beni Suef</item>
-            <item >Qena</item>
-            <item >Sohag</item>
-            <item >Hurghada</item>
-            <item>6th of October City</item>
-            <item>Shibin El Kom</item>
-            <item>Banha</item>
-            <item >Arish</item>
-            <item >Mallawi</item>
-            <item >10th of Ramadan City</item>
-            <item >Bilbais</item>
-            <item >Marsa Matruh</item>
-            <item >Idfu</item>
-            <item >Mit Ghamr</item>
-            <item >El-Hawamdeyya</item>
-            <item >Desouk</item>
-            <item >Qalyub</item>
-            <item >Abu Kabir</item>
-            <item >Kafr el-Dawwar</item>
-            <item >Girga</item>
-            <item >Akhmim</item>
-            <item >Matareya</item>
-        
+        <item>Cairo</item>
+        <item>Alexandria</item>
+        <item>Giza</item>
+        <item>Shubra El-Kheima</item>
+        <item>Port Said</item>
+        <item>Suez</item>
+        <item>Luxor</item>
+        <item>al-Mansura</item>
+        <item>El-Mahalla El-Kubra</item>
+        <item>Tanta</item>
+        <item>Asyut</item>
+        <item>Ismailia</item>
+        <item>Fayyum</item>
+        <item>Zagazig</item>
+        <item>Aswan</item>
+        <item>Damietta</item>
+        <item>Damanhur</item>
+        <item>al-Minya</item>
+        <item>Beni Suef</item>
+        <item>Qena</item>
+        <item>Sohag</item>
+        <item>Hurghada</item>
+        <item>6th of October City</item>
+        <item>Shibin El Kom</item>
+        <item>Banha</item>
+        <item>Arish</item>
+        <item>Mallawi</item>
+        <item>10th of Ramadan City</item>
+        <item>Bilbais</item>
+        <item>Marsa Matruh</item>
+        <item>Idfu</item>
+        <item>Mit Ghamr</item>
+        <item>El-Hawamdeyya</item>
+        <item>Desouk</item>
+        <item>Qalyub</item>
+        <item>Abu Kabir</item>
+        <item>Kafr el-Dawwar</item>
+        <item>Girga</item>
+        <item>Akhmim</item>
+        <item>Matareya</item>
+
     </string-array>
 
 

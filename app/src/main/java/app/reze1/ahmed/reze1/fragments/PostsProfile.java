@@ -1,6 +1,7 @@
 package app.reze1.ahmed.reze1.fragments;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -76,6 +78,7 @@ public class PostsProfile extends Fragment {
     long now;
     String userId;
     private OnCallback mListener;
+    ProgressBar postsProgress;
 
     @Nullable
     @Override
@@ -88,6 +91,10 @@ public class PostsProfile extends Fragment {
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
 
+        postsProgress = view.findViewById(R.id.postsProgress);
+
+        postsProgress.getIndeterminateDrawable().setColorFilter(getResources()
+                .getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         requestQueue = Volley.newRequestQueue(getActivity());
         fetchPosts();
@@ -397,6 +404,7 @@ public class PostsProfile extends Fragment {
                     @Override
                     public void onResponse(ApiResponse response) {
                         if (response.getPosts() != null){
+                            postsProgress.setVisibility(View.GONE);
                             Log.i("volley response", "onResponse: " + response.getPosts()[0].getCreatedAt());
                             posts = response.getPosts();
                             nextCursor = response.getNextCursor();

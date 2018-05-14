@@ -25,6 +25,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -47,30 +48,30 @@
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
-        <activity android:name="app.reze1.ahmed.reze1.activities.MainActivity" />
+        <activity android:name=".activities.MainActivity" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.Language"
+            android:name=".activities.Language"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.Registration"
+            android:name=".activities.Registration"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.WelcomeActivity"
+            android:name=".activities.WelcomeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.BuildProfile"
+            android:name=".activities.BuildProfile"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.BuildProfile1"
+            android:name=".activities.BuildProfile1"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.BuildProfile2"
+            android:name=".activities.BuildProfile2"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.BuildNetwork"
+            android:name=".activities.BuildNetwork"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.Splash"
+            android:name=".activities.Splash"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,62 +79,73 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="app.reze1.ahmed.reze1.activities.ForgetPassword" android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.CommentActivity"
+            android:name=".activities.ForgetPassword"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.CreatePostActivity"
+            android:name=".activities.CommentActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.OtherProfileActivity"
+            android:name=".activities.CreatePostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.ReplayActivity"
+            android:name=".activities.OtherProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ReplayActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name="app.reze1.ahmed.reze1.services.FirebaseMessagingService">
+        <service android:name=".services.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="app.reze1.ahmed.reze1.services.InstanceIDService">
+        <service android:name=".services.InstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <activity android:name="app.reze1.ahmed.reze1.activities.PostActivity" />
-        <activity android:name="app.reze1.ahmed.reze1.activities.NetworkList" />
+        <activity android:name=".activities.PostActivity" />
+        <activity android:name=".activities.NetworkList" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.ImageActivity"
+            android:name=".activities.ImageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.GroupActivity"
+            android:name=".activities.GroupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.CreateGroupPostActivity"
+            android:name=".activities.CreateGroupPostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.ViewTeamsActivity"
+            android:name=".activities.ViewTeamsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.ViewEventActivity"
+            android:name=".activities.ViewEventActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="app.reze1.ahmed.reze1.activities.Login"
+            android:name=".activities.Login"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="app.reze1.ahmed.reze1.activities.MyEventsActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="app.reze1.ahmed.reze1.activities.StoresListActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="app.reze1.ahmed.reze1.activities.CreateStoreActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="app.reze1.ahmed.reze1.activities.WebActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="app.reze1.ahmed.reze1.activities.StoreActivity" android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity
+            android:name=".activities.MyEventsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.StoresListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CreateStoreActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.WebActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.StoreActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ChatActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity android:name=".activities.UserImageActivity"></activity>
     </application>
 
 </manifest>
