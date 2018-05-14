@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -27,12 +26,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import app.reze1.ahmed.reze1.fragments.AlertFragment;
 import app.reze1.ahmed.reze1.R;
@@ -44,7 +37,6 @@ import app.reze1.ahmed.reze1.model.pojo.search.SearchResponse;
 import app.reze1.ahmed.reze1.app.AppConfig;
 import app.reze1.ahmed.reze1.helper.ResizeWidthAnimation;
 import app.reze1.ahmed.reze1.helper.VolleyCustomRequest;
-import app.reze1.ahmed.reze1.model.pojo.user.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +44,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,10 +60,6 @@ public class OtherProfileActivity extends AppCompatActivity {
     private static final int CREATE_POST_RESULT = 1002;
     private static final int VIEW_HEADER = 1;
     private static final int VIEW_ITEM = 2;
-    private DatabaseReference mUsersDatabase;
-    private DatabaseReference mFriendReqDatabase;
-    private DatabaseReference mFriendDatabase;
-    private String mCurrent_state;
 
     boolean searchUsers = false;
     boolean searchGroups = false;
@@ -100,9 +87,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     public Button addBtn;
     private RecyclerView.Adapter searchAdapter;
     RecyclerView searchRecyclerView;
-    private DatabaseReference mRootRef;
 
-    private FirebaseUser mCurrent_user;
     public static Intent createIntent(String userId, String username, Context context){
         Intent intent = new Intent(context, OtherProfileActivity.class);
         intent.putExtra(USER_ID_EXTRA, userId);
@@ -114,19 +99,13 @@ public class OtherProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_profile);
-        mRootRef = FirebaseDatabase.getInstance().getReference();
-        mCurrent_state = "not_friends";
+
         postsRecyclerView = findViewById(R.id.otherProfileRecView);
         searchRecyclerView = findViewById(R.id.otherSearchRecView);
+
         searchBox = findViewById(R.id.searchView);
         guestUserId = getIntent().getStringExtra(USER_ID_EXTRA);
         backView = findViewById(R.id.searchBackArrow);
-        final String user_id = getIntent().getStringExtra("user_id");
-        User user = new User();
-        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(String.valueOf(user.getId()));
-        mCurrent_user = FirebaseAuth.getInstance().getCurrentUser();
-
-        mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
 
         userId = OtherProfileActivity.this.getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
@@ -194,16 +173,169 @@ public class OtherProfileActivity extends AppCompatActivity {
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder{
         TextView usernamePView;
+        Button msgBtn = itemView.findViewById(R.id.msgSend);
+
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
             usernamePView = itemView.findViewById(R.id.otherUsernameView);
+            addBtn = itemView.findViewById(R.id.addfBtn);
+
+            msgBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//
+                    AlertFragment fragment = AlertFragment.createFragment("coming soon");
+                    fragment.show(getFragmentManager(), null);
+                }
+            });
+
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    AlertFragment fragment = AlertFragment.createFragment("coming soon");
+//                    fragment.show(getFragmentManager(), null);
+
+                    if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.add))){
+                        performAddFriend();
+                    } else if(addBtn.getText().toString().contentEquals(getResources().getString(R.string.unfriend))) {
+                        performUnFriend();
+                    } else {
+                        performUnFriend();
+                    }
+
+                }
+            });
         }
 
         public void bind(){
             usernamePView.setText(username);
+            performFriendStatus();
         }
+
+        private void performFriendStatus(){
+            StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/addfriend.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.i("friend", "onErrorResponse: " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    int friendState = jsonObject.getInt("state");
+                                    if (friendState == 0){
+                                        addBtn.setText(R.string.cancel_request);
+                                    } else if (friendState == 1){
+                                        addBtn.setText(R.string.unfriend);
+                                    }
+                                } else {
+                                    addBtn.setText(R.string.add);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    Log.i("isFriend", "getParams: " + userId + " " + guestUserId);
+                    map.put("isFriend", String.valueOf(true));
+                    map.put("from", userId);
+                    map.put("to", guestUserId);
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
+        }
+
+        private void performAddFriend(){
+            StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/addfriend.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.i("add_friend", "onErrorResponse: " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    addBtn.setText(R.string.cancel_request);
+                                } else {
+                                    addBtn.setText(R.string.add);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    map.put("add", String.valueOf(true));
+                    map.put("from", userId);
+                    map.put("to", guestUserId);
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
+        }
+
+        private void performUnFriend(){
+            StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/addfriend.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.i("unFriend", "onErrorResponse: " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    addBtn.setText(R.string.add);
+                                } else if (jsonObject.getInt("state") == 0){
+                                    addBtn.setText(R.string.cancel_request);
+                                } else if (jsonObject.getInt("state") > 1){
+                                    addBtn.setText(R.string.unfriend);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    Log.i("unFriend", "getParams: " + userId + " " + guestUserId);
+                    map.put("unFriend", String.valueOf(true));
+                    map.put("from", userId);
+                    map.put("to", guestUserId);
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
+        }
+
     }
 
     private class PostViewHolder extends RecyclerView.ViewHolder{
@@ -415,71 +547,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             if (viewType == VIEW_HEADER){
-
                 View view = LayoutInflater.from(OtherProfileActivity.this).inflate(R.layout.other_header_layout, parent, false);
-                Button msgBtn = (Button)view.findViewById(R.id.msgSend);
-                addBtn = (Button)view.findViewById(R.id.addfBtn);
-
-                msgBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//
-                        AlertFragment fragment = AlertFragment.createFragment("coming soon");
-                        fragment.show(getFragmentManager(), null);
-                    }
-                });
-
-                addBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                       // AlertFragment fragment = AlertFragment.createFragment("coming soon");
-                       // fragment.show(getFragmentManager(), null);
-
-                        final String user_id = getIntent().getStringExtra("user_id");
-                        User user = new User();
-                        if(mCurrent_state.equals("req_received")){
-
-                            final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
-
-                            Map friendsMap = new HashMap();
-                            friendsMap.put("Friends/" +user.getId() + "/" + user.getId()+ "/date", currentDate);
-                            friendsMap.put("Friends/" + user.getId() + "/"  +user.getId() + "/date", currentDate);
-
-
-                            friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
-                            friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
-
-
-                            mRootRef.updateChildren(friendsMap, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-
-                                    if(databaseError == null){
-
-                                        addBtn.setEnabled(true);
-                                        mCurrent_state = "friends";
-                                      //  addBtn.setText("Unfriend this Person");
-
-                                      //  mDeclineBtn.setVisibility(View.INVISIBLE);
-                                      //  mDeclineBtn.setEnabled(false);
-
-                                    } else {
-
-                                        String error = databaseError.getMessage();
-
-                                        Toast.makeText(OtherProfileActivity.this, error, Toast.LENGTH_SHORT).show();
-
-
-                                    }
-
-                                }
-                            });
-
-                        }
-
-                    }
-                });
                 return new OtherProfileActivity.HeaderViewHolder(view);
             } else {
                 View view = LayoutInflater.from(OtherProfileActivity.this).inflate(R.layout.post_card, parent, false);
@@ -609,7 +677,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 }
 
             }
-          //  Toast.makeText(OtherProfileActivity.this, "result", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(OtherProfileActivity.this, "result", Toast.LENGTH_SHORT).show();
         } else if (requestCode == CREATE_POST_RESULT){
             if (data != null){
                 PostResponse postResponse = (PostResponse) data.getSerializableExtra("post");
