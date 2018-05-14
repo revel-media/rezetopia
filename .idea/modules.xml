@@ -4,9 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\Users\amr\AndroidStudioProjects\rezeTest\app\app.iml" filepath="C:\Users\amr\AndroidStudioProjects\rezeTest\app\app.iml" />
-      <module fileurl="file://C:\Users\amr\AndroidStudioProjects\reze\.idea\reze.iml" filepath="C:\Users\amr\AndroidStudioProjects\reze\.idea\reze.iml" />
-      <module fileurl="file://C:\Users\Mona Abdallh\AndroidStudioProjects\reze22\reze.iml" filepath="C:\Users\Mona Abdallh\AndroidStudioProjects\reze22\reze.iml" />
       <module fileurl="file://C:\Users\Mona Abdallh\AndroidStudioProjects\rezetopia\reze.iml" filepath="C:\Users\Mona Abdallh\AndroidStudioProjects\rezetopia\reze.iml" />
+      <module fileurl="file://C:\Users\Mona Abdallh\AndroidStudioProjects\reze22\reze.iml" filepath="C:\Users\Mona Abdallh\AndroidStudioProjects\reze22\reze.iml" />
+      <module fileurl="file://C:\Users\amr\AndroidStudioProjects\reze\.idea\reze.iml" filepath="C:\Users\amr\AndroidStudioProjects\reze\.idea\reze.iml" />
       <module fileurl="file://$PROJECT_DIR$/reze22.iml" filepath="$PROJECT_DIR$/reze22.iml" />
       <module fileurl="file://C:\Users\ahmed\AndroidStudioProjects\rezeTest\reze22.iml" filepath="C:\Users\ahmed\AndroidStudioProjects\rezeTest\reze22.iml" />
       <module fileurl="file://C:\Users\ahmed\AndroidStudioProjects\reze\reze22.iml" filepath="C:\Users\ahmed\AndroidStudioProjects\reze\reze22.iml" />

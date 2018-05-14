@@ -64,6 +64,14 @@ public class User {
     @Expose
     private String nationality;
 
+    @SerializedName("img")
+    @Expose
+    private String imageUrl;
+
+    @SerializedName("error")
+    @Expose
+    private boolean error;
+
 
     public String getNationality() {
         return nationality;
@@ -153,14 +161,6 @@ public class User {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
-    @SerializedName("img")
-    @Expose
-    private String imageUrl;
-
-    @SerializedName("error")
-    @Expose
-    private boolean error;
 
     public int getId() {
         return id;

@@ -58,7 +58,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements Home.OnCallback,Notification.OnFragmentInteractionListener,Requests.OnFragmentInteractionListener,Profile.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Home.OnCallback,Notification.OnFragmentInteractionListener,Profile.OnFragmentInteractionListener {
     private static final int VIEW_HEADER = 1;
     private static final int VIEW_ITEM = 2;
     private FirebaseAuth mAuth;
@@ -697,9 +697,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if(currentUser == null){
-
-            sendToStart();
-
+           // sendToStart();
         } else {
 
             mUserRef.child("online").setValue("true");

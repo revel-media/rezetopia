@@ -153,6 +153,14 @@ public class Registration extends AppCompatActivity {
                             intent.putExtra("fbname", inputFullName.getText().toString());
                             intent.putExtra("fbpicurl", "null");
                             intent.putExtra("id", id);
+
+                            String display_name = inputFullName.getText().toString();
+                            String email = inputEmail.getText().toString();
+                            String password = inputPassword.getText().toString();
+
+
+                            register_user(display_name, email, password, id);
+
                             startActivityForResult(intent, 0);
                             finish();
                         }
@@ -165,13 +173,6 @@ public class Registration extends AppCompatActivity {
                         }
                     });
                 }
-
-                String display_name = inputFullName.getText().toString();
-                String email = inputEmail.getText().toString();
-                String password = inputPassword.getText().toString();
-
-
-                register_user(display_name, email, password);
             }
         });
 
@@ -272,7 +273,7 @@ public class Registration extends AppCompatActivity {
         });
     }
 
-    private void register_user(final String display_name, String email, String password) {
+    private void register_user(final String display_name, String email, String password, final String id) {
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -280,11 +281,9 @@ public class Registration extends AppCompatActivity {
 
                 if(task.isSuccessful()){
 
-                    User user = new User();
                     FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
-                    String uid = current_user.getUid();
 
-                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(String.valueOf(user.getId()));
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(String.valueOf(id));
 
                     String device_token = FirebaseInstanceId.getInstance().getToken();
 

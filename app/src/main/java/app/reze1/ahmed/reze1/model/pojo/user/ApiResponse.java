@@ -13,13 +13,25 @@ public class ApiResponse{
 
     @SerializedName("users")
     @Expose
-    private ArrayList<User>users;
+    private User[] users;
 
-    public ArrayList<User> getUsers() {
+    @SerializedName("error")
+    @Expose
+    private boolean error;
+
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
+    }
+
+    public User[] getUsers() {
         return users;
     }
 
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(User[] users) {
         this.users = users;
     }
 }

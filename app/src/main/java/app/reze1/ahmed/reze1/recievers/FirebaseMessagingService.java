@@ -2,12 +2,18 @@ package app.reze1.ahmed.reze1.recievers;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 
 import app.reze1.ahmed.reze1.R;
+import app.reze1.ahmed.reze1.activities.ChatActivity;
+import app.reze1.ahmed.reze1.utils.Constants;
 
 /**
  * Created by AkshayeJH on 13/07/17.
@@ -16,48 +22,89 @@ import app.reze1.ahmed.reze1.R;
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
 
+    private static final String TAG = "MyFirebaseMsgService";
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
-        String notification_title = remoteMessage.getNotification().getTitle();
-        String notification_message = remoteMessage.getNotification().getBody();
-
-        String click_action = remoteMessage.getNotification().getClickAction();
-
         String from_user_id = remoteMessage.getData().get("from_user_id");
+        if (from_user_id != null || !from_user_id.contentEquals("")){
+            String notification_title = remoteMessage.getNotification().getTitle();
+            String notification_message = remoteMessage.getNotification().getBody();
+            String click_action = remoteMessage.getNotification().getClickAction();
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(notification_title)
-                        .setContentText(notification_message);
-
-
-        Intent resultIntent = new Intent(click_action);
-        resultIntent.putExtra("user_id", from_user_id);
-
-
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        this,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-        mBuilder.setContentIntent(resultPendingIntent);
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle(notification_title)
+                            .setContentText(notification_message);
 
 
+            Intent resultIntent = new Intent(click_action);
+            resultIntent.putExtra("user_id", from_user_id);
 
 
-        int mNotificationId = (int) System.currentTimeMillis();
+            PendingIntent resultPendingIntent =
+                    PendingIntent.getActivity(
+                            this,
+                            0,
+                            resultIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
 
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+            mBuilder.setContentIntent(resultPendingIntent);
 
 
+
+
+            int mNotificationId = (int) System.currentTimeMillis();
+
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            mNotifyMgr.notify(mNotificationId, mBuilder.build());
+        } else if (!remoteMessage.getFrom().contentEquals("") || remoteMessage.getFrom() != null){
+            if (remoteMessage.getData().size() > 0) {
+                Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+
+                String title = remoteMessage.getData().get("title");
+                String message = remoteMessage.getData().get("text");
+                String username = remoteMessage.getData().get("username");
+                String uid = remoteMessage.getData().get("uid");
+                String fcmToken = remoteMessage.getData().get("fcm_token");
+
+                // Don't show notification if chat activity is open.
+
+            }
+        }
+
+    }
+
+    private void sendNotification(String title,
+                                  String message,
+                                  String receiver,
+                                  String receiverUid,
+                                  String firebaseToken) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra(Constants.ARG_RECEIVER, receiver);
+        intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
+        intent.putExtra(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_messaging)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, notificationBuilder.build());
     }
 }

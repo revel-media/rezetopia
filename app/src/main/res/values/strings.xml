@@ -55,13 +55,11 @@
     <string name="replay">Replay</string>
     <string name="matches">Matches</string>
     <string name="points">points</string>
-    <string name="add">add+</string>
     <string name="message">message</string>
     <string name="invite">invite</string>
     <string name="tell_something">Tell something to your team&#8230;</string>
     <string name="add">Add +</string>
     <string name="unfriend">Unfriend</string>
-    <string name="cancel_request">Cancel Request</string>
 
     <string name="follow">Follow</string>
     <string name="schedule">Schedule</string>
