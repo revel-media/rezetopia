@@ -991,7 +991,9 @@ public class Home extends Fragment {
             @Override
             public void onError(String error) {
                 AlertFragment fragment = AlertFragment.createFragment(error);
-                fragment.show(getActivity().getFragmentManager(), null);
+                if (getActivity() != null) {
+                    fragment.show(getActivity().getFragmentManager(), null);
+                }
             }
         });
     }

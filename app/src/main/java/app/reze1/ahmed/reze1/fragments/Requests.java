@@ -77,12 +77,34 @@ public class Requests extends Fragment {
             refuse = itemView.findViewById(R.id.refuse);
         }
 
-        public void bind(User user, int position){
+        public void bind(final User user, final int position){
             if (user.getImageUrl() != null){
                 Picasso.with(getActivity()).load(user.getHeight()).into(img);
             }
 
             sugName.setText(user.getName());
+
+            accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new AcceptAsync().execute(String.valueOf(user.getRequestId()));
+                    users.remove(position);
+                    users = new ArrayList<>(users);
+                    adapter.notifyItemRemoved(position);
+                    adapter.notifyItemRangeChanged(position, users.size());
+                }
+            });
+
+            refuse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new RemoveAsync().execute(String.valueOf(user.getRequestId()));
+                    users.remove(position);
+                    users = new ArrayList<>(users);
+                    adapter.notifyItemRemoved(position);
+                    adapter.notifyItemRangeChanged(position, users.size());
+                }
+            });
         }
     }
 
@@ -114,8 +136,11 @@ public class Requests extends Fragment {
                     new Response.Listener<ApiResponse>() {
                         @Override
                         public void onResponse(ApiResponse response) {
-                            users = new ArrayList<>(Arrays.asList(response.getUsers()));
-                            updateUi();
+                            if (response.getUsers() != null) {
+                                Log.i("friend_request", "onResponse: " + response.getUsers()[0].getName());
+                                users = new ArrayList<>(Arrays.asList(response.getUsers()));
+                                updateUi();
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -132,6 +157,89 @@ public class Requests extends Fragment {
                             .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
                     params.put("id", userId);
                     params.put("method", "get_requests");
+                    return params;
+                }
+            };
+            Volley.newRequestQueue(getActivity()).add(post);
+            return null;
+        }
+
+    }
+
+    private class AcceptAsync extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(final String... strings) {
+            StringRequest post = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/friend_request.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    Log.i("accept_friend_request", "onResponse: " + response);
+                                } else {
+                                    Log.i("accept_friend_request", "onResponse: " + response);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }
+            ){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String>  params = new HashMap<>();
+
+
+                    params.put("id", strings[0]);
+                    params.put("method", "accept");
+                    return params;
+                }
+            };
+            Volley.newRequestQueue(getActivity()).add(post);
+            return null;
+        }
+
+    }
+
+    private class RemoveAsync extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(final String... strings) {
+            StringRequest post = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/friend_request.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    Log.i("accept_friend_request", "onResponse: " + response);
+                                } else {
+                                    Log.i("accept_friend_request", "onResponse: " + response);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }
+            ){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String>  params = new HashMap<>();
+
+                    params.put("id", strings[0]);
+                    params.put("method", "remove");
                     return params;
                 }
             };

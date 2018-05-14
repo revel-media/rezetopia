@@ -12,6 +12,10 @@ public class User {
     @Expose
     private int id;
 
+    @SerializedName("request_id")
+    @Expose
+    private int requestId;
+
     @SerializedName("state")
     @Expose
     private int state;
@@ -72,6 +76,13 @@ public class User {
     @Expose
     private boolean error;
 
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
 
     public String getNationality() {
         return nationality;
