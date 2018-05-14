@@ -41,7 +41,7 @@
         android:layout_marginTop="@dimen/dimen_10"
         android:layout_marginStart="@dimen/dimen_10"
         android:textColor="@color/black"
-        android:text="@string/slide_4_title"
+        android:text="Rezetopia Product"
         android:textStyle="bold"
         android:textSize="15sp"
         android:ems="7"
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_10"
-        android:text="@string/slide_4_title"
+        android:text="Product Details"
         android:textSize="12sp"
         android:ems="9"
         />

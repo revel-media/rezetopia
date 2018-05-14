@@ -300,7 +300,7 @@ public class UserOperations {
                                     }
                                 }
 
-                                if (vendorPosts != null){
+                                /*if (vendorPosts != null){
                                     for (VendorPostsResponse postResponse : vendorPosts) {
                                         NewsFeedItem item = new NewsFeedItem();
                                         item.setId(postResponse.getPostId());
@@ -314,7 +314,7 @@ public class UserOperations {
                                         item.setType(NewsFeedItem.VENDOR_POST_TYPE);
                                         newsFeedItems.add(item);
                                     }
-                                }
+                                }*/
 
                                 if (events != null){
                                     for (EventResponse eventResponse : events) {

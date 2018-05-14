@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
@@ -108,18 +110,19 @@ public class Home extends Fragment {
     ProgressBar homeProgress;
     private RecyclerView.Adapter adapter;
     private EditText commentEditText;
-    int nextCursor = 0;
-    int adapterPos;
+    int lastCursor = 0;
+    //int adapterPos;
     RequestQueue requestQueue;
     long now;
     String userId;
+    SwipeRefreshLayout homeSwipeView;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    LinearLayoutManager layoutManager;
 
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    String name;
 
     private OnCallback mListener;
 
@@ -171,9 +174,20 @@ public class Home extends Fragment {
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
 
+        homeSwipeView = view.findViewById(R.id.homeSwipeView);
+
 
         requestQueue = Volley.newRequestQueue(getActivity());
-        fetchNewsFeed();
+        layoutManager = new LinearLayoutManager(getActivity());
+        fetchNewsFeed(false);
+
+        homeSwipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                homeSwipeView.setRefreshing(true);
+                fetchNewsFeed(true);
+            }
+        });
         return view;
     }
 
@@ -279,24 +293,31 @@ public class Home extends Fragment {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-
+            String likeString = getActivity().getResources().getString(R.string.like);
             if (item.getLikes() != null && item.getLikes().length > 0){
-                String likeString = getActivity().getResources().getString(R.string.like);
-                likeButton.setText(item.getLikes().length + " " + likeString);
 
-                Log.e("loggedInUserId", userId);
+                likeButton.setText(item.getLikes().length + " " + likeString);
+                Log.e("post_like ->> " + item.getPostText(), item.getLikes().length + " " + likeString);
+
+                //Log.e("loggedInUserId", userId);
                 for (int id : item.getLikes()) {
-                    Log.e("likesUserId", String.valueOf(id));
+                    //Log.e("likesUserId", String.valueOf(id));
                     if (String.valueOf(id).contentEquals(String.valueOf(userId))){
                         likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
                         break;
                     }
                 }
+            } else {
+                likeButton.setText(likeString);
+                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
             }
-
+            String commentString = getActivity().getResources().getString(R.string.comment);
             if (item.getCommentSize() > 0){
-                String commentString = getActivity().getResources().getString(R.string.comment);
+
                 commentButton.setText(item.getCommentSize() + " " + commentString);
+                Log.e("post_comment ->> " + item.getPostText(), (item.getCommentSize() + " " + commentString));
+            } else {
+                commentButton.setText(commentString);
             }
 
             commentButton.setOnClickListener(new View.OnClickListener() {
@@ -305,7 +326,7 @@ public class Home extends Fragment {
                     Intent intent = CommentActivity.createIntent(item.getLikes(), item.getId(), now, item.getOwnerId(),
                             getActivity());
 
-                    adapterPos = pos;
+                    //adapterPos = pos;
                     startActivityForResult(intent, COMMENT_ACTIVITY_RESULT);
                     getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 
@@ -907,6 +928,7 @@ public class Home extends Fragment {
                 eventViewHolder.bind(newsFeedItems.get(position-1));
             } else if (holder instanceof  VendorPostViewHolder){
                 VendorPostViewHolder vendorPostViewHolder = (VendorPostViewHolder) holder;
+                //todo replace holder with adapter
                 vendorPostViewHolder.bind(newsFeedItems.get(position-1), position-1);
             }
         }
@@ -936,33 +958,61 @@ public class Home extends Fragment {
         }
     }
 
-    private void fetchNewsFeed(){
-        String cursor = "0";
-        if (newsFeed != null){
-            cursor = String.valueOf(newsFeed.getNextCursor());
+    private void fetchNewsFeed(boolean refresh){
+        if (refresh){
+            fetchNews("0", true);
+        } else if (newsFeed != null){
+            fetchNews(String.valueOf(newsFeed.getNextCursor()), false);
+        } else {
+            fetchNews("0", false);
         }
+    }
 
+    private void fetchNews(String cursor, final boolean refresh){
+        Log.e("cursor => ", cursor );
         UserOperations.fetchNewsFeed(userId, cursor);
         UserOperations.setNewsFeedCalllback(new UserOperations.NewsFeedCallback() {
             @Override
             public void onResponse(NewsFeed news) {
                 newsFeed = news;
-                if (newsFeedItems != null && newsFeedItems.size() > 0)
-                    newsFeedItems.addAll(news.getItems());
-                else
-                    newsFeedItems = news.getItems();
+                if (news.getNextCursor() != lastCursor) {
+                    if (newsFeedItems != null && newsFeedItems.size() > 0 && !refresh) {
+                        newsFeedItems.addAll(news.getItems());
+                    } else {
+                        newsFeedItems = news.getItems();
+                    }
+                }
+
+                homeSwipeView.setRefreshing(false);
+                lastCursor = news.getNextCursor();
                 updateUi();
             }
 
             @Override
             public void onError(String error) {
-
+                AlertFragment fragment = AlertFragment.createFragment(error);
+                fragment.show(getActivity().getFragmentManager(), null);
             }
         });
     }
 
-
     private void updateUi(){
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if(dy > 0) {
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if (visibleItemCount == totalItemCount) {
+                        Log.v("ScrollRecView", "Last Item");
+                        fetchNews(String.valueOf(newsFeed.getNextCursor()), false);
+                    }
+                }
+            }
+        });
+
         if (adapter == null){
             adapter = new PostRecyclerAdapter();
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

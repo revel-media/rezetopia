@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">ريزيتوبيا</string>
     <string name="wrong_login">خطأ فى البريد الالكترونى او كلمة المرور</string>
     <string name="mail_prompt">ادخل البريد الالكترونى</string>
     <string name="password_prompt">ادخل كلمة المرور</string>

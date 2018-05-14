@@ -1,22 +1,32 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="app.reze1.ahmed.reze1.fragments.Home"
-    >
+    android:id="@+id/homeSwipeView">
 
-    <android.support.v7.widget.RecyclerView
-    android:id="@+id/homePostsRecyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="50dp"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="app.reze1.ahmed.reze1.fragments.Home"
+        >
 
-    <ProgressBar
-        android:visibility="gone"
-        android:id="@+id/homeProgress"
-        android:layout_width="@dimen/dimen_20"
-        android:layout_height="@dimen/dimen_20"
-        android:layout_gravity="center"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/homePostsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"/>
 
-</LinearLayout>
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/homeProgress"
+            android:layout_width="@dimen/dimen_20"
+            android:layout_height="@dimen/dimen_20"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>
+

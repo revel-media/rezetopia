@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import app.reze1.ahmed.reze1.model.pojo.news_feed.NewsFeedItem;
 import app.reze1.ahmed.reze1.views.CustomEditText;
 import app.reze1.ahmed.reze1.R;
 import app.reze1.ahmed.reze1.model.pojo.post.ApiCommentResponse;
@@ -100,7 +102,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
 
         userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
-                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
+                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
 
         ownerId = getIntent().getExtras().getInt(POST_OWNER_EXTRA, 0);
 
@@ -170,11 +172,11 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             commenterView = itemView.findViewById(R.id.commenterView);
             commentReplayView = itemView.findViewById(R.id.commentReplayView);
             commentLikeView = itemView.findViewById(R.id.commentLikeView);
-            commentLikeView.setEnabled(false);
+            //commentLikeView.setEnabled(false);
             postingView = itemView.findViewById(R.id.postingView);
         }
 
-        public void bind(final CommentResponse comment, boolean pending){
+        public void bind(final CommentResponse comment, boolean pending, final int position){
             if (pending){
                 postingView.setVisibility(View.VISIBLE);
             } else {
@@ -201,7 +203,51 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 if (comment.getLikes() != null && comment.getLikes().length > 0) {
                     String like = getResources().getString(R.string.like);
                     commentLikeView.setText(comment.getLikes().length + " " + like);
+                    for (int i = 0; i < comment.getLikes().length; i++) {
+                        if (comment.getLikes()[i] == Integer.parseInt(userId)) {
+
+                            if (comment.getLikes().length > 1) {
+                                commentLikeView.setText((comment.getLikes().length) + " " + like);
+                                commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            } else {
+                                commentLikeView.setText(like);
+                            }
+
+                            reverseLike(comment, position);
+                            return;
+                        }
+                    }
                 }
+
+
+                commentLikeView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String likeString = getResources().getString(R.string.like);
+
+                        if (comment.getLikes() != null) {
+                            for (int i = 0; i < comment.getLikes().length; i++) {
+                                if (comment.getLikes()[i] == Integer.parseInt(userId)) {
+
+                                    if (comment.getLikes().length > 1) {
+                                        commentLikeView.setText((comment.getLikes().length - 1) + " " + likeString);
+                                        commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                    } else {
+                                        commentLikeView.setText(likeString);
+                                    }
+
+                                    reverseLike(comment, position);
+                                    return;
+                                }
+                            }
+                        }
+
+
+                        commentLikeView.setText((comment.getLikes().length + 1) + " " + likeString);
+                        //commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        performLike(comment, position);
+                    }
+                });
 
                 commentReplayView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -231,6 +277,111 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 });
             }
         }
+
+        private void performLike(final CommentResponse comment, final int position){
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("volley response", "onResponse: " + response);
+                            try {
+                                Log.i("comment_like", "onResponse: " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    int[] likes = new int[comment.getLikes().length + 1];
+                                    for (int i = 0; i < comment.getLikes().length; i++) {
+                                        likes[i] = comment.getLikes()[i];
+                                    }
+
+                                    likes[likes.length - 1] = Integer.parseInt(userId);
+                                    comment.setLikes(likes);
+                                    adapter.notifyItemChanged(position);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("like_error", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    Log.i("add_like_parameters", "getParams: " + userId + " " + postId + " " + comment.getCommentId());
+                    map.put("method", "comment_like");
+                    map.put("userId", userId);
+                    map.put("post_id", String.valueOf(String.valueOf(comment.getCommentId())));
+                    map.put("comment_id", String.valueOf(comment.getCommentId()));
+                    map.put("add_like", String.valueOf(true));
+
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(CommentActivity.this).add(stringRequest);
+        }
+
+        private void reverseLike(final CommentResponse comment, final int position){
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("volley response", "onResponse: " + response);
+                            try {
+                                Log.i("comment_dislike", "onResponse: " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+
+                                    ArrayList<Integer> likesList = new ArrayList<>();
+
+                                    for (int id : comment.getLikes()) {
+                                        if (id != Integer.parseInt(userId)){
+                                            likesList.add(id);
+                                        }
+                                    }
+
+                                    int[] likes = new int[likesList.size()];
+
+                                    for(int i = 0; i < likesList.size(); i++) {
+                                        likes[i] = likesList.get(i);
+                                    }
+
+                                    comment.setLikes(likes);
+                                    adapter.notifyItemChanged(position);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("unlike_error", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    Log.i("reverse_like_parameters", "getParams: " + userId + " " + postId + " " + comment.getCommentId());
+                    map.put("method", "comment_like");
+                    map.put("userId", userId);
+                    map.put("post_id", String.valueOf(postId));
+                    map.put("comment_id", String.valueOf(comment.getCommentId()));
+                    map.put("remove_like", String.valueOf(true));
+
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(CommentActivity.this).add(stringRequest);
+        }
     }
 
     private class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentViewHolder>{
@@ -244,7 +395,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-            holder.bind(comments.get(position), comments.get(position).isPending());
+            holder.bind(comments.get(position), comments.get(position).isPending(), position);
         }
 
         @Override
@@ -277,6 +428,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                                     commentResponse.setCreatedAt(jsonObject.getString("createdAt"));
                                     commentResponse.setCommenterName(jsonObject.getString("commenterName"));
                                     commentResponse.setPending(false);
+                                    commentResponse.setLikes(new int[0]);
                                     comments.set(comments.size()-1, commentResponse);
 
                                     //comments.add(commentResponse);
