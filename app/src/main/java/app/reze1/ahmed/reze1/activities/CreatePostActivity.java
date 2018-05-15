@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -51,7 +52,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
 
     EditText postTextView;
     ImageView imageView;
-    Button postButton;
+    TextView postButton;
     String userId;
     LinearLayout newPostHeader;
 

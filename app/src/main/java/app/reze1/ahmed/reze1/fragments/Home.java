@@ -305,6 +305,8 @@ public class Home extends Fragment {
                     if (String.valueOf(id).contentEquals(String.valueOf(userId))){
                         likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
                         break;
+                    } else {
+                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
                     }
                 }
             } else {
@@ -414,7 +416,7 @@ public class Home extends Fragment {
                                 JSONObject jsonObject = new JSONObject(response);
                                 if (!jsonObject.getBoolean("error")){
                                     int[] likes = new int[item.getLikes().length + 1];
-                                        for (int i = 0; i < item.getLikes().length; i++) {
+                                    for (int i = 0; i < item.getLikes().length; i++) {
                                         likes[i] = item.getLikes()[i];
                                     }
 
@@ -991,9 +993,7 @@ public class Home extends Fragment {
             @Override
             public void onError(String error) {
                 AlertFragment fragment = AlertFragment.createFragment(error);
-                if (getActivity() != null) {
-                    fragment.show(getActivity().getFragmentManager(), null);
-                }
+                fragment.show(getActivity().getFragmentManager(), null);
             }
         });
     }

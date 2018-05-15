@@ -95,7 +95,7 @@ public class BuildProfile extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         //btnSkip = (Button) findViewById(R.eventId.btn_skip);
         btnNext = (Button) findViewById(R.id.btn_next);
-        btnNext.setEnabled(false);
+        //btnNext.setEnabled(false);
         progress = new ProgressDialog(BuildProfile.this);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
