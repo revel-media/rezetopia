@@ -1,4 +1,4 @@
-package exr.at.com.firebasechat.core.users.getall;
+package app.reze1.ahmed.reze1.core.chat.users.getall;
 
 import android.text.TextUtils;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import app.reze1.ahmed.reze1.core.users.getall.GetUsersContract;
+import app.reze1.ahmed.reze1.core.core.users.getall.GetUsersContract;
 import app.reze1.ahmed.reze1.models.User;
 import app.reze1.ahmed.reze1.utils.Constants;
 

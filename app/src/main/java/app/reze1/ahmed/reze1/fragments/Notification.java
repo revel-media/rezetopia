@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,7 +47,7 @@ public class Notification extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RequestQueue requestQueue;
     private ArrayList<app.reze1.ahmed.reze1.model.pojo.notification.Notification> notifications;
     private RecyclerView recyclerView;
@@ -95,6 +96,13 @@ public class Notification extends Fragment {
         requestQueue = Volley.newRequestQueue(getActivity());
         recyclerView = view.findViewById(R.id.notificationRecView);
         fetchNotifications();
+        swipeRefreshLayout = view.findViewById(R.id.Refresh_notification);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchNotifications();
+            }
+        });
         return view;
     }
 
@@ -137,8 +145,8 @@ public class Notification extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void updateUi(){
-        if (adapter == null){
+    private void updateUi() {
+        if (adapter == null) {
             adapter = new NotificationRecyclerAdapter();
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -147,7 +155,7 @@ public class Notification extends Fragment {
         }
     }
 
-    private class NotificationViewHolder extends RecyclerView.ViewHolder{
+    private class NotificationViewHolder extends RecyclerView.ViewHolder {
 
         TextView usernameView;
         TextView createdAtView;
@@ -161,14 +169,14 @@ public class Notification extends Fragment {
             createdAtView = itemView.findViewById(R.id.notificationCreatedAtView);
         }
 
-        public void bind(app.reze1.ahmed.reze1.model.pojo.notification.Notification notification){
+        public void bind(app.reze1.ahmed.reze1.model.pojo.notification.Notification notification) {
             usernameView.setText(notification.getUsername());
             detailsView.setText(notification.getMessage());
             createdAtView.setText(notification.getCreatedAt());
         }
     }
 
-    private class NotificationRecyclerAdapter extends RecyclerView.Adapter<NotificationViewHolder>{
+    private class NotificationRecyclerAdapter extends RecyclerView.Adapter<NotificationViewHolder> {
 
         @NonNull
         @Override
@@ -198,12 +206,14 @@ public class Notification extends Fragment {
     }
 
 
-    private void fetchNotifications(){
+    private void fetchNotifications() {
         VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/push_notification.php",
                 ApiResponse.class,
                 new Response.Listener<ApiResponse>() {
+
                     @Override
                     public void onResponse(ApiResponse response) {
+                        swipeRefreshLayout.setRefreshing(false);
                         if (response != null) {
                             if (response.getNotifications() != null) {
                                 Log.i("volley response", "onResponse: " + response.getNotifications().get(0).getCreatedAt());
@@ -217,7 +227,7 @@ public class Notification extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 Log.i("volley error", "onErrorResponse: " + error.getMessage());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();

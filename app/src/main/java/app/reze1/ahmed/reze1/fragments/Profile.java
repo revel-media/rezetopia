@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import app.reze1.ahmed.reze1.activities.UserImageActivity;
 import app.reze1.ahmed.reze1.helper.ProfilePagerAdapter;
 import app.reze1.ahmed.reze1.R;
 import app.reze1.ahmed.reze1.app.AppConfig;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -67,6 +69,7 @@ public class Profile extends Fragment {
     ViewPager viewPager;
     ViewPager viewPager2;
     TabLayout tabLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
     private ProfilePagerAdapter adapter;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -116,6 +119,7 @@ public class Profile extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,8 +133,9 @@ public class Profile extends Fragment {
             //Restore the fragment's instance
 
         }
-       // Toast.makeText(getContext(),"first",Toast.LENGTH_LONG).show();
+        // Toast.makeText(getContext(),"first",Toast.LENGTH_LONG).show();
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -142,10 +147,11 @@ public class Profile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_profile, container, false);
-         viewPager = (ViewPager)v.findViewById(R.id.pager);
-        settingView = v.findViewById(R.id.settingView);
 
+        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        viewPager = (ViewPager) v.findViewById(R.id.pager);
+        settingView = v.findViewById(R.id.settingView);
+        swipeRefreshLayout=v.findViewById(R.id.swipeToRefresh);
         View profile_menu = v.findViewById(R.id.profile_menu);
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
@@ -153,16 +159,23 @@ public class Profile extends Fragment {
         profile_menu.setOnClickListener(new optionProfile(getContext()));
         //getUser(userId);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        playerNameTv=(TextView)v.findViewById(R.id.userNameTv);
-        playerCityTv=(TextView)v.findViewById(R.id.playerCityTv);
-        playerPositionTv=(TextView)v.findViewById(R.id.playerPositionTv);
-        playerMatchesTv=(TextView)v.findViewById(R.id.matchesNumbersTv);
-        playerPointsTv=(TextView)v.findViewById(R.id.pointsNumbersTv);
-        playerLevelsTv=(TextView)v.findViewById(R.id.levelsNumbersTv);
-        playerImg= (ImageView)v.findViewById(R.id.imageView2);
-        btnNetwork=(Button)v.findViewById(R.id.btn_friends);
-        topScroll = (ScrollView)v.findViewById(R.id.topScroll);
-        wraper = (LinearLayout)v.findViewById(R.id.wraper);
+        playerNameTv = (TextView) v.findViewById(R.id.userNameTv);
+        playerCityTv = (TextView) v.findViewById(R.id.playerCityTv);
+        playerPositionTv = (TextView) v.findViewById(R.id.playerPositionTv);
+        playerMatchesTv = (TextView) v.findViewById(R.id.matchesNumbersTv);
+        playerPointsTv = (TextView) v.findViewById(R.id.pointsNumbersTv);
+        playerLevelsTv = (TextView) v.findViewById(R.id.levelsNumbersTv);
+        playerImg = (ImageView) v.findViewById(R.id.imageView2);
+        btnNetwork = (Button) v.findViewById(R.id.btn_friends);
+        topScroll = (ScrollView) v.findViewById(R.id.topScroll);
+        wraper = (LinearLayout) v.findViewById(R.id.wraper);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getUser(userId,requestQueue);
+
+            }
+        });
         btnNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,12 +188,11 @@ public class Profile extends Fragment {
         });
 
 
-
-       // Toast.makeText(getContext(),wraper.getHeight()+"",Toast.LENGTH_LONG).show();
+        // Toast.makeText(getContext(),wraper.getHeight()+"",Toast.LENGTH_LONG).show();
         //params.height = 200;
-       // wraper.setLayoutParams(params);
+        // wraper.setLayoutParams(params);
         //topScroll.setMinimumHeight(500);
-       // topScroll.smoothScrollTo(0,topScroll.getBottom());
+        // topScroll.smoothScrollTo(0,topScroll.getBottom());
 
 
 //        overview=(TextView)v.findViewById(R.eventId.overview_tab);
@@ -216,8 +228,8 @@ public class Profile extends Fragment {
 //                viewPager2.setCurrentItem(3);
 //            }
 //        });
-        probar = (RelativeLayout)v.findViewById(R.id.loadingPanel) ;
-        getUser(userId,requestQueue);
+        probar = (RelativeLayout) v.findViewById(R.id.loadingPanel);
+        getUser(userId, requestQueue);
         getIDs(v);
         setEvents();
         addPage("overview");
@@ -283,7 +295,7 @@ public class Profile extends Fragment {
         if (adapter.getCount() > 0) tabLayout.setupWithViewPager(viewPager2);
 
         viewPager2.setCurrentItem(adapter.getCount() - 1);
-       // setupTabLayout();
+        // setupTabLayout();
     }
 
 //    public void setupTabLayout() {
@@ -331,17 +343,19 @@ public class Profile extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    private void getUser(final String id,RequestQueue requestQueue) {
+
+    private void getUser(final String id, RequestQueue requestQueue) {
         StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/getInfo.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                swipeRefreshLayout.setRefreshing(false);
 
                 //Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
                 try {
                     final JSONObject jsonObject;
                     jsonObject = new JSONObject(response);
                     //Toast.makeText(getApplicationContext(),jsonObject.getString("msg"),Toast.LENGTH_LONG).show();
-                    if(jsonObject.getString("msg").equals("succ")){
+                    if (jsonObject.getString("msg").equals("succ")) {
 
                         playerCityTv.setText(jsonObject.getString("city"));
                         playerPositionTv.setText(jsonObject.getString("position"));
@@ -350,7 +364,7 @@ public class Profile extends Fragment {
                         playerLevelsTv.setText("0");
                         playerPointsTv.setText("0");
                         Picasso.with(getApplicationContext())
-                                .load("https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG")
+                                .load("https://rezetopia.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
                                 .placeholder(R.drawable.circle).into(playerImg);
 
                         settingView.setOnClickListener(new View.OnClickListener() {
@@ -359,7 +373,7 @@ public class Profile extends Fragment {
                                 Intent intent = new Intent(getActivity(), BuildProfile.class);
                                 try {
                                     intent.putExtra("fbname", jsonObject.getString("name"));
-                                    intent.putExtra("fbpicurl", "https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG");
+                                    intent.putExtra("fbpicurl", "https://rezetopia.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG");
                                     intent.putExtra("id", id);
                                     startActivity(intent);
                                 } catch (JSONException e) {
@@ -373,8 +387,8 @@ public class Profile extends Fragment {
                             public void onClick(View v) {
                                 String url = null;
                                 try {
-                                    if (jsonObject.getString("img") != null && !jsonObject.getString("img").contentEquals("")){
-                                        url = "https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG";
+                                    if (jsonObject.getString("img") != null && !jsonObject.getString("img").contentEquals("")) {
+                                        url = "https://rezetopia.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG";
                                         Intent intent = UserImageActivity.createIntent(url, getActivity());
                                         startActivityForResult(intent, 2002);
                                     }
@@ -385,9 +399,8 @@ public class Profile extends Fragment {
                         });
 
                         probar.setVisibility(View.GONE);
-                       // new DownloadImage(playerImg).execute("https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG");
-                    }
-                    else {
+                        // new DownloadImage(playerImg).execute("https://rezetopia.com/images/profileImgs/"+jsonObject.getString("img")+".JPG");
+                    } else {
 
                     }
 
@@ -404,10 +417,10 @@ public class Profile extends Fragment {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> parameters  = new HashMap<String, String>();
+                Map<String, String> parameters = new HashMap<String, String>();
 
-                parameters.put("id",id);
-                parameters.put("getInfo","");
+                parameters.put("id", id);
+                parameters.put("getInfo", "");
 
 
                 return parameters;
@@ -439,7 +452,7 @@ public class Profile extends Fragment {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
                         case R.id.menu_item_network:
-                           // Toast.makeText(getApplicationContext(),menuItem.getTitle(),Toast.LENGTH_LONG).show();
+                            // Toast.makeText(getApplicationContext(),menuItem.getTitle(),Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getActivity(), NetworkList.class);
                             startActivity(intent);
                             return true;
@@ -457,7 +470,7 @@ public class Profile extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 2002){
+        if (requestCode == 2002) {
             getUser(userId, requestQueue);
         }
     }

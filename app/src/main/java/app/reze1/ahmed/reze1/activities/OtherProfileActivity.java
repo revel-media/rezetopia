@@ -3,6 +3,7 @@ package app.reze1.ahmed.reze1.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,6 +69,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     private static final int CREATE_POST_RESULT = 1002;
     private static final int VIEW_HEADER = 1;
     private static final int VIEW_ITEM = 2;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     boolean searchUsers = false;
     boolean searchGroups = false;
@@ -103,7 +105,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     private RecyclerView.Adapter searchAdapter;
     RecyclerView searchRecyclerView;
 
-    public static Intent createIntent(String userId, String username, Context context){
+    public static Intent createIntent(String userId, String username, Context context) {
         Intent intent = new Intent(context, OtherProfileActivity.class);
         intent.putExtra(USER_ID_EXTRA, userId);
         intent.putExtra(USERNAME_EXTRA, username);
@@ -122,16 +124,20 @@ public class OtherProfileActivity extends AppCompatActivity {
         mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
         mFriendDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
         mCurrent_user = FirebaseAuth.getInstance().getCurrentUser();
-
-
-
+        swipeRefreshLayout = findViewById(R.id.swipe_other);
         postsRecyclerView = findViewById(R.id.otherProfileRecView);
         searchRecyclerView = findViewById(R.id.otherSearchRecView);
+
 
         searchBox = findViewById(R.id.searchView);
         guestUserId = getIntent().getStringExtra(USER_ID_EXTRA);
         backView = findViewById(R.id.searchBackArrow);
-
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchPosts();
+            }
+        });
         userId = OtherProfileActivity.this.getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
         searchBox.addTextChangedListener(new TextWatcher() {
@@ -143,7 +149,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s != null && s.length() > 0 && !s.toString().contentEquals("0")){
+                if (s != null && s.length() > 0 && !s.toString().contentEquals("0")) {
                     q = s.toString();
                     performSearch(q);
                 } else {
@@ -165,7 +171,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 anim.setDuration(20);
                 searchBox.startAnimation(anim);
                 searchBox.setFocusable(true);
-                if (searchItems == null){
+                if (searchItems == null) {
                     searchItems = new ArrayList<>();
                 }
                 updateSearchUi();
@@ -196,7 +202,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         fetchPosts();
     }
 
-    private class HeaderViewHolder extends RecyclerView.ViewHolder{
+    private class HeaderViewHolder extends RecyclerView.ViewHolder {
         TextView usernamePView;
         Button msgBtn = itemView.findViewById(R.id.msgSend);
 
@@ -220,9 +226,9 @@ public class OtherProfileActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.add))){
+                    if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.add))) {
                         performAddFriend();
-                    } else if(addBtn.getText().toString().contentEquals(getResources().getString(R.string.unfriend))) {
+                    } else if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.unfriend))) {
                         performUnFriend();
                     } else {
                         performUnFriend();
@@ -235,8 +241,8 @@ public class OtherProfileActivity extends AppCompatActivity {
                     final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
 
                     Map friendsMap = new HashMap();
-                    friendsMap.put("Friends/" +user.getId() + "/" + user.getId()+ "/date", currentDate);
-                    friendsMap.put("Friends/" + user.getId() + "/"  +user.getId() + "/date", currentDate);
+                    friendsMap.put("Friends/" + user.getId() + "/" + user.getId() + "/date", currentDate);
+                    friendsMap.put("Friends/" + user.getId() + "/" + user.getId() + "/date", currentDate);
 
 
                     friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
@@ -248,7 +254,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
 
-                            if(databaseError == null){
+                            if (databaseError == null) {
 
                                 addBtn.setEnabled(true);
                                 mCurrent_state = "friends";
@@ -272,12 +278,12 @@ public class OtherProfileActivity extends AppCompatActivity {
             });
         }
 
-        public void bind(){
+        public void bind() {
             usernamePView.setText(username);
             performFriendStatus();
         }
 
-        private void performFriendStatus(){
+        private void performFriendStatus() {
             StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/addfriend.php",
                     new Response.Listener<String>() {
                         @Override
@@ -285,11 +291,11 @@ public class OtherProfileActivity extends AppCompatActivity {
                             try {
                                 Log.i("friend", "onErrorResponse: " + response);
                                 JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
+                                if (!jsonObject.getBoolean("error")) {
                                     int friendState = jsonObject.getInt("state");
-                                    if (friendState == 0){
+                                    if (friendState == 0) {
                                         addBtn.setText(R.string.cancel_request);
-                                    } else if (friendState == 1){
+                                    } else if (friendState == 1) {
                                         addBtn.setText(R.string.unfriend);
                                     }
                                 } else {
@@ -304,7 +310,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     Log.i("volley error", "onErrorResponse: " + error.getMessage());
                 }
-            }){
+            }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     HashMap<String, String> map = new HashMap<>();
@@ -320,7 +326,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
         }
 
-        private void performAddFriend(){
+        private void performAddFriend() {
             StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/addfriend.php",
                     new Response.Listener<String>() {
                         @Override
@@ -328,7 +334,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                             try {
                                 Log.i("add_friend", "onErrorResponse: " + response);
                                 JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
+                                if (!jsonObject.getBoolean("error")) {
                                     addBtn.setText(R.string.cancel_request);
                                 } else {
                                     addBtn.setText(R.string.add);
@@ -343,7 +349,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     Log.i("volley error", "onErrorResponse: " + error.getMessage());
                 }
-            }){
+            }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     HashMap<String, String> map = new HashMap<>();
@@ -358,7 +364,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
         }
 
-        private void performUnFriend(){
+        private void performUnFriend() {
             StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/addfriend.php",
                     new Response.Listener<String>() {
                         @Override
@@ -366,11 +372,11 @@ public class OtherProfileActivity extends AppCompatActivity {
                             try {
                                 Log.i("unFriend", "onErrorResponse: " + response);
                                 JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
+                                if (!jsonObject.getBoolean("error")) {
                                     addBtn.setText(R.string.add);
-                                } else if (jsonObject.getInt("state") == 0){
+                                } else if (jsonObject.getInt("state") == 0) {
                                     addBtn.setText(R.string.cancel_request);
-                                } else if (jsonObject.getInt("state") > 1){
+                                } else if (jsonObject.getInt("state") > 1) {
                                     addBtn.setText(R.string.unfriend);
                                 }
                             } catch (JSONException e) {
@@ -383,7 +389,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     Log.i("volley error", "onErrorResponse: " + error.getMessage());
                 }
-            }){
+            }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     HashMap<String, String> map = new HashMap<>();
@@ -401,7 +407,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
     }
 
-    private class PostViewHolder extends RecyclerView.ViewHolder{
+    private class PostViewHolder extends RecyclerView.ViewHolder {
 
         TextView postTextView;
         Button likeButton;
@@ -421,7 +427,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         public void bind(final PostResponse post, final int pos) {
             String postText;
-            if (post.getUsername() != null){
+            if (post.getUsername() != null) {
                 usernameView.setText(post.getUsername());
             }
             Date date = null;
@@ -442,7 +448,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            if (post.getLikes() != null && post.getLikes().length > 0){
+            if (post.getLikes() != null && post.getLikes().length > 0) {
                 //likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
                 likeButton.setText(post.getLikes().length + " Like");
 
@@ -450,14 +456,14 @@ public class OtherProfileActivity extends AppCompatActivity {
                 Log.e("loggedInUserId", userId);
                 for (int id : post.getLikes()) {
                     Log.e("likesUserId", String.valueOf(id));
-                    if (String.valueOf(id).contentEquals(String.valueOf(userId))){
-                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
+                    if (String.valueOf(id).contentEquals(String.valueOf(userId))) {
+                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green, 0, 0, 0);
                         break;
                     }
                 }
             }
 
-            if (post.getComments() != null && post.getComments().length > 0){
+            if (post.getComments() != null && post.getComments().length > 0) {
                 //commentButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
                 commentButton.setText(post.getComments().length + " Comment");
             }
@@ -481,7 +487,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     for (int i = 0; i < post.getLikes().length; i++) {
-                        if (post.getLikes()[i] == Integer.parseInt(userId)){
+                        if (post.getLikes()[i] == Integer.parseInt(userId)) {
                             reverseLike(post, pos);
                             return;
                         }
@@ -493,7 +499,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
 
 
-        private void performLike(final PostResponse postResponse, final int pos){
+        private void performLike(final PostResponse postResponse, final int pos) {
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
@@ -502,8 +508,8 @@ public class OtherProfileActivity extends AppCompatActivity {
                             Log.i("volley response", "onResponse: " + response);
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
-                                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
+                                if (!jsonObject.getBoolean("error")) {
+                                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green, 0, 0, 0);
                                     likeButton.setText((postResponse.getLikes().length + 1) + " Like");
                                     int[] likes = new int[postResponse.getLikes().length + 1];
                                     for (int i = 0; i < posts[pos].getLikes().length; i++) {
@@ -523,7 +529,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     Log.i("volley error", "onErrorResponse: " + error.getMessage());
                 }
-            }){
+            }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     HashMap<String, String> map = new HashMap<>();
@@ -540,7 +546,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             requestQueue.add(stringRequest);
         }
 
-        private void reverseLike(final PostResponse postResponse, final int pos){
+        private void reverseLike(final PostResponse postResponse, final int pos) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
@@ -548,29 +554,28 @@ public class OtherProfileActivity extends AppCompatActivity {
                             Log.i("volley response", "onResponse: " + response);
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
+                                if (!jsonObject.getBoolean("error")) {
 
-                                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
+                                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
 
-                                    if (postResponse.getLikes().length > 1){
+                                    if (postResponse.getLikes().length > 1) {
                                         likeButton.setText((postResponse.getLikes().length - 1) + " Like");
                                     } else {
                                         likeButton.setText("Like");
                                     }
 
 
-
                                     ArrayList<Integer> likesList = new ArrayList<>();
 
                                     for (int id : postResponse.getLikes()) {
-                                        if (id != Integer.parseInt(userId)){
+                                        if (id != Integer.parseInt(userId)) {
                                             likesList.add(id);
                                         }
                                     }
 
                                     int[] likes = new int[likesList.size()];
 
-                                    for(int i = 0; i < likesList.size(); i++) {
+                                    for (int i = 0; i < likesList.size(); i++) {
                                         likes[i] = likesList.get(i);
                                     }
 
@@ -586,7 +591,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     Log.i("volley error", "onErrorResponse: " + error.getMessage());
                 }
-            }){
+            }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     HashMap<String, String> map = new HashMap<>();
@@ -604,12 +609,12 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
     }
 
-    private class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
+    private class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            if (viewType == VIEW_HEADER){
+            if (viewType == VIEW_HEADER) {
                 View view = LayoutInflater.from(OtherProfileActivity.this).inflate(R.layout.other_header_layout, parent, false);
                 return new OtherProfileActivity.HeaderViewHolder(view);
             } else {
@@ -623,8 +628,8 @@ public class OtherProfileActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof OtherProfileActivity.PostViewHolder) {
                 OtherProfileActivity.PostViewHolder pHolder = (OtherProfileActivity.PostViewHolder) holder;
-                pHolder.bind(posts[position-1], position-1);
-            } else  if (holder instanceof OtherProfileActivity.HeaderViewHolder) {
+                pHolder.bind(posts[position - 1], position - 1);
+            } else if (holder instanceof OtherProfileActivity.HeaderViewHolder) {
                 OtherProfileActivity.HeaderViewHolder pHolder = (OtherProfileActivity.HeaderViewHolder) holder;
                 pHolder.bind();
             }
@@ -637,7 +642,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         @Override
         public int getItemViewType(int position) {
-            if (isPositionHeader(position)){
+            if (isPositionHeader(position)) {
                 return VIEW_HEADER;
             }
 
@@ -650,18 +655,19 @@ public class OtherProfileActivity extends AppCompatActivity {
 
     }
 
-    private void fetchPosts(){
+    private void fetchPosts() {
         VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php", ApiResponse.class,
                 new Response.Listener<ApiResponse>() {
                     @Override
                     public void onResponse(ApiResponse response) {
-                        if (response.getPosts() != null){
+                        swipeRefreshLayout.setRefreshing(false);
+                        if (response.getPosts() != null) {
                             Log.i("volley response", "onResponse: " + response.getPosts()[0].getCreatedAt());
                             posts = response.getPosts();
                             nextCursor = response.getNextCursor();
                             now = response.getNow();
                             updatePostsUi();
-                        } else{
+                        } else {
                             posts = new PostResponse[0];
                             updatePostsUi();
                         }
@@ -671,7 +677,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.i("volley error", "onErrorResponse: " + error.getMessage());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
@@ -687,8 +693,8 @@ public class OtherProfileActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void updatePostsUi(){
-        if (postsAdapter == null){
+    private void updatePostsUi() {
+        if (postsAdapter == null) {
             searchAdapter = null;
             searchRecyclerView.setVisibility(View.GONE);
             postsRecyclerView.setVisibility(View.VISIBLE);
@@ -700,8 +706,8 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void updateSearchUi(){
-        if (searchAdapter == null){
+    private void updateSearchUi() {
+        if (searchAdapter == null) {
             postsAdapter = null;
             postsRecyclerView.setVisibility(View.GONE);
             searchRecyclerView.setVisibility(View.VISIBLE);
@@ -721,15 +727,15 @@ public class OtherProfileActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == COMMENT_ACTIVITY_RESULT){
-            if (data != null){
+        if (requestCode == COMMENT_ACTIVITY_RESULT) {
+            if (data != null) {
                 CommentResponse commentResponse = (CommentResponse) data.getSerializableExtra("comment");
                 int postId = data.getIntExtra("post_id", 0);
                 for (int i = 0; i < posts.length; i++) {
-                    if (posts[i].getPostId() == postId){
+                    if (posts[i].getPostId() == postId) {
                         int c_size = posts[i].getComments().length;
-                        CommentResponse[] c_resArray = new CommentResponse[c_size+1];
-                        for (int j = 0; j <  posts[i].getComments().length; j++) {
+                        CommentResponse[] c_resArray = new CommentResponse[c_size + 1];
+                        for (int j = 0; j < posts[i].getComments().length; j++) {
                             c_resArray[j] = posts[i].getComments()[j];
                         }
 
@@ -741,15 +747,15 @@ public class OtherProfileActivity extends AppCompatActivity {
 
             }
             //  Toast.makeText(OtherProfileActivity.this, "result", Toast.LENGTH_SHORT).show();
-        } else if (requestCode == CREATE_POST_RESULT){
-            if (data != null){
+        } else if (requestCode == CREATE_POST_RESULT) {
+            if (data != null) {
                 PostResponse postResponse = (PostResponse) data.getSerializableExtra("post");
                 PostResponse[] p_array = new PostResponse[posts.length + 1];
 
                 p_array[0] = postResponse;
 
                 for (int i = 0; i < posts.length; i++) {
-                    p_array[i+1] = posts[i];
+                    p_array[i + 1] = posts[i];
                 }
 
                 posts = p_array;
@@ -758,7 +764,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
     }
 
-    private class SearchHeaderViewHolder extends RecyclerView.ViewHolder{
+    private class SearchHeaderViewHolder extends RecyclerView.ViewHolder {
 
         Button userSearchFilter;
         Button groupSearchFilter;
@@ -772,17 +778,17 @@ public class OtherProfileActivity extends AppCompatActivity {
             userSearchFilter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (searchItems != null && searchItems.size() > 0){
+                    if (searchItems != null && searchItems.size() > 0) {
                         searchUsers = true;
                         searchGroups = false;
-                        if (q != null){
+                        if (q != null) {
                             ArrayList<SearchItem> items = new ArrayList<>();
-                            for (SearchItem item:searchItems) {
-                                if (item.getType().contentEquals("user")){
+                            for (SearchItem item : searchItems) {
+                                if (item.getType().contentEquals("user")) {
                                     items.add(item);
                                 }
                             }
-                            if (items.size() > 0){
+                            if (items.size() > 0) {
                                 searchItems = items;
                                 updateSearchUi();
                             } else {
@@ -797,17 +803,17 @@ public class OtherProfileActivity extends AppCompatActivity {
             groupSearchFilter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (searchItems != null && searchItems.size() > 0){
+                    if (searchItems != null && searchItems.size() > 0) {
                         searchGroups = true;
                         searchUsers = false;
-                        if (q != null){
+                        if (q != null) {
                             ArrayList<SearchItem> items = new ArrayList<>();
-                            for (SearchItem item:searchItems) {
-                                if (item.getType().contentEquals("group")){
+                            for (SearchItem item : searchItems) {
+                                if (item.getType().contentEquals("group")) {
                                     items.add(item);
                                 }
                             }
-                            if (items.size() > 0){
+                            if (items.size() > 0) {
                                 searchItems = items;
                                 updateSearchUi();
                             } else {
@@ -821,7 +827,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
     }
 
-    private class SearchViewHolder extends RecyclerView.ViewHolder{
+    private class SearchViewHolder extends RecyclerView.ViewHolder {
 
         TextView searchUsername;
         TextView detailsView;
@@ -833,9 +839,9 @@ public class OtherProfileActivity extends AppCompatActivity {
             detailsView = itemView.findViewById(R.id.detailsView);
         }
 
-        public void bind(final SearchItem item){
+        public void bind(final SearchItem item) {
             searchUsername.setText(item.getName());
-            if (item.getDescription() != null && !item.getDescription().contentEquals("")){
+            if (item.getDescription() != null && !item.getDescription().contentEquals("")) {
                 detailsView.setText(item.getDescription());
             }
 
@@ -844,9 +850,8 @@ public class OtherProfileActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-
                     if (item.getType().contentEquals("user")) {
-                        if (userId.contentEquals(String.valueOf(item.getId()))){
+                        if (userId.contentEquals(String.valueOf(item.getId()))) {
 
                         } else {
                             Intent intent = OtherProfileActivity.createIntent(
@@ -862,12 +867,12 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
     }
 
-    private class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    private class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            if (viewType == VIEW_HEADER){
+            if (viewType == VIEW_HEADER) {
                 View view = LayoutInflater.from(OtherProfileActivity.this).inflate(R.layout.search_header, parent, false);
                 return new SearchHeaderViewHolder(view);
             } else {
@@ -880,7 +885,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
             if (holder instanceof SearchViewHolder) {
                 SearchViewHolder pHolder = (SearchViewHolder) holder;
-                pHolder.bind(searchItems.get(position-1));
+                pHolder.bind(searchItems.get(position - 1));
             }
         }
 
@@ -891,7 +896,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         @Override
         public int getItemViewType(int position) {
-            if (isPositionHeader(position)){
+            if (isPositionHeader(position)) {
                 return VIEW_HEADER;
             }
 
@@ -903,14 +908,14 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void performSearch(final String query){
+    private void performSearch(final String query) {
         VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_search.php", SearchResponse.class,
                 new Response.Listener<SearchResponse>() {
                     @Override
                     public void onResponse(SearchResponse response) {
                         searchItems = new ArrayList<>();
-                        if (searchUsers){
-                            if (response.getUsers() != null && response.getUsers().length > 0){
+                        if (searchUsers) {
+                            if (response.getUsers() != null && response.getUsers().length > 0) {
                                 Log.i("volley response", "onResponse: " + response.getUsers()[0].getUsername());
 
                                 for (int i = 0; i < response.getUsers().length; i++) {
@@ -921,13 +926,13 @@ public class OtherProfileActivity extends AppCompatActivity {
                                     searchItems.add(item);
                                 }
                             }
-                        } else if (searchGroups){
-                            if (response.getGroups() != null && response.getGroups().length > 0){
+                        } else if (searchGroups) {
+                            if (response.getGroups() != null && response.getGroups().length > 0) {
                                 for (int i = 0; i < response.getGroups().length; i++) {
                                     SearchItem item = new SearchItem();
                                     item.setId(response.getGroups()[i].getGroupId());
                                     item.setName(response.getGroups()[i].getGroup_name());
-                                    if (response.getGroups()[i].getGroup_description() != null && !response.getGroups()[i].getGroup_description().contentEquals("")){
+                                    if (response.getGroups()[i].getGroup_description() != null && !response.getGroups()[i].getGroup_description().contentEquals("")) {
                                         item.setDescription(response.getGroups()[i].getGroup_description());
                                     }
                                     item.setType("group");
@@ -935,7 +940,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            if (response.getUsers() != null && response.getUsers().length > 0){
+                            if (response.getUsers() != null && response.getUsers().length > 0) {
                                 Log.i("volley response", "onResponse: " + response.getUsers()[0].getUsername());
 
                                 for (int i = 0; i < response.getUsers().length; i++) {
@@ -947,12 +952,12 @@ public class OtherProfileActivity extends AppCompatActivity {
                                 }
                             }
 
-                            if (response.getGroups() != null && response.getGroups().length > 0){
+                            if (response.getGroups() != null && response.getGroups().length > 0) {
                                 for (int i = 0; i < response.getGroups().length; i++) {
                                     SearchItem item = new SearchItem();
                                     item.setId(response.getGroups()[i].getGroupId());
                                     item.setName(response.getGroups()[i].getGroup_name());
-                                    if (response.getGroups()[i].getGroup_description() != null && !response.getGroups()[i].getGroup_description().contentEquals("")){
+                                    if (response.getGroups()[i].getGroup_description() != null && !response.getGroups()[i].getGroup_description().contentEquals("")) {
                                         item.setDescription(response.getGroups()[i].getGroup_description());
                                     }
                                     item.setType("group");
@@ -962,7 +967,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                         }
 
 
-                        if (searchItems.size() > 0){
+                        if (searchItems.size() > 0) {
                             updateSearchUi();
                         }
                     }
@@ -971,7 +976,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.i("volley error", "onErrorResponse: " + error.getMessage());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
@@ -988,7 +993,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (searchAdapter != null){
+        if (searchAdapter != null) {
             ViewGroup.LayoutParams lp = searchBox.getLayoutParams();
             lp.width = searchBoxWidth;
             searchBox.setLayoutParams(lp);

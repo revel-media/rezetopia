@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.google.firebase.auth.FirebaseUser;
 
-import app.reze1.ahmed.reze1.core.users.add.AddUserContract;
+import app.reze1.ahmed.reze1.core.core.users.add.AddUserContract;
 
 
 public class AddUserPresenter implements AddUserContract.Presenter, AddUserContract.OnUserDatabaseListener {

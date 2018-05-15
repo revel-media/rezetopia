@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -42,6 +43,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class Requests extends Fragment {
+    SwipeRefreshLayout swipeRefreshLayout;
     public RecyclerView recyclerView;
     ArrayList<User> users;
     RecyclerView.Adapter adapter;
@@ -56,8 +58,14 @@ public class Requests extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_request, container, false);
+        swipeRefreshLayout=view.findViewById(R.id.swipe_request);
         recyclerView =  view.findViewById(R.id.requests_list);
-
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new UsersAsync().execute();
+            }
+        });
         new UsersAsync().execute();
 
         return view;
@@ -123,6 +131,7 @@ public class Requests extends Fragment {
         @Override
         public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.request_row, parent, false);
+
             return new RequestViewHolder(view);
         }
 
@@ -145,6 +154,7 @@ public class Requests extends Fragment {
                     new Response.Listener<ApiResponse>() {
                         @Override
                         public void onResponse(ApiResponse response) {
+                            swipeRefreshLayout.setRefreshing(false);
                             if (response.getUsers() != null) {
                                 Log.i("friend_request", "onResponse: " + response.getUsers()[0].getName());
                                 users = new ArrayList<>(Arrays.asList(response.getUsers()));
