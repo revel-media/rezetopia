@@ -144,7 +144,7 @@ public class CreateProductActivity extends AppCompatActivity implements View.OnC
         protected Void doInBackground(Void... voids) {
             dialog.show();
 
-            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_store.php",
+            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_store.php",
                     ProductResponse.class,
                     new Response.Listener<ProductResponse>() {
                         @Override
@@ -204,7 +204,7 @@ public class CreateProductActivity extends AppCompatActivity implements View.OnC
     private void createProduct(){
         dialog.show();
 
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_store.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_store.php",
                 ProductResponse.class,
                 new Response.Listener<ProductResponse>() {
                     @Override

@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import app.reze1.ahmed.reze1.model.pojo.post.CommentResponse;
 import app.reze1.ahmed.reze1.views.CustomEditText;
 import app.reze1.ahmed.reze1.R;
 import app.reze1.ahmed.reze1.model.pojo.post.ApiReplayResponse;
@@ -155,6 +157,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
         TextView createdAtView;
         TextView replierView;
         TextView postingView;
+        TextView likeReplayView;
 
         public ReplayViewHolder(View itemView) {
             super(itemView);
@@ -163,9 +166,10 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
             createdAtView = itemView.findViewById(R.id.commentCreatedAtView);
             replierView = itemView.findViewById(R.id.commenterView);
             postingView = itemView.findViewById(R.id.postingView);
+            likeReplayView = itemView.findViewById(R.id.replayLikeView);
         }
 
-        public void bind(CommentReplyResponse replay, boolean pending){
+        public void bind(final CommentReplyResponse replay, boolean pending, final int position){
             if (pending){
                 postingView.setVisibility(View.VISIBLE);
             } else {
@@ -183,11 +187,155 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
                 long millisecondsFromNow = milliseconds - now;
                 createdAtView.setText(DateUtils.getRelativeTimeSpanString(milliseconds, now, milliseconds - now));
 
+//                if (replay.getLikes() != null && replay.getLikes().length > 0) {
+//                    String like = getResources().getString(R.string.like);
+//                    replayTextView.setText(replay.getLikes().length + " " + like);
+//                }
+
                 if (replay.getLikes() != null && replay.getLikes().length > 0) {
                     String like = getResources().getString(R.string.like);
-                    replayTextView.setText(replay.getLikes().length + " " + like);
+                    likeReplayView.setText(replay.getLikes().length + " " + like);
+                    for (int i = 0; i < replay.getLikes().length; i++) {
+                        if (replay.getLikes()[i] == Integer.parseInt(userId)) {
+
+                            if (replay.getLikes().length > 0) {
+                                likeReplayView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            }
+                        }
+                    }
                 }
+
+
+                likeReplayView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String likeString = getResources().getString(R.string.like);
+
+                        if (replay.getLikes() != null && replay.getLikes().length > 0) {
+                            for (int i = 0; i < replay.getLikes().length; i++) {
+                                if (replay.getLikes()[i] == Integer.parseInt(userId)) {
+
+                                    likeReplayView.setText((replay.getLikes().length - 1) + " " + likeString);
+                                    if (!(replay.getLikes().length > 1)) {
+                                        likeReplayView.setText(likeString);
+                                    }
+
+                                    reverseLike(replay);
+                                    return;
+                                }
+                            }
+                        }
+
+                        likeReplayView.setText((replay.getLikes().length + 1) + " " + likeString);
+                        performLike(replay);
+                    }
+                });
             }
+        }
+
+        private void performLike(final CommentReplyResponse replay){
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("volley response", "onResponse: " + response);
+                            try {
+                                Log.i("comment_like", "onResponse: " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    int[] likes = new int[replay.getLikes().length + 1];
+                                    for (int i = 0; i < replay.getLikes().length; i++) {
+                                        likes[i] = replay.getLikes()[i];
+                                    }
+
+                                    likes[likes.length - 1] = Integer.parseInt(userId);
+                                    replay.setLikes(likes);
+                                    //adapter.notifyItemChanged(position);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("like_error", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    //Log.i("add_like_parameters", "getParams: " + userId + " " + postId + " " + replay.getCommentId());
+                    map.put("method", "replay_like");
+                    map.put("userId", userId);
+                    map.put("post_id", String.valueOf(String.valueOf(replay.getReplayId())));
+                    map.put("replay_id", String.valueOf(replay.getReplayId()));
+                    map.put("add_like", String.valueOf(true));
+
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(ReplayActivity.this).add(stringRequest);
+        }
+
+        private void reverseLike(final CommentReplyResponse replay){
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("volley response", "onResponse: " + response);
+                            try {
+                                Log.i("comment_dislike", "onResponse: " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+
+                                    ArrayList<Integer> likesList = new ArrayList<>();
+
+                                    for (int id : replay.getLikes()) {
+                                        if (id != Integer.parseInt(userId)){
+                                            likesList.add(id);
+                                        }
+                                    }
+
+                                    int[] likes = new int[likesList.size()];
+
+                                    for(int i = 0; i < likesList.size(); i++) {
+                                        likes[i] = likesList.get(i);
+                                    }
+
+                                    replay.setLikes(likes);
+                                    //adapter.notifyItemChanged(position);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("unlike_error", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    //Log.i("reverse_like_parameters", "getParams: " + userId + " " + postId + " " + replay.getCommentId());
+                    map.put("method", "replay_like");
+                    map.put("userId", userId);
+                    map.put("post_id", String.valueOf(postId));
+                    map.put("comment_id", String.valueOf(replay.getReplayId()));
+                    map.put("remove_like", String.valueOf(true));
+
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(ReplayActivity.this).add(stringRequest);
         }
     }
 
@@ -202,7 +350,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public void onBindViewHolder(@NonNull ReplayViewHolder holder, int position) {
-            holder.bind(replies.get(position), replies.get(position).isPending());
+            holder.bind(replies.get(position), replies.get(position).isPending(), position);
         }
 
         @Override
@@ -215,7 +363,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
         if (replayEditText.getText().toString().length() > 0){
             final String replayText = replayEditText.getText().toString();
             replayEditText.setText(null);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -283,7 +431,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void fetchReplies(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 ApiReplayResponse.class,
                 new Response.Listener<ApiReplayResponse>() {
                     @Override

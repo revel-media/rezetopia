@@ -266,7 +266,11 @@ public class GroupHome extends Fragment {
         }
 
         private void startOtherProfile(int position){
-            Intent intent = OtherProfileActivity.createIntent(posts[position].getUserId(), posts[position].getUsername(), getActivity());
+            Intent intent = OtherProfileActivity.createIntent(
+                    posts[position].getUserId(),
+                    posts[position].getUsername(),
+                    null,
+                    getActivity());
             startActivity(intent);
         }
 

@@ -371,7 +371,7 @@ public class Home extends Fragment {
                     if (item.getOwnerId() == Integer.parseInt(userId)){
                         mListener.onProfile();
                     } else if (item.getType() == NewsFeedItem.POST_TYPE){
-                        startOtherProfile(pos);
+                        startOtherProfile(item);
                     }
                 }
             });
@@ -382,7 +382,8 @@ public class Home extends Fragment {
                     if (item.getOwnerId() == Integer.parseInt(userId)){
                         mListener.onProfile();
                     } else if (item.getType() == NewsFeedItem.POST_TYPE){
-                        startOtherProfile(pos);
+                        startOtherProfile(item);
+                        //Log.i("IMAGE", "onClick: " + item.getItemImage());
                     }
                 }
             });
@@ -399,14 +400,18 @@ public class Home extends Fragment {
             });
         }
 
-        private void startOtherProfile(int position){
-            Intent intent = OtherProfileActivity.createIntent(String.valueOf(newsFeedItems.get(position).getOwnerId()), newsFeedItems.get(position).getOwnerName(), getActivity());
+        private void startOtherProfile(NewsFeedItem item){
+            Intent intent = OtherProfileActivity.createIntent(
+                    String.valueOf(item.getOwnerId()),
+                    item.getOwnerName(),
+                    item.getItemImage(),
+                    getActivity());
             startActivity(intent);
         }
 
         private void performLike(final NewsFeedItem item, final int pos){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -451,7 +456,7 @@ public class Home extends Fragment {
         }
 
         private void reverseLike(final NewsFeedItem item, final int pos){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -775,13 +780,17 @@ public class Home extends Fragment {
         }
 
         private void startOtherProfile(int position){
-            Intent intent = OtherProfileActivity.createIntent(String.valueOf(newsFeedItems.get(position).getOwnerId()), newsFeedItems.get(position).getOwnerName(), getActivity());
+            Intent intent = OtherProfileActivity.createIntent(
+                    String.valueOf(newsFeedItems.get(position).getOwnerId()),
+                    newsFeedItems.get(position).getOwnerName(),
+                    newsFeedItems.get(position).getItemImage(),
+                    getActivity());
             startActivity(intent);
         }
 
         private void performLike(final NewsFeedItem item, final int pos){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -1089,7 +1098,7 @@ public class Home extends Fragment {
     }
 
     private void removePost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -1126,7 +1135,7 @@ public class Home extends Fragment {
     }
 
     private void savePost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -1154,7 +1163,7 @@ public class Home extends Fragment {
     }
 
     private void reportPost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

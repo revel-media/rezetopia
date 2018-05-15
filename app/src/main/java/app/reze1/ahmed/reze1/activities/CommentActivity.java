@@ -206,15 +206,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     for (int i = 0; i < comment.getLikes().length; i++) {
                         if (comment.getLikes()[i] == Integer.parseInt(userId)) {
 
-                            if (comment.getLikes().length > 1) {
-                                commentLikeView.setText((comment.getLikes().length) + " " + like);
+                            if (comment.getLikes().length > 0) {
                                 commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
-                            } else {
-                                commentLikeView.setText(like);
                             }
-
-                            reverseLike(comment, position);
-                            return;
                         }
                     }
                 }
@@ -225,14 +219,12 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     public void onClick(View v) {
                         String likeString = getResources().getString(R.string.like);
 
-                        if (comment.getLikes() != null) {
+                        if (comment.getLikes() != null && comment.getLikes().length > 0) {
                             for (int i = 0; i < comment.getLikes().length; i++) {
                                 if (comment.getLikes()[i] == Integer.parseInt(userId)) {
 
-                                    if (comment.getLikes().length > 1) {
-                                        commentLikeView.setText((comment.getLikes().length - 1) + " " + likeString);
-                                        commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                    } else {
+                                    commentLikeView.setText((comment.getLikes().length - 1) + " " + likeString);
+                                    if (!(comment.getLikes().length > 1)) {
                                         commentLikeView.setText(likeString);
                                     }
 
@@ -244,7 +236,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
 
                         commentLikeView.setText((comment.getLikes().length + 1) + " " + likeString);
-                        //commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
                         performLike(comment, position);
                     }
                 });
@@ -280,7 +271,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
         private void performLike(final CommentResponse comment, final int position){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -296,7 +287,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
                                     likes[likes.length - 1] = Integer.parseInt(userId);
                                     comment.setLikes(likes);
-                                    adapter.notifyItemChanged(position);
+                                    //adapter.notifyItemChanged(position);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -315,7 +306,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     Log.i("add_like_parameters", "getParams: " + userId + " " + postId + " " + comment.getCommentId());
                     map.put("method", "comment_like");
                     map.put("userId", userId);
-                    map.put("post_id", String.valueOf(String.valueOf(comment.getCommentId())));
+                    map.put("post_id", String.valueOf(postId));
                     map.put("comment_id", String.valueOf(comment.getCommentId()));
                     map.put("add_like", String.valueOf(true));
 
@@ -327,7 +318,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         private void reverseLike(final CommentResponse comment, final int position){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -352,7 +343,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                                     }
 
                                     comment.setLikes(likes);
-                                    adapter.notifyItemChanged(position);
+                                    //adapter.notifyItemChanged(position);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -408,7 +399,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         if (commentEditText.getText().toString().length() > 0){
             final String commentText = commentEditText.getText().toString();
             commentEditText.setText(null);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -504,7 +495,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void fetchComments(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 ApiCommentResponse.class,
                 new Response.Listener<ApiCommentResponse>() {
                     @Override

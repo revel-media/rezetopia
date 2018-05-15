@@ -151,7 +151,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
                     Bitmap bm = null;
                     bm = BitmapFactory.decodeFile(image.getPath());
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    bm.compress(Bitmap.CompressFormat.JPEG, 50, baos);
                     String encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
                     encodedImages.add(encodedImage);
                 }
@@ -162,7 +162,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

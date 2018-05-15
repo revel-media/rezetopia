@@ -119,7 +119,7 @@ public class UserImageActivity extends AppCompatActivity {
 //            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 //            final String encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
             Log.i("encodedImage", "doInBackground: " + encodedImage);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/upload.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/upload.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -171,7 +171,7 @@ public class UserImageActivity extends AppCompatActivity {
     private void performUpload(){
         dialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/upload.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/upload.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         reqView = LayoutInflater.from(this).inflate(R.layout.request_tab_icon, null);
         mCustomView = mInflater.inflate(R.layout.action_bar, null);
         searchBox = mCustomView.findViewById(R.id.searchbox);
+        searchBox.setFocusable(false);
         searchIcon = mCustomView.findViewById(R.id.searchIcon);
         chatButton = mCustomView.findViewById(R.id.imageButton);
         ActionBar.LayoutParams layout = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
 
     @Override
     public void onProfile() {
-        inflateMainView(4);
+        inflateMainView(3);
     }
 
     @Override
@@ -469,6 +470,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
                             Intent intent = OtherProfileActivity.createIntent(
                                     String.valueOf(item.getId()),
                                     item.getName(),
+                                    null,
                                     MainActivity.this);
 
                             startActivity(intent);
@@ -530,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     }
 
     private void performSearch(final String query){
-        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_search.php", SearchResponse.class,
+        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_search.php", SearchResponse.class,
                 new Response.Listener<SearchResponse>() {
                     @Override
                     public void onResponse(SearchResponse response) {

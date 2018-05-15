@@ -30,7 +30,7 @@ import app.reze1.ahmed.reze1.model.pojo.user.User;
 
 public class UserOperations {
 
-    private static final String baseUrl = "https://rezetopia.com/app/";
+    private static final String baseUrl = "https://rezetopia.dev-krito.com/app/";
     static RegistrationCallback registrationCallback;
     static LoginCallback loginCallback;
     static FBLoginCallback fbLoginCallback;
@@ -273,7 +273,7 @@ public class UserOperations {
         @Override
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "reze/user_post.php";
-            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, url, ApiResponse.class,
+            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php", ApiResponse.class,
                     new Response.Listener<ApiResponse>() {
                         @Override
                         public void onResponse(ApiResponse response) {

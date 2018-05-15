@@ -221,13 +221,17 @@ public class PostsProfile extends Fragment {
         }
 
         private void startOtherProfile(int position){
-            Intent intent = OtherProfileActivity.createIntent(posts[position].getUserId(), posts[position].getUsername(), getActivity());
+            Intent intent = OtherProfileActivity.createIntent(
+                    posts[position].getUserId(),
+                    posts[position].getUsername(),
+                    null,
+                    getActivity());
             startActivity(intent);
         }
 
         private void performLike(final PostResponse postResponse, final int pos){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -399,7 +403,7 @@ public class PostsProfile extends Fragment {
     }
 
     private void fetchPosts(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php", ApiResponse.class,
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php", ApiResponse.class,
                 new Response.Listener<ApiResponse>() {
                     @Override
                     public void onResponse(ApiResponse response) {

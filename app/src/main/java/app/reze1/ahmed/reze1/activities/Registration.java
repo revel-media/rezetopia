@@ -62,7 +62,7 @@ public class Registration extends AppCompatActivity {
 
 
     RequestQueue requestQueue;
-    public static String URL_REGISTER = "https://rezetopia.com/app/register.php";
+    public static String URL_REGISTER = "https://rezetopia.dev-krito.com/app/register.php";
     public ProgressDialog progress;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;

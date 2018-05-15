@@ -119,7 +119,11 @@ public class Requests extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = OtherProfileActivity.createIntent(String.valueOf(user.getId()), user.getName(), getActivity());
+                    Intent intent = OtherProfileActivity.createIntent(
+                            String.valueOf(user.getId()),
+                            user.getName(),
+                            null,
+                            getActivity());
                 }
             });
         }
@@ -150,7 +154,7 @@ public class Requests extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            VolleyCustomRequest post = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/friend_request.php", ApiResponse.class,
+            VolleyCustomRequest post = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/friend_request.php", ApiResponse.class,
                     new Response.Listener<ApiResponse>() {
                         @Override
                         public void onResponse(ApiResponse response) {
@@ -189,7 +193,7 @@ public class Requests extends Fragment {
 
         @Override
         protected Void doInBackground(final String... strings) {
-            StringRequest post = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/friend_request.php",
+            StringRequest post = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/friend_request.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -231,7 +235,7 @@ public class Requests extends Fragment {
 
         @Override
         protected Void doInBackground(final String... strings) {
-            StringRequest post = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/friend_request.php",
+            StringRequest post = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/friend_request.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {

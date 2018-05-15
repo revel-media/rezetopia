@@ -240,7 +240,11 @@ public class SavedPostsActivity extends AppCompatActivity {
         }
 
         private void startOtherProfile(int position){
-            Intent intent = OtherProfileActivity.createIntent(String.valueOf(posts.get(position).getUserId()), posts.get(position).getUsername(), SavedPostsActivity.this);
+            Intent intent = OtherProfileActivity.createIntent(
+                    String.valueOf(posts.get(position).getUserId()),
+                    posts.get(position).getUsername(),
+                    null,
+                    SavedPostsActivity.this);
             startActivity(intent);
         }
 
