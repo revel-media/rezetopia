@@ -416,6 +416,7 @@ public class Profile extends Fragment {
         requestQueue.add(request);
 
     }
+
     class optionProfile implements View.OnClickListener {
         private Profile profile;
         private Context mContext;
