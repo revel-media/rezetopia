@@ -145,7 +145,6 @@
             android:name=".activities.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.UserImageActivity" />
-        <activity android:name=".activities.ActivitySearch"></activity>
     </application>
 
 </manifest>
