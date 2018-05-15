@@ -29,8 +29,11 @@ import app.reze1.ahmed.reze1.event.PushNotificationEvent;
 import app.reze1.ahmed.reze1.models.Chat;
 import app.reze1.ahmed.reze1.adapters.ChatRecyclerAdapter;
 import app.reze1.ahmed.reze1.utils.Constants;
+import de.hdodenhof.circleimageview.CircleImageView;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+
+import static app.reze1.ahmed.reze1.utils.Constants.ARG_RECEIVER;
 
 
 public class ChatFragment extends Fragment implements ChatContract.View, TextView.OnEditorActionListener {
@@ -41,16 +44,19 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     ImageView emojiImageView;
     EmojIconActions emojIcon;
     private ProgressDialog mProgressDialog;
+    CircleImageView ppView;
+    TextView nameView;
+    String username;
 
     private ChatRecyclerAdapter mChatRecyclerAdapter;
 
     private ChatPresenter mChatPresenter;
 
-    public static ChatFragment newInstance(String receiver,
+    public static ChatFragment newInstance(String name,
                                            String receiverUid,
                                            String firebaseToken) {
         Bundle args = new Bundle();
-        args.putString(Constants.ARG_RECEIVER, receiver);
+        args.putString(ARG_RECEIVER, name);
         args.putString(Constants.ARG_RECEIVER_UID, receiverUid);
         args.putString(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
         ChatFragment fragment = new ChatFragment();
@@ -75,6 +81,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_chat, container, false);
         bindViews(fragmentView);
+        ppView = fragmentView.findViewById(R.id.ppView);
+        nameView = fragmentView.findViewById(R.id.nameView);
+
+        nameView.setText(getArguments().getString(ARG_RECEIVER));
+        ppView.setBackground(getActivity().getResources().getDrawable(R.drawable.default_avatar));
         return fragmentView;
     }
 
@@ -130,7 +141,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
 
     private void sendMessage() {
         String message = mETxtMessage.getText().toString();
-        String receiver = getArguments().getString(Constants.ARG_RECEIVER);
+        String receiver = getArguments().getString(ARG_RECEIVER);
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
