@@ -243,6 +243,7 @@ public class Home extends Fragment {
         ImageView postSideMenu;
         Button postShareButton;
 
+        //todo
         public PostViewHolder(final View itemView) {
             super(itemView);
 
