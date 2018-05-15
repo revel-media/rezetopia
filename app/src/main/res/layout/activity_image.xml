@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rezetopia.ahmed.reze1.app.rezetopia.ahmed.reze1.ImageActivity">
+    android:background="@drawable/post_background"
+    android:layout_margin="40dp">
 
     <ImageView
         android:layout_marginTop="60dp"
@@ -12,7 +13,7 @@
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/green7"/>
+        android:background=""/>
 
     <ImageView
         android:id="@+id/uploadImageView"

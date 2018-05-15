@@ -144,7 +144,7 @@
         <activity
             android:name=".activities.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.UserImageActivity"></activity>
+        <activity android:name=".activities.UserImageActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import app.reze1.ahmed.reze1.R;
-import app.reze1.ahmed.reze1.core.users.add.AddUserContract;
+import app.reze1.ahmed.reze1.core.core.users.add.AddUserContract;
 import app.reze1.ahmed.reze1.models.User;
 import app.reze1.ahmed.reze1.utils.Constants;
 import app.reze1.ahmed.reze1.utils.SharedPrefUtil;

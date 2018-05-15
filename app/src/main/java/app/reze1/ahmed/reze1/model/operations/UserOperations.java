@@ -1,6 +1,5 @@
 package app.reze1.ahmed.reze1.model.operations;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -36,6 +35,8 @@ public class UserOperations {
     static LoginCallback loginCallback;
     static FBLoginCallback fbLoginCallback;
     static NewsFeedCallback feedCallback;
+    static GetProductsCallback productsCallback;
+    static CreateProductsCallback createProductsCallback;
     static RequestQueue requestQueue;
 
 
@@ -51,8 +52,16 @@ public class UserOperations {
         fbLoginCallback = call;
     }
 
-    public static void setNewsFeedCalllback(NewsFeedCallback call){
+    public static void setNewsFeedCallback(NewsFeedCallback call){
         feedCallback = call;
+    }
+
+    public static void setProductsCallback(GetProductsCallback call){
+        productsCallback = call;
+    }
+
+    public static void setCreateProductsCallback(CreateProductsCallback call){
+        createProductsCallback = call;
     }
 
     public static void setRequestQueue(RequestQueue queue){
@@ -85,6 +94,10 @@ public class UserOperations {
         new FetchNewsFeedTask().execute(userId, cursor);
     }
 
+    public static void fetchProducts(){
+        new FetchProductsTask().execute();
+    }
+
     public interface RegistrationCallback {
         void onResponse(String id);
         void onError(String error);
@@ -102,6 +115,16 @@ public class UserOperations {
 
     public interface NewsFeedCallback{
         void onResponse(NewsFeed news);
+        void onError(String error);
+    }
+
+    public interface GetProductsCallback {
+        void onResponse(ProductResponse[] products);
+        void onError(String error);
+    }
+
+    public interface CreateProductsCallback{
+        void onResponse(ProductResponse products);
         void onError(String error);
     }
 
@@ -280,25 +303,25 @@ public class UserOperations {
                                     }
                                 }
 
-                                if (products != null){
-                                    for (ProductResponse productResponse : products) {
-                                        NewsFeedItem item = new NewsFeedItem();
-                                        item.setProductAmount(productResponse.getAmount());
-                                        item.setDescription(productResponse.getDescription());
-                                        item.setProductImageUrl(productResponse.getImageUrl());
-                                        item.setProductPrice(productResponse.getPrice());
-                                        item.setProductSale(productResponse.getSale());
-                                        item.setProductSoldAmount(productResponse.getSoldAmount());
-                                        item.setProductTitle(productResponse.getTitle());
-                                        item.setId(productResponse.getId());
-                                        item.setOwnerId(productResponse.getUserId());
-                                        item.setOwnerName(productResponse.getStoreName());
-                                        item.setItemImage(productResponse.getStoreImageUrl());
-                                        item.setStoreId(productResponse.getStoreId());
-                                        item.setType(NewsFeedItem.PRODUCT_TYPE);
-                                        newsFeedItems.add(item);
-                                    }
-                                }
+//                                if (products != null){
+//                                    for (ProductResponse productResponse : products) {
+//                                        NewsFeedItem item = new NewsFeedItem();
+//                                        item.setProductAmount(productResponse.getAmount());
+//                                        item.setDescription(productResponse.getDescription());
+//                                        item.setProductImageUrl(productResponse.getImageUrl());
+//                                        item.setProductPrice(productResponse.getPrice());
+//                                        item.setProductSale(productResponse.getSale());
+//                                        item.setProductSoldAmount(productResponse.getSoldAmount());
+//                                        item.setProductTitle(productResponse.getTitle());
+//                                        item.setId(productResponse.getId());
+//                                        item.setOwnerId(productResponse.getUserId());
+//                                        item.setOwnerName(productResponse.getStoreName());
+//                                        item.setItemImage(productResponse.getStoreImageUrl());
+//                                        item.setStoreId(productResponse.getStoreId());
+//                                        item.setType(NewsFeedItem.PRODUCT_TYPE);
+//                                        newsFeedItems.add(item);
+//                                    }
+//                                }
 
                                 /*if (vendorPosts != null){
                                     for (VendorPostsResponse postResponse : vendorPosts) {
@@ -316,18 +339,18 @@ public class UserOperations {
                                     }
                                 }*/
 
-                                if (events != null){
-                                    for (EventResponse eventResponse : events) {
-                                        NewsFeedItem item = new NewsFeedItem();
-                                        item.setId(eventResponse.getId());
-                                        item.setDescription(eventResponse.getDescription());
-                                        item.setOccurDate(eventResponse.getOccurDate());
-                                        item.setItemName(eventResponse.getName());
-                                        item.setCreatedAt(eventResponse.getTimestamp());
-                                        item.setType(NewsFeedItem.EVENT_TYPE);
-                                        newsFeedItems.add(item);
-                                    }
-                                }
+//                                if (events != null){
+//                                    for (EventResponse eventResponse : events) {
+//                                        NewsFeedItem item = new NewsFeedItem();
+//                                        item.setId(eventResponse.getId());
+//                                        item.setDescription(eventResponse.getDescription());
+//                                        item.setOccurDate(eventResponse.getOccurDate());
+//                                        item.setItemName(eventResponse.getName());
+//                                        item.setCreatedAt(eventResponse.getTimestamp());
+//                                        item.setType(NewsFeedItem.EVENT_TYPE);
+//                                        newsFeedItems.add(item);
+//                                    }
+//                                }
 
                                 NewsFeed newsFeed = new NewsFeed();
                                 int nextCursor = response.getNextCursor();
@@ -379,6 +402,75 @@ public class UserOperations {
             };
 
             requestQueue.add(stringRequest);
+            return null;
+        }
+    }
+
+    private static class FetchProductsTask extends AsyncTask<String, String, Void>{
+
+        @Override
+        protected Void doInBackground(final String... users) {
+            String url = baseUrl + "user_store.php";
+
+            VolleyCustomRequest post = new VolleyCustomRequest(Request.Method.POST, url,
+                    app.reze1.ahmed.reze1.model.pojo.product.ApiResponse.class, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }
+            ){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String>  params = new HashMap<>();
+
+                    return params;
+                }
+            };
+            requestQueue.add(post);
+            return null;
+        }
+    }
+
+    private static class CreateProductsTask extends AsyncTask<String, String, Void>{
+
+        @Override
+        protected Void doInBackground(final String... strings) {
+            String url = baseUrl + "user_store.php";
+
+            VolleyCustomRequest post = new VolleyCustomRequest(Request.Method.POST, url,
+                    ProductResponse.class, new Response.Listener<ProductResponse>() {
+                @Override
+                public void onResponse(ProductResponse response) {
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }
+            ){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String>  params = new HashMap<>();
+
+                    params.put("user_id", strings[0]);
+                    params.put("image", strings[1]);
+                    params.put("title", strings[2]);
+                    params.put("price", strings[3]);
+                    params.put("amount", strings[4]);
+                    params.put("description", strings[5]);
+                    params.put("sale", strings[6]);
+                    return params;
+                }
+            };
+            requestQueue.add(post);
             return null;
         }
     }

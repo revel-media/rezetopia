@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public interface AddUserContract {
     interface View {
-        //todo
         void onAddUserSuccess(String message);
 
         void onAddUserFailure(String message);
