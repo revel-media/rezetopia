@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:text="@string/groups"
             android:textSize="15sp"
+            android:id="@+id/txt_groups"
             android:textColor="@color/green7"/>
 
         <ImageView
@@ -89,6 +90,7 @@
             android:layout_height="wrap_content"
             android:text="@string/setting"
             android:textSize="15sp"
+            android:id="@+id/txt_setting"
             android:textColor="@color/green7"/>
 
         <TextView
@@ -113,6 +115,7 @@
             android:layout_height="wrap_content"
             android:text="@string/report_to_rezetopia"
             android:textSize="15sp"
+            android:id="@+id/txt_report"
             android:textColor="@color/green7"/>
 
         <ImageView
@@ -165,6 +168,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/english"
                 android:textSize="15sp"
+                android:id="@+id/eng"
                 android:textColor="@color/green7"/>
 
             <TextView
@@ -176,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/arabic"
                 android:textSize="15sp"
+                android:id="@+id/ar"
                 android:textColor="@color/green7"/>
         </LinearLayout>
 

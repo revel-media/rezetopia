@@ -257,6 +257,7 @@
                         android:orientation="vertical">
 
                         <Button
+                            android:id="@+id/btnpls"
                             android:layout_width="32dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="4dp"
@@ -266,6 +267,7 @@
                             android:layout_width="32dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="4dp"
+                            android:id="@+id/btnchalng"
                             android:background="@drawable/ic_me_btn2" />
 
                         <Button

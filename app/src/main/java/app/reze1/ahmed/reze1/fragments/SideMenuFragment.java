@@ -102,6 +102,18 @@ public class SideMenuFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
 
                 break;
+            case R.id.txt_groups:
+                fragment=AlertFragment.createFragment("قريبا في النسخة القادمة");
+                fragment.show(getActivity().getFragmentManager(),null);
+                break;
+            case R.id.txt_setting:
+                fragment=AlertFragment.createFragment("قريبا في النسخة القادمة");
+                fragment.show(getActivity().getFragmentManager(),null);
+                break;
+            case R.id.txt_report:
+                fragment=AlertFragment.createFragment("قريبا في النسخة القادمة");
+                fragment.show(getActivity().getFragmentManager(),null);
+            break;
 
             default:
                 break;
