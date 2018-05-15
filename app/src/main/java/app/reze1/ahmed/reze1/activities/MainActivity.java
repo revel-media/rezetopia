@@ -709,19 +709,19 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if(currentUser != null) {
-
-            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
-
-        }
-
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//
+//        if(currentUser != null) {
+//
+//            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
+//
+//        }
+//
+//    }
 
     private void sendToStart() {
 

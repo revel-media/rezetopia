@@ -217,27 +217,25 @@ public class OtherProfileActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 //
-                    AlertFragment fragment = AlertFragment.createFragment("coming soon");
-                    fragment.show(getFragmentManager(), null);
+                    // AlertFragment fragment = AlertFragment.createFragment("coming soon");
+                    // fragment.show(getFragmentManager(), null);
+                    User user = new User();
+                    Intent chatIntent = new Intent(OtherProfileActivity.this, ChatActivity.class);
+                    chatIntent.putExtra("user_id",user.getId());
+                    chatIntent.putExtra("user_name", username);
+                    startActivity(chatIntent);
                 }
             });
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.add))){
-                        performAddFriend();
-                    } else if(addBtn.getText().toString().contentEquals(getResources().getString(R.string.unfriend))) {
-                        performUnFriend();
-                    } else {
-                        performUnFriend();
-                    }
-
 //                    AlertFragment fragment = AlertFragment.createFragment("coming soon");
 //                    fragment.show(getFragmentManager(), null);
                     final String user_id = getIntent().getStringExtra("user_id");
                     User user = new User();
+                    //  if(mCurrent_state.equals("req_received")){
+
                     final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
 
                     Map friendsMap = new HashMap();
@@ -274,6 +272,16 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                         }
                     });
+
+                    //}
+                    if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.add))){
+                        performAddFriend();
+                    } else if(addBtn.getText().toString().contentEquals(getResources().getString(R.string.unfriend))) {
+                        performUnFriend();
+                    } else {
+                        performUnFriend();
+                    }
+
                 }
             });
         }

@@ -5,22 +5,31 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ServerValue;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import app.reze1.ahmed.reze1.R;
 import app.reze1.ahmed.reze1.core.chat.ChatContract;
@@ -34,6 +43,7 @@ import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 import static app.reze1.ahmed.reze1.utils.Constants.ARG_RECEIVER;
+import static app.reze1.ahmed.reze1.utils.Constants.ARG_UID;
 
 
 public class ChatFragment extends Fragment implements ChatContract.View, TextView.OnEditorActionListener {
@@ -44,7 +54,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     ImageView emojiImageView;
     EmojIconActions emojIcon;
     private ProgressDialog mProgressDialog;
-    CircleImageView ppView;
+    private ImageButton mChatSendBtn;
+   // CircleImageView ppView;
+
+    RelativeLayout header;
     TextView nameView;
     String username;
 
@@ -81,12 +94,15 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_chat, container, false);
         bindViews(fragmentView);
-        ppView = fragmentView.findViewById(R.id.ppView);
+       // ppView = fragmentView.findViewById(R.id.ppView);
         nameView = fragmentView.findViewById(R.id.nameView);
 
-        nameView.setText(getArguments().getString(ARG_RECEIVER));
-        ppView.setBackground(getActivity().getResources().getDrawable(R.drawable.default_avatar));
+        nameView.setText(getArguments().getString(Constants.ARG_RECEIVER));
+
+//        ppView.setBackground(getActivity().getResources().getDrawable(R.drawable.default_avatar));
         return fragmentView;
+
+
     }
 
     private void bindViews(View view) {
@@ -94,6 +110,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
         mRecyclerViewChat = (RecyclerView) view.findViewById(R.id.recycler_view_chat);
         mETxtMessage = (EmojiconEditText) view.findViewById(R.id.edit_text_message);
         emojiImageView=(ImageView)view.findViewById(R.id.emoji_btn);
+        mChatSendBtn = (ImageButton) view.findViewById(R.id.chat_send_btn);
+        header=(RelativeLayout)view.findViewById(R.id.headerLayout);
         emojIcon = new EmojIconActions(getContext(),view,mETxtMessage , emojiImageView);
         emojIcon.ShowEmojIcon();
         emojIcon.setIconsIds(R.drawable.ic_action_keyboard, R.drawable.smiley);
@@ -106,6 +124,15 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
             @Override
             public void onKeyboardClose() {
                 Log.e(TAG, "Keyboard closed");
+            }
+        });
+
+        mChatSendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                sendMessages();
+
             }
         });
     }
@@ -121,9 +148,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
         mProgressDialog.setTitle(getString(R.string.loading));
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setIndeterminate(true);
-
+        nameView.setText(getArguments().getString(Constants.ARG_RECEIVER));
         mETxtMessage.setOnEditorActionListener(this);
-
         mChatPresenter = new ChatPresenter(this);
         mChatPresenter.getMessage(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                 getArguments().getString(Constants.ARG_RECEIVER_UID));
@@ -189,5 +215,27 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
             mChatPresenter.getMessage(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                     pushNotificationEvent.getUid());
         }
+    }
+    private void sendMessages() {
+
+
+        String message = mETxtMessage.getText().toString();
+
+        String receiver = getArguments().getString(ARG_RECEIVER);
+        String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
+        String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
+        Chat chat = new Chat(sender,
+                receiver,
+                senderUid,
+                receiverUid,
+                message,
+                System.currentTimeMillis());
+        mChatPresenter.sendMessage(getActivity().getApplicationContext(),
+                chat,
+                receiverFirebaseToken);
+
+
     }
 }

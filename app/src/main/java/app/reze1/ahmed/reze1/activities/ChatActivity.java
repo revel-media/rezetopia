@@ -15,11 +15,13 @@ import app.reze1.ahmed.reze1.utils.Constants;
 public class ChatActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     String name;
+
     public static void startActivity(Context context,
                                      String name,
                                      String receiverUid,
                                      String firebaseToken) {
         Intent intent = new Intent(context, ChatActivity.class);
+
        //String mChatUser = getIntent().getStringExtra("user_id");
         intent.putExtra(name,Constants.ARG_RECEIVER);
         intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
@@ -47,6 +49,8 @@ public class ChatActivity extends AppCompatActivity {
         //mToolbar.setTitle(getIntent().getExtras().getString(name));
 
         // set the register screen fragment
+        String userName = getIntent().getStringExtra("user_name");
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_content_chat,
                 ChatFragment.newInstance(getIntent().getExtras().getString(Constants.ARG_RECEIVER),
