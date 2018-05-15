@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
 
     @Override
     public void onProfile() {
-        inflateMainView(3);
+        inflateMainView(4);
     }
 
     @Override
@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_notification_tab));
+        //tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_store));
         tabLayout.addTab(tabLayout.newTab().setCustomView(reqView));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_profile_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_side_menu));

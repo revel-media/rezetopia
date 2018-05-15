@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -21,6 +22,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
+
+import app.reze1.ahmed.reze1.app.AppConfig;
 import app.reze1.ahmed.reze1.views.CustomButton;
 import app.reze1.ahmed.reze1.views.CustomEditText;
 import app.reze1.ahmed.reze1.R;
@@ -81,7 +84,7 @@ public class CreateProductActivity extends AppCompatActivity implements View.OnC
         createProductButton.setOnClickListener(this);
         productImageView.setOnClickListener(this);
 
-        storeId = getIntent().getStringExtra(STORE_ID_EXTRA);
+        //storeId = getIntent().getStringExtra(STORE_ID_EXTRA);
         requestQueue = Volley.newRequestQueue(this);
     }
 
@@ -90,7 +93,8 @@ public class CreateProductActivity extends AppCompatActivity implements View.OnC
         switch (v.getId()){
             case R.id.createProductButton:
                 if (validProduct()){
-                    createProduct();
+                    new CreateProductAsync().execute();
+//                    createProduct();
                 }
                 break;
             case R.id.productImageView:
@@ -134,63 +138,70 @@ public class CreateProductActivity extends AppCompatActivity implements View.OnC
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void createProduct1(){
+    private class CreateProductAsync extends AsyncTask<Void, Void, Void>{
 
-        dialog.show();
+        @Override
+        protected Void doInBackground(Void... voids) {
+            dialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_store.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("product_response", "onResponse: " + response);
+            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_store.php",
+                    ProductResponse.class,
+                    new Response.Listener<ProductResponse>() {
+                        @Override
+                        public void onResponse(ProductResponse response) {
+                            Log.i("product_response", "onResponse: " + response.getCreatedAt());
                         /*Intent intent = new Intent();
                         intent.putExtra("product", response);
                         setResult(1005, intent);*/
-                        onBackPressed();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("volley error", "onErrorResponse: " + error.getMessage());
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> map = new HashMap<>();
-
-                String title = productTitleView.getText().toString();
-                String price = productPriceView.getText().toString();
-                String amount = productAmountView.getText().toString();
-                String description = productDescriptionView.getText().toString();
-                String sale = productDiscountView.getText().toString();
-
-                if (selectedImage != null) {
-                    Bitmap bm = null;
-                    bm = BitmapFactory.decodeFile(selectedImage.getPath());
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-                    map.put("image", encodedImage);
+                            onBackPressed();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
                 }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
 
-                map.put("method", "create_product");
-                map.put("store_id", storeId);
-                map.put("title", title);
-                map.put("price", price);
-                map.put("amount", amount);
-                map.put("description", description);
-                map.put("sale", sale);
+                    String title = productTitleView.getText().toString();
+                    String price = productPriceView.getText().toString();
+                    String amount = productAmountView.getText().toString();
+                    String description = productDescriptionView.getText().toString();
+                    String sale = productDiscountView.getText().toString();
+
+                    if (selectedImage != null) {
+                        Bitmap bm = null;
+                        bm = BitmapFactory.decodeFile(selectedImage.getPath());
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+                        map.put("image", encodedImage);
+                    }
+
+                    String userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
+                            .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+
+                    map.put("method", "create_product");
+                    map.put("user_id", userId);
+                    map.put("title", title);
+                    map.put("price", price);
+                    map.put("amount", amount);
+                    map.put("description", description);
+                    map.put("sale", sale);
 
 
-                return map;
-            }
-        };
+                    return map;
+                }
+            };
 
-        requestQueue.add(stringRequest);
+            requestQueue.add(stringRequest);
+            return null;
+        }
     }
 
     private void createProduct(){
-
         dialog.show();
 
         VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_store.php",

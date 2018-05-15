@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -48,9 +50,10 @@ public class UserImageActivity extends AppCompatActivity {
     private ProgressDialog dialog = null;
     Image selectedImage;
     String url;
+    String encodedImage;
 
     public static Intent createIntent(String url, Context context){
-        Intent intent = new Intent(context, ImageActivity.class);
+        Intent intent = new Intent(context, UserImageActivity.class);
         intent.putExtra(URL_EXTRA, url);
         return intent;
     }
@@ -77,6 +80,7 @@ public class UserImageActivity extends AppCompatActivity {
 
         dialog = new ProgressDialog(this);
         dialog.setMessage("uploading your profile picture");
+        dialog.setCancelable(false);
     }
 
 
@@ -103,6 +107,65 @@ public class UserImageActivity extends AppCompatActivity {
 
                     }
                 }).check();
+    }
+
+    private class UploadImage extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+//            Bitmap bm = null;
+//            bm = BitmapFactory.decodeFile(selectedImage.getPath());
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//            final String encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+            Log.i("encodedImage", "doInBackground: " + encodedImage);
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/upload.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("upload_pp", "onResponse: " + response);
+                            if (response.contentEquals("updated")){
+                                dialog.dismiss();
+                                Intent intent = new Intent();
+                                intent.putExtra("url", response);
+                                setResult(RESULT_OK, intent);
+                                finish();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                    dialog.dismiss();
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+
+
+                    String userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
+                            .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+
+                    //map.put("method", "update_pp");
+                    map.put("image", encodedImage);
+                    map.put("img_name", String.valueOf(System.currentTimeMillis()/100));
+                    map.put("id", userId);
+
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(UserImageActivity.this).add(stringRequest);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
     }
 
     private void performUpload(){
@@ -142,7 +205,7 @@ public class UserImageActivity extends AppCompatActivity {
 
                 map.put("method", "update_pp");
                 map.put("image", encodedImage);
-                map.put("img_name", userId);
+                map.put("img_name", String.valueOf(System.currentTimeMillis()/100));
                 map.put("id", userId);
 
                 return map;
@@ -156,8 +219,19 @@ public class UserImageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
             selectedImage = ImagePicker.getFirstImageOrNull(data);
-            if (selectedImage != null)
-                performUpload();
+            if (selectedImage != null){
+                Bitmap bm = null;
+                bm = BitmapFactory.decodeFile(selectedImage.getPath());
+                image_view.setImageBitmap(bm);
+                Bitmap bitmap = ((BitmapDrawable) image_view.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+                dialog.show();
+                new UploadImage().execute();
+            }
+
+                //performUpload();
         }
 
 

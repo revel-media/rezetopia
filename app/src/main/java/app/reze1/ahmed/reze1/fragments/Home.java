@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -46,13 +45,12 @@ import app.reze1.ahmed.reze1.model.pojo.news_feed.EventResponse;
 import app.reze1.ahmed.reze1.model.pojo.news_feed.GroupPostResponse;
 import app.reze1.ahmed.reze1.model.pojo.news_feed.NewsFeedItem;
 import app.reze1.ahmed.reze1.model.pojo.news_feed.VendorPostsResponse;
-import app.reze1.ahmed.reze1.model.pojo.post.ApiResponse;
 import app.reze1.ahmed.reze1.model.pojo.post.PostResponse;
 import app.reze1.ahmed.reze1.model.pojo.product.ProductResponse;
 import app.reze1.ahmed.reze1.app.AppConfig;
 import app.reze1.ahmed.reze1.helper.ListPopupWindowAdapter;
 import app.reze1.ahmed.reze1.helper.MenuCustomItem;
-import app.reze1.ahmed.reze1.helper.VolleyCustomRequest;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -974,7 +972,7 @@ public class Home extends Fragment {
     private void fetchNews(String cursor, final boolean refresh){
         Log.e("cursor => ", cursor );
         UserOperations.fetchNewsFeed(userId, cursor);
-        UserOperations.setNewsFeedCalllback(new UserOperations.NewsFeedCallback() {
+        UserOperations.setNewsFeedCallback(new UserOperations.NewsFeedCallback() {
             @Override
             public void onResponse(NewsFeed news) {
                 newsFeed = news;

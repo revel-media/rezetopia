@@ -6,12 +6,12 @@ import android.app.ProgressDialog;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.graphics.Color;
-        import android.graphics.drawable.BitmapDrawable;
-        import android.net.Uri;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
         import android.os.AsyncTask;
         import android.os.Build;
         import android.os.Bundle;
-        import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager;
         import android.support.v7.app.AppCompatActivity;
         import android.util.Log;
         import android.view.LayoutInflater;
@@ -68,7 +68,7 @@ public class BuildProfile extends AppCompatActivity {
     public Spinner spinnerCarrer;
     public Spinner spinnerCity;
     public static final int PICK_IMAGE = 1;
-    public ProgressDialog progress;
+    String encodedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,60 +95,35 @@ public class BuildProfile extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         //btnSkip = (Button) findViewById(R.eventId.btn_skip);
         btnNext = (Button) findViewById(R.id.btn_next);
-        //btnNext.setEnabled(false);
-        progress = new ProgressDialog(BuildProfile.this);
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-        //btnSkip.setVisibility(View.GONE);
+
+        layouts = new int[]{R.layout.build_profile1};
 
 
-        // layouts of all welcome sliders
-        // add few more layouts if you want
-        layouts = new int[]{
-                R.layout.build_profile1,
-                /*R.layout.build_profile2,
-                R.layout.build_profile3*/};
-
-        // adding bottom dots
-        //addBottomDots(0);
-
-        // making notification bar transparent
         changeStatusBarColor();
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
-//        btnSkip.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //launchHomeScreen();
-//            }
-//        });
+//
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getBaseContext(),spinnerCarrer.getSelectedItem().toString(),Toast.LENGTH_LONG).show();
-                //Toast.makeText(getBaseContext(),spinnerCity.getSelectedItem().toString(),Toast.LENGTH_LONG).show();
-//                Bitmap per_img = ((BitmapDrawable) user_img.getDrawable()).getBitmap();
-//                new UploadImage(per_img,(System.currentTimeMillis()/100)+"").execute();
-                //radioButtonptl = (RadioButton)findViewById(radioGroupptl.getCheckedRadioButtonId());
-                //radioButtonr = (RadioButton)findViewById(radioGroupr.getCheckedRadioButtonId());
-                //Toast.makeText(getBaseContext(),address.getText(),Toast.LENGTH_LONG).show();
-                //Toast.makeText(getBaseContext(),phone.getText(),Toast.LENGTH_LONG).show();
-               // Toast.makeText(getBaseContext(),radioButtonptl.getText(),Toast.LENGTH_LONG).show();
-               // Toast.makeText(getBaseContext(),radioButtonr.getText(),Toast.LENGTH_LONG).show();
-              // Toast.makeText(getBaseContext(),validate()+"",Toast.LENGTH_LONG).show();
+
                 if(!validate()){
 
 
                 }
                 else{
+                    final ProgressDialog progress = new ProgressDialog(BuildProfile.this);
+                    progress.setTitle("Loading");
+                    progress.setMessage("Wait while loading...");
+                    progress.setCancelable(false);
                     progress.show();
                     radioButtonptl = (RadioButton)findViewById(radioGroupptl.getCheckedRadioButtonId());
                     radioButtonr = (RadioButton)findViewById(radioGroupr.getCheckedRadioButtonId());
-                    Bitmap per_img = ((BitmapDrawable) user_img.getDrawable()).getBitmap();
-                    new UploadImage(per_img,(System.currentTimeMillis()/100)+"").execute();
+                    if (encodedImage != null) {
+                        new UploadImage(encodedImage, (String.valueOf(System.currentTimeMillis() / 100))).execute();
+                    }
                     StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/rcp.php", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -262,11 +237,14 @@ public class BuildProfile extends AppCompatActivity {
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri imgSelectedUri = data.getData();
             ((ImageView)findViewById(R.id.profile_upload_image)).setImageURI(imgSelectedUri);
+            Bitmap per_img = ((BitmapDrawable) user_img.getDrawable()).getBitmap();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            per_img.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            encodedImage = android.util.Base64.encodeToString(byteArrayOutputStream.toByteArray(), android.util.Base64.DEFAULT);
         }
     }
     /**
@@ -296,36 +274,32 @@ public class BuildProfile extends AppCompatActivity {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(layouts[position], container, false);
             user_img = (ImageView)view.findViewById(R.id.profile_upload_image);
-            //Toast.makeText(getBaseContext(),layouts.length+"    "+position,Toast.LENGTH_LONG).show();
+
             if(position == 0){
-                //Toast.makeText(getBaseContext(),position+"",Toast.LENGTH_LONG).show();
+
                 user_namae = (TextView)view.findViewById(R.id.user_build_name);
                 user_namae.setText(fbname);
-                //((ImageView)findViewById(R.eventId.profile_upload_image)).setImageResource(R.drawable.default_avatar);
-                //Toast.makeText(getBaseContext(),fbpicurl,Toast.LENGTH_LONG).show();
+
                 if (fbpicurl.equals("null")){
-                    //Toast.makeText(getBaseContext(),"1",Toast.LENGTH_LONG).show();
+
                     ((ImageView)view.findViewById(R.id.profile_upload_image)).setImageResource(R.drawable.default_avatar);
 
                 }
                 else{
-                    //Toast.makeText(getBaseContext(),"2",Toast.LENGTH_LONG).show();
+
                     new DownloadImage((ImageView)view.findViewById(R.id.profile_upload_image)).execute(fbpicurl);
                     ((EditText)view.findViewById(R.id.phone_compelete)).setVisibility(View.VISIBLE);
                 }
 
                 spinnerCity = (Spinner) view.findViewById(R.id.spinner_city);
-// Create an ArrayAdapter using the string array and a default spinner layout
                 ArrayAdapter<CharSequence> adapterSpinnerCity = ArrayAdapter.createFromResource(getApplicationContext(),
                         R.array.spinner_city, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
                 adapterSpinnerCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
                 spinnerCity.setAdapter(adapterSpinnerCity);
                 spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                       // Toast.makeText(getBaseContext(),spinnerCity.getSelectedItemPosition()+"",Toast.LENGTH_LONG).show();
+
                     }
 
                     @Override
@@ -339,17 +313,14 @@ public class BuildProfile extends AppCompatActivity {
                 radioGroupr = (RadioGroup)view.findViewById(R.id.rtp);
                 address = (EditText) view.findViewById(R.id.c_address);
                 phone = (EditText)view.findViewById(R.id.phone_compelete);
-// Create an ArrayAdapter using the string array and a default spinner layout
                 ArrayAdapter<CharSequence> adapterSpinnerCarrer = ArrayAdapter.createFromResource(getApplicationContext(),
                         R.array.spinner_carrer, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
                 adapterSpinnerCarrer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
                 spinnerCarrer.setAdapter(adapterSpinnerCarrer);
                 spinnerCarrer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                       // Toast.makeText(getBaseContext(),spinnerCarrer.getSelectedItemPosition()+"",Toast.LENGTH_LONG).show();
+
                     }
 
                     @Override
@@ -376,6 +347,7 @@ public class BuildProfile extends AppCompatActivity {
             container.removeView(view);
         }
     }
+
     public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -401,19 +373,20 @@ public class BuildProfile extends AppCompatActivity {
         }
 
     }
+
     public class UploadImage extends AsyncTask<Void,Void,Void>{
-        Bitmap image;
+        String image;
         String imgName;
 
-        public UploadImage(Bitmap image,String imgName){
+        public UploadImage(String image,String imgName){
            this.image = image;
            this.imgName = imgName;
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
-            final String enI = android.util.Base64.encodeToString(byteArrayOutputStream.toByteArray(), android.util.Base64.DEFAULT);
+            final String enI = android.util.Base64.encodeToString(byteArrayOutputStream.toByteArray(), android.util.Base64.DEFAULT);*/
             StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/upload.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -421,7 +394,8 @@ public class BuildProfile extends AppCompatActivity {
                    // Toast.makeText(getBaseContext(),response,Toast.LENGTH_LONG).show();
                     Log.i("ImageUpload", "onResponse: " + response);
 
-                    //hideDialog();
+
+                    //progress.dismiss();
                     btnNext.setEnabled(true);
                     try {
                         JSONObject jsonObject;
@@ -446,9 +420,9 @@ public class BuildProfile extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String,String> parameters  = new HashMap<String, String>();
 
-                    parameters.put("image",enI.toString());
-                    parameters.put("img_name",imgName.toString());
-                    parameters.put("id",user_id.toString());
+                    parameters.put("image", encodedImage);
+                    parameters.put("img_name", imgName.toString());
+                    parameters.put("id", user_id.toString());
                     return parameters;
                 }
             };
@@ -477,12 +451,7 @@ public class BuildProfile extends AppCompatActivity {
            // Toast.makeText(getBaseContext(),"image sent",Toast.LENGTH_LONG).show();
         }
     }
-//    private HttpParams httpRequest(){
-//      HttpParams httpParams = new BasicHttpParams();
-//        HttpConnectionParams.setConnectionTimeout(httpParams,100 * 30);
-//        HttpConnectionParams.setSoTimeout(httpParams,100 * 30);
-//        return httpParams;
-//    }
+
 public boolean validate() {
     boolean valid = true;
 

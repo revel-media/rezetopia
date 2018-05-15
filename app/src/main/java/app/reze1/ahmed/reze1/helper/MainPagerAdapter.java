@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import app.reze1.ahmed.reze1.fragments.Home;
 import app.reze1.ahmed.reze1.fragments.Notification;
+import app.reze1.ahmed.reze1.fragments.Products;
 import app.reze1.ahmed.reze1.fragments.Profile;
 import app.reze1.ahmed.reze1.fragments.Requests;
 import app.reze1.ahmed.reze1.fragments.SideMenuFragment;
@@ -38,6 +39,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 Notification notification = new Notification();
                 return  notification;
+//            case 2:
+//                Products products = new Products();
+//                return  products;
             case 2:
                 Requests requests = new Requests();
                 return  requests;
