@@ -97,7 +97,7 @@ public class CreateGroupPostActivity extends AppCompatActivity implements View.O
         }
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_group.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_group.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

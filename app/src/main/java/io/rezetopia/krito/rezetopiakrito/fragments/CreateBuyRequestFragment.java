@@ -92,7 +92,7 @@ public class CreateBuyRequestFragment extends DialogFragment {
     }
 
     private void performBuyRequest(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_store.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_store.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

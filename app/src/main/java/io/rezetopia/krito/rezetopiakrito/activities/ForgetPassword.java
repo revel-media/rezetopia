@@ -32,7 +32,7 @@ public class ForgetPassword extends AppCompatActivity {
     private CustomEditText edreset;
     private CustomButton ok;
     private RequestQueue requestQueue;
-    public static String URL_RESET = "https://rezetopia.com/app/resetpass.php";
+    public static String URL_RESET = "https://rezetopia.dev-krito.com/app/resetpass.php";
     private StringRequest request;
     private LoginButton fblogin;
     private CallbackManager callbackManager;
@@ -58,10 +58,10 @@ public class ForgetPassword extends AppCompatActivity {
             public void onClick(View view) {
                 boolean phone = validatePhoneNumber(edreset.getText().toString());
                 if (!phone){
-                    URL_RESET = "https://rezetopia.com/app/resetpass.php";
+                    URL_RESET = "https://rezetopia.dev-krito.com/app/resetpass.php";
                 }
                 else if(phone){
-                    URL_RESET = "https://rezetopia.com/app/resetsms.php";
+                    URL_RESET = "https://rezetopia.dev-krito.com/app/resetsms.php";
                 }
                 validate();
                // Toast.makeText(getApplicationContext(),"clicked"+URL_RESET,Toast.LENGTH_SHORT).show();

@@ -76,7 +76,7 @@ public class StoreListFragment extends Fragment {
     }
 
     private void performGetStores(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_store.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_store.php",
                 ApiResponse.class,
                 new Response.Listener<ApiResponse>() {
                     @Override

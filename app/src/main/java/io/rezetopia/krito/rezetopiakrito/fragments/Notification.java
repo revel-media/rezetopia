@@ -207,7 +207,7 @@ public class Notification extends Fragment {
 
 
     private void fetchNotifications() {
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/push_notification.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/push_notification.php",
                 ApiResponse.class,
                 new Response.Listener<ApiResponse>() {
 

@@ -224,7 +224,7 @@ public class BuildNetwork extends AppCompatActivity {
 
                     cursor.close();
 
-                    StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/contacts.php", new Response.Listener<String>() {
+                    StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/contacts.php", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             progress.dismiss();
@@ -366,7 +366,7 @@ public class BuildNetwork extends AppCompatActivity {
 
                 cursor.close();
 
-                StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/contacts.php", new Response.Listener<String>() {
+                StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/contacts.php", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progress.dismiss();
@@ -446,7 +446,7 @@ public class BuildNetwork extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/networkstate.php", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/networkstate.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                 //    Toast.makeText(getBaseContext(),response,Toast.LENGTH_LONG).show();

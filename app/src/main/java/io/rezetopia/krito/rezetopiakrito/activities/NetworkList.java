@@ -91,7 +91,7 @@ public class NetworkList extends AppCompatActivity {
         }
     }
     private void getUsers(){
-        StringRequest stringRequest = new  StringRequest(Request.Method.POST, "https://rezetopia.com/app/friendlist.php",
+        StringRequest stringRequest = new  StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/friendlist.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
