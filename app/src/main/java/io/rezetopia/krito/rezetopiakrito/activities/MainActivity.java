@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         searchBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                startActivity(new Intent(MainActivity.this,SearchActivity.class));
             }
         });
 

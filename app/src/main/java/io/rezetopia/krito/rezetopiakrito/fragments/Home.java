@@ -240,6 +240,7 @@ public class Home extends Fragment {
         ImageView ppView;
         ImageView postSideMenu;
         Button postShareButton;
+        ImageView verfiyView;
 
         //todo
         public PostViewHolder(final View itemView) {
@@ -253,6 +254,7 @@ public class Home extends Fragment {
             ppView = itemView.findViewById(R.id.ppView);
             postSideMenu = itemView.findViewById(R.id.postSideMenu);
             postShareButton = itemView.findViewById(R.id.postShareButton);
+            verfiyView = itemView.findViewById(R.id.verfiyView);
 
             postShareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -269,6 +271,10 @@ public class Home extends Fragment {
                 Picasso.with(getActivity()).load(item.getItemImage()).into(ppView);
             } else {
                 ppView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_avatar));
+            }
+
+            if (item.getOwnerId() == 1){
+                verfiyView.setVisibility(View.VISIBLE);
             }
 
             String postText = null;
@@ -365,28 +371,30 @@ public class Home extends Fragment {
                 }
             });
 
-            usernameView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (item.getOwnerId() == Integer.parseInt(userId)){
-                        mListener.onProfile();
-                    } else if (item.getType() == NewsFeedItem.POST_TYPE){
-                        startOtherProfile(item);
+            if (item.getOwnerId() != 1) {
+                usernameView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (item.getOwnerId() == Integer.parseInt(userId)) {
+                            mListener.onProfile();
+                        } else if (item.getType() == NewsFeedItem.POST_TYPE) {
+                            startOtherProfile(item);
+                        }
                     }
-                }
-            });
+                });
 
-            ppView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (item.getOwnerId() == Integer.parseInt(userId)){
-                        mListener.onProfile();
-                    } else if (item.getType() == NewsFeedItem.POST_TYPE){
-                        startOtherProfile(item);
-                        //Log.i("IMAGE", "onClick: " + item.getItemImage());
+                ppView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (item.getOwnerId() == Integer.parseInt(userId)) {
+                            mListener.onProfile();
+                        } else if (item.getType() == NewsFeedItem.POST_TYPE) {
+                            startOtherProfile(item);
+                            //Log.i("IMAGE", "onClick: " + item.getItemImage());
+                        }
                     }
-                }
-            });
+                });
+            }
 
             postSideMenu.setOnClickListener(new View.OnClickListener() {
                 @Override

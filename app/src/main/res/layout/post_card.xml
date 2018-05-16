@@ -47,12 +47,15 @@
                     android:text="Amro Tarek"
                     android:textColor="@android:color/black"/>
 
-                <!--<ImageView-->
-                    <!--android:layout_marginStart="5dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:layout_width="8dp"-->
-                    <!--android:layout_height="8dp"-->
-                    <!--android:background="@drawable/online_circle"/>-->
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/verfiyView"
+                    android:layout_marginStart="5dp"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_verified"
+                    android:background="@color/green7"/>
 
             </LinearLayout>
 

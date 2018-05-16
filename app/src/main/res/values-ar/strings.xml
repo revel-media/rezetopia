@@ -25,6 +25,13 @@
     <string name="replay">رد</string>
     <string name="matches">المباريات</string>
     <string name="points">النقاط</string>
+    <string name="empty">لا توجد نتائج</string>
+    <string name="server_error">خطا في السيرفر</string>
+    <string name="netwok_error">خطا في الشبكة</string>
+    <string name="authi_failure">خطا ف الاتصال بالانترنت</string>
+    <string name="parse_error">خطا ف التحميل حاول مرة اخري </string>
+    <string name="no_connection">خطا ف الاتصال بالانترنت</string>
+    <string name="time_out">خطا في الشبكة</string>
     <string name="level">المستوي</string>
     <string name="add">اضافة+</string>
     <string name="message">رسالة</string>
@@ -41,7 +48,7 @@
     <string name="repassword">تأكيد كلمة المرور</string>
     <string name="groups">المجموعات</string>
     <string name="events">المناسبات</string>
-    <string name="my_teams">زملائي</string>
+    <string name="my_teams">فريقي</string>
     <string name="my_coins">نقودي</string>
     <string name="my_orders">طلباتي</string>
     <string name="setting">الاعدادت</string>

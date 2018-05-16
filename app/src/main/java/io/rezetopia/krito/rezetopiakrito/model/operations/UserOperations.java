@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.rezetopia.krito.rezetopiakrito.R;
 import io.rezetopia.krito.rezetopiakrito.helper.VolleyCustomRequest;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.EventResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.GroupPostResponse;
@@ -122,7 +123,7 @@ public class UserOperations {
 
     public interface LoginCallback{
         void onResponse(String id);
-        void onError(String error);
+        void onError(int error);
     }
 
     public interface FBLoginCallback{
@@ -165,7 +166,7 @@ public class UserOperations {
                             Log.e("login_response", response);
                             loginCallback.onResponse(jsonResponse.getString("id"));
                         } else {
-                            loginCallback.onError(jsonResponse.getString("msg"));
+                            loginCallback.onError(R.string.ef_msg_empty_images);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -177,31 +178,31 @@ public class UserOperations {
                     String message = null;
                     Log.i("volley error", "onErrorResponse: " + error.getMessage());
                     if (error instanceof NetworkError) {
-                        message = "Cannot connect to Internet...Please check your connection!";
-                        loginCallback.onError(message.toString());
+                        //message = String.valueOf();
+                        loginCallback.onError(R.string.netwok_error);
                         return;
                     } else if (error instanceof ServerError) {
                         message = "The server could not be found. Please try again after some time!!";
-                        loginCallback.onError(message.toString());
+                        loginCallback.onError(R.string.server_error);
                         return;
                     } else if (error instanceof AuthFailureError) {
                         message = "Cannot connect to Internet...Please check your connection!";
-                        loginCallback.onError(message.toString());
+                        loginCallback.onError(R.string.authi_failure);
                         return;
                     } else if (error instanceof ParseError) {
                         message = "Parsing error! Please try again after some time!!";
-                        loginCallback.onError(message.toString());
+                        loginCallback.onError(R.string.parse_error);
                         return;
                     } else if (error instanceof NoConnectionError) {
                         message = "Cannot connect to Internet...Please check your connection!";
-                        loginCallback.onError(message.toString());
+                        loginCallback.onError(R.string.no_connection);
                         return;
                     } else if (error instanceof TimeoutError) {
                         message = "Connection TimeOut! Please check your internet connection.";
-                        loginCallback.onError(message.toString());
+                        loginCallback.onError(R.string.time_out);
                         return;
                     }
-                    loginCallback.onError(error.toString());
+                    loginCallback.onError(R.string.netwok_error);
                 }
             }
             ){

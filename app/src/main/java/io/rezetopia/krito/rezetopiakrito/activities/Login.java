@@ -173,10 +173,10 @@ public class Login extends AppCompatActivity{
                         }
 
                         @Override
-                        public void onError(String error) {
+                        public void onError(int error) {
                             hideDialog();
-                            String wrong = getResources().getString(R.string.wrong_login);
-                            AlertFragment.createFragment(error).show(getFragmentManager(), null);
+                            String wrong = getResources().getString(error);
+                            AlertFragment.createFragment(wrong).show(getFragmentManager(), null);
                         }
                     });
                 }
