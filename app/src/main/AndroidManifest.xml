@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="app.reze1.ahmed.reze1"
+    package="io.rezetopia.krito.rezetopiakrito"
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:name=".app.RezetopiaApp"
+        android:name="io.rezetopia.krito.rezetopiakrito.app.RezetopiaApp"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@drawable/rezetopia"
@@ -20,7 +20,7 @@
         android:roundIcon="@drawable/rezetopia"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".recievers.FirebaseMessagingService">
+        <service android:name="io.rezetopia.krito.rezetopiakrito.recievers.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -48,30 +48,30 @@
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name="io.rezetopia.krito.rezetopiakrito.activities.MainActivity" />
         <activity
-            android:name=".activities.Language"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.Language"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.Registration"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.Registration"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.WelcomeActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.WelcomeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.BuildProfile"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.BuildProfile"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.BuildProfile1"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.BuildProfile1"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.BuildProfile2"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.BuildProfile2"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.BuildNetwork"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.BuildNetwork"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.Splash"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.Splash"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -80,71 +80,71 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ForgetPassword"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.ForgetPassword"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.CommentActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.CommentActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.CreatePostActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.CreatePostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.OtherProfileActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.OtherProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ReplayActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.ReplayActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".services.FirebaseMessagingService">
+        <service android:name="io.rezetopia.krito.rezetopiakrito.services.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".services.InstanceIDService">
+        <service android:name="io.rezetopia.krito.rezetopiakrito.services.InstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.PostActivity" />
-        <activity android:name=".activities.NetworkList" />
+        <activity android:name="io.rezetopia.krito.rezetopiakrito.activities.PostActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="io.rezetopia.krito.rezetopiakrito.activities.NetworkList" />
         <activity
-            android:name=".activities.ImageActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.ImageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.GroupActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.GroupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.CreateGroupPostActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.CreateGroupPostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ViewTeamsActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.ViewTeamsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ViewEventActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.ViewEventActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.Login"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.MyEventsActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.MyEventsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.StoresListActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.StoresListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.CreateStoreActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.CreateStoreActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.WebActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.WebActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.StoreActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.StoreActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ChatActivity"
+            android:name="io.rezetopia.krito.rezetopiakrito.activities.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.UserImageActivity" />
+        <activity android:name="io.rezetopia.krito.rezetopiakrito.activities.UserImageActivity" />
     </application>
 
 </manifest>

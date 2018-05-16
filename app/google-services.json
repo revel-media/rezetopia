@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:493152873483:android:07834e5ffb37d6ce",
         "android_client_info": {
-          "package_name": "app.reze1.ahmed.reze1"
+          "package_name": "io.rezetopia.krito.rezetopiakrito"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "493152873483-jre60lrded6mbm3tm97vs59gur7s7p0i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "app.reze1.ahmed.reze1",
+            "package_name": "io.rezetopia.krito.rezetopiakrito",
             "certificate_hash": "ea81ccf7242cbf5bd7f1c58e09f1fccaea187546"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "493152873483-95vgnc1849i4nfd9s5mkf910sov9q5mo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "app.reze1.ahmed.reze1",
+            "package_name": "io.rezetopia.krito.rezetopiakrito",
             "certificate_hash": "794f838bc7c21e340803761d40e0bdc7a53ce2c9"
           }
         },

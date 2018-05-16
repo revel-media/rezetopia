@@ -168,7 +168,7 @@
             </android.support.design.widget.TabLayout>
         </LinearLayout>
 
-        <app.reze1.ahmed.reze1.helper.CustomViewPager
+        <io.rezetopia.krito.rezetopiakrito.helper.CustomViewPager
             android:id="@+id/groupViewPager"
             android:layout_below="@+id/pagerHeader"
             android:layout_width="match_parent"

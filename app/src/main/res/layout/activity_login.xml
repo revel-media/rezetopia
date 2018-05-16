@@ -33,7 +33,7 @@
                     android:layout_width="100dp"
                     android:layout_gravity="center"
                     android:src="@drawable/rezetopia"/>
-                <app.reze1.ahmed.reze1.views.CustomTextView
+                <io.rezetopia.krito.rezetopiakrito.views.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -61,7 +61,7 @@
                     android:layout_marginLeft="@dimen/kasb_margin_top"
                     />
 
-                <app.reze1.ahmed.reze1.views.CustomEditText
+                <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                     android:id="@+id/edName"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -101,7 +101,7 @@
                     android:layout_gravity="center|center_vertical|center_horizontal"
                     android:layout_marginLeft="@dimen/kasb_margin_top"
                     />
-                <app.reze1.ahmed.reze1.views.CustomEditText
+                <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                     android:layout_height="40dp"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/small_margin"
@@ -132,7 +132,7 @@
                 android:paddingBottom="@dimen/small_margin"
                 android:gravity="center">
 
-                <!--<app.reze1.ahmed.reze1.views.CustomTextView-->
+                <!--<app.rezetopia.ahmed.rezetopiakrito.views.CustomTextView-->
                     <!--android:visibility="gone"-->
                     <!--android:layout_height="wrap_content"-->
                     <!--android:layout_width="match_parent"-->
@@ -148,7 +148,7 @@
                     <!--android:text="@string/forget_password"-->
                     <!--/>-->
 
-                <app.reze1.ahmed.reze1.views.CustomButton
+                <io.rezetopia.krito.rezetopiakrito.views.CustomButton
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/small_margin"
@@ -164,7 +164,7 @@
                     android:background="@drawable/rect_white"/>
 
 
-                <app.reze1.ahmed.reze1.views.CustomButton
+                <io.rezetopia.krito.rezetopiakrito.views.CustomButton
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -180,6 +180,7 @@
                     android:textSize="@dimen/bigger_text_size" />
 
                 <com.facebook.login.widget.LoginButton
+                    android:visibility="gone"
                     android:id="@+id/login_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -187,7 +188,7 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp" />
 
-                <app.reze1.ahmed.reze1.views.CustomTextView
+                <io.rezetopia.krito.rezetopiakrito.views.CustomTextView
                     android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -197,7 +198,8 @@
                     android:textColor="@color/white"/>
 
 
-                <app.reze1.ahmed.reze1.views.CustomTextView
+                <io.rezetopia.krito.rezetopiakrito.views.CustomTextView
+                    android:layout_marginTop="@dimen/dimen_20"
                     android:id="@+id/forgetPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

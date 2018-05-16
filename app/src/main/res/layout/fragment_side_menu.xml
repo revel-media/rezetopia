@@ -129,7 +129,7 @@
             android:layout_marginStart="@dimen/dimen_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Terms and Conditions"
+            android:text="@string/terms_and_conditions"
             android:textSize="15sp"
             android:textColor="@color/green7"/>
 

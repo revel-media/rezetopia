@@ -19,7 +19,7 @@
 
 
 
-            <app.reze1.ahmed.reze1.views.CustomEditText
+            <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                 android:inputType="text"
                 android:textSize="15sp"
                 android:id="@+id/teamTitleView"
@@ -33,7 +33,7 @@
                 android:paddingStart="@dimen/dimen_10"/>
 
 
-            <app.reze1.ahmed.reze1.views.CustomButton
+            <io.rezetopia.krito.rezetopiakrito.views.CustomButton
                 android:id="@+id/createTeamButton"
                 android:layout_width="wrap_content"
                 android:paddingStart="@dimen/dimen_10"

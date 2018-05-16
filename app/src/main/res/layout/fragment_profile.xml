@@ -27,6 +27,7 @@
                 android:gravity="center">
 
                 <ProgressBar
+                    android:visibility="gone"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:indeterminate="true" />
@@ -93,15 +94,13 @@
                             android:id="@+id/playerCityTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="cairo" />
+                            android:layout_gravity="center" />
 
                         <TextView
                             android:id="@+id/playerPositionTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="play maker" />
+                            android:layout_gravity="center" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -116,7 +115,7 @@
                             android:id="@+id/userNameTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Amro Tarek"
+                            android:text=""
                             android:textColor="#000"
                             android:textSize="22dp" />
 
@@ -257,7 +256,7 @@
                         android:orientation="vertical">
 
                         <Button
-                            android:id="@+id/btnpls"
+                            android:id="@+id/btninvite"
                             android:layout_width="32dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="4dp"
@@ -306,7 +305,7 @@
             <!--android:id="@+id/profile_perview"-->
             <!--android:layout_height="1000dp"-->
             <!--android:layout_below="@id/pagerHeader"/>-->
-            <app.reze1.ahmed.reze1.helper.CustomViewPager
+            <io.rezetopia.krito.rezetopiakrito.helper.CustomViewPager
                 android:id="@+id/profile_perview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

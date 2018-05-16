@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:id="@+id/homeSwipeView"
     android:layout_height="match_parent"
-    tools:context="app.reze1.ahmed.reze1.fragments.Home">
+    tools:context="io.rezetopia.krito.rezetopiakrito.fragments.Home">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="app.reze1.ahmed.reze1.fragments.Home"
+    tools:context="io.rezetopia.krito.rezetopiakrito.fragments.Home"
     >
 
     <android.support.v7.widget.RecyclerView

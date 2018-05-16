@@ -24,7 +24,7 @@
         android:layout_width="100dp"
         android:layout_gravity="center"
         android:src="@drawable/rezetopia"/>
-        <app.reze1.ahmed.reze1.views.CustomTextView
+        <io.rezetopia.krito.rezetopiakrito.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
@@ -64,7 +64,7 @@
                      android:layout_gravity="center|center_vertical|center_horizontal"
                      android:layout_marginLeft="@dimen/medium_margin"
                      android:layout_toLeftOf="@id/edName"/>
-                 <app.reze1.ahmed.reze1.views.CustomEditText
+                 <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                      android:layout_height="wrap_content"
                      android:layout_width="match_parent"
                      android:layout_marginBottom="@dimen/small_margin"
@@ -121,7 +121,7 @@
                     android:layout_gravity="center|center_vertical|center_horizontal"
                     android:layout_marginLeft="@dimen/medium_margin"
                     android:layout_toLeftOf="@id/edPhone"/>
-                <app.reze1.ahmed.reze1.views.CustomEditText
+                <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                     android:id="@+id/edPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                     android:layout_toLeftOf="@id/edPhone"
                     />
 
-                <app.reze1.ahmed.reze1.views.CustomEditText
+                <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginBottom="@dimen/small_margin"
@@ -232,7 +232,7 @@
                     android:layout_marginLeft="@dimen/medium_margin"
                     android:layout_toLeftOf="@id/edPhone"
                     />
-                <app.reze1.ahmed.reze1.views.CustomEditText
+                <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/small_margin"
@@ -290,7 +290,7 @@
                     android:layout_marginLeft="@dimen/medium_margin"
                     android:layout_toLeftOf="@id/edPhone"
                     />
-                <app.reze1.ahmed.reze1.views.CustomEditText
+                <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginBottom="@dimen/small_margin"
@@ -348,7 +348,7 @@
                     android:layout_marginLeft="@dimen/medium_margin"
                     android:layout_toLeftOf="@id/edPhone"
                     />
-                <app.reze1.ahmed.reze1.views.CustomEditText
+                <io.rezetopia.krito.rezetopiakrito.views.CustomEditText
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginBottom="@dimen/small_margin"
@@ -389,7 +389,7 @@
                 android:background="@drawable/roundone_green"
                 android:layout_marginLeft="@dimen/small_padding"/>
 
-            <app.reze1.ahmed.reze1.views.CustomTextView
+            <io.rezetopia.krito.rezetopiakrito.views.CustomTextView
                 android:id="@+id/customTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -403,7 +403,7 @@
                 android:textSize="@dimen/txtsize" />
 
         </LinearLayout>
-        <app.reze1.ahmed.reze1.views.CustomButton
+        <io.rezetopia.krito.rezetopiakrito.views.CustomButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/kasb_margin_top"
@@ -416,7 +416,7 @@
             android:text="Sign Up"
             android:textColor="#000"
             android:id="@+id/btnRegister"/>
-        <app.reze1.ahmed.reze1.views.CustomButton
+        <io.rezetopia.krito.rezetopiakrito.views.CustomButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/img_gallery"
