@@ -20,11 +20,6 @@
         android:roundIcon="@drawable/rezetopia"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name="io.rezetopia.krito.rezetopiakrito.recievers.FirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
