@@ -87,7 +87,7 @@ public class CreateProductFragment extends DialogFragment implements View.OnClic
     }
 
     private void createProduct(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/vendor_operation.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/vendor_operation.php",
                 ProductResponse.class,
                 new Response.Listener<ProductResponse>() {
                     @Override

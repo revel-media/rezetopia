@@ -82,7 +82,7 @@ public class StoreActivity extends AppCompatActivity {
 
 
     private void performGetStore(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_store.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_store.php",
                 StoreResponse.class,
                 new Response.Listener<StoreResponse>() {
                     @Override

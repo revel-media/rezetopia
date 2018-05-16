@@ -53,7 +53,7 @@ public class GroupDescription extends Fragment {
     }
 
     private void performGetGroup(){
-        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_group.php",
+        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_group.php",
                 GroupResponse.class,
                 new Response.Listener<GroupResponse>() {
                     @Override

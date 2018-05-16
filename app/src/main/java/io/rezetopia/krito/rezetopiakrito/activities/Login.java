@@ -50,7 +50,7 @@ public class Login extends AppCompatActivity{
     private CustomEditText name,password;
     private CustomButton btnSignIn;
     private RequestQueue requestQueue;
-    public static String URL_LOGIN = "https://rezetopia.com/app/login.php";
+    public static String URL_LOGIN = "https://rezetopia.dev-krito.com/app/login.php";
     private StringRequest request;
     private LoginButton fblogin;
     private CallbackManager callbackManager;

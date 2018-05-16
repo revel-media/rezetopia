@@ -139,7 +139,7 @@ public class ViewEventActivity extends AppCompatActivity {
     }
 
     private void fetchEvent(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_event.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_event.php",
                 EventResponse.class,
                 new Response.Listener<EventResponse>() {
                     @Override
@@ -175,7 +175,7 @@ public class ViewEventActivity extends AppCompatActivity {
     }
 
     private void isGoing(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_event.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_event.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -211,7 +211,7 @@ public class ViewEventActivity extends AppCompatActivity {
     }
 
     private void isInterested(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_event.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_event.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -276,7 +276,7 @@ public class GroupHome extends Fragment {
 
         private void performLike(final PostResponse item, final int pos){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -439,7 +439,7 @@ public class GroupHome extends Fragment {
     }
 
     private void fetchPosts(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_group.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_group.php",
                 ApiResponse.class,
                 new Response.Listener<ApiResponse>() {
                     @Override
@@ -520,7 +520,7 @@ public class GroupHome extends Fragment {
     }
 
     private void removePost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -557,7 +557,7 @@ public class GroupHome extends Fragment {
     }
 
     private void savePost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -585,7 +585,7 @@ public class GroupHome extends Fragment {
     }
 
     private void reportPost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

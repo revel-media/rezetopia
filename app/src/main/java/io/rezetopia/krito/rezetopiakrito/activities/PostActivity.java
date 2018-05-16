@@ -86,7 +86,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void fetchPost(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
                 PostResponse.class,
                 new Response.Listener<PostResponse>() {
                     @Override

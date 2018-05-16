@@ -91,50 +91,49 @@ public class NetworkList extends AppCompatActivity {
         }
     }
     private void getUsers(){
+        StringRequest stringRequest = new  StringRequest(Request.Method.POST, "https://rezetopia.com/app/friendlist.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("response", "onResponse: " + response);
+                        users = new ArrayList<>();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                User userResponse = new User();
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                userResponse.setName(object.getString("username"));
+                                userResponse.setId(object.getInt("eventId"));
+                                users.add(userResponse);
+                                friendsRecyclerView.setLayoutManager(new LinearLayoutManager(NetworkList.this));
+                                friendsRecyclerView.setAdapter(adapter);
+                            }
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
 
-//        StringRequest stringRequest = new  StringRequest(Request.Method.POST, "https://rezetopia.com/app/friendlist.php",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.i("response", "onResponse: " + response);
-//                        users = new ArrayList<>();
-//                        try {
-//                            JSONArray jsonArray = new JSONArray(response);
-//                            for (int i = 0; i < jsonArray.length(); i++) {
-//                                User userResponse = new User();
-//                                JSONObject object = jsonArray.getJSONObject(i);
-//                                userResponse.setName(object.getString("username"));
-//                                userResponse.setId(object.getInt("eventId"));
-//                                users.add(userResponse);
-//                                friendsRecyclerView.setLayoutManager(new LinearLayoutManager(NetworkList.this));
-//                                friendsRecyclerView.setAdapter(adapter);
-//                            }
-//                        }
-//                        catch (JSONException e) {
-//                            e.printStackTrace();
-//
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.i("volley error", "onErrorResponse: " + error.getMessage());
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                HashMap<String, String> map = new HashMap<>();
-//
-//                String userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
-//                map.put("eventId", userId);
-//
-//                return map;
-//
-//            }
-//        };
-//
-//        Volley.newRequestQueue(NetworkList.this).add(stringRequest);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("volley error", "onErrorResponse: " + error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                HashMap<String, String> map = new HashMap<>();
+
+                String userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
+                map.put("eventId", userId);
+
+                return map;
+
+            }
+        };
+
+        Volley.newRequestQueue(NetworkList.this).add(stringRequest);
     }
 }
 
