@@ -141,9 +141,6 @@
         <activity
             android:name="io.rezetopia.krito.rezetopiakrito.activities.StoreActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="io.rezetopia.krito.rezetopiakrito.activities.ChatActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="io.rezetopia.krito.rezetopiakrito.activities.UserImageActivity" />
     </application>
 
