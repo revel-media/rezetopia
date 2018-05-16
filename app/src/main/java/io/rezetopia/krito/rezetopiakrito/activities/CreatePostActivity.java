@@ -88,6 +88,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
                                 .folderMode(true) // folder mode (false by default)
                                 .toolbarFolderTitle("Folder") // folder selection title
                                 .toolbarImageTitle("Tap to select")
+                                .limit(1)
                                 .start();
                     }
 

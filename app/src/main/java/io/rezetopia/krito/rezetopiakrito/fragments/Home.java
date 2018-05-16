@@ -241,6 +241,7 @@ public class Home extends Fragment {
         ImageView postSideMenu;
         Button postShareButton;
         ImageView verfiyView;
+        ImageView postImage;
 
         //todo
         public PostViewHolder(final View itemView) {
@@ -255,6 +256,8 @@ public class Home extends Fragment {
             postSideMenu = itemView.findViewById(R.id.postSideMenu);
             postShareButton = itemView.findViewById(R.id.postShareButton);
             verfiyView = itemView.findViewById(R.id.verfiyView);
+            postImage = itemView.findViewById(R.id.postImage);
+
 
             postShareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -275,6 +278,17 @@ public class Home extends Fragment {
 
             if (item.getOwnerId() == 1){
                 verfiyView.setVisibility(View.VISIBLE);
+            }
+
+            if (item.getPostAttachment() != null) {
+                if (item.getPostAttachment().getImages()[0].getPath() != null) {
+                    postImage.setVisibility(View.VISIBLE);
+                    Picasso.with(getActivity()).load(item.getPostAttachment().getImages()[0].getPath()).into(postImage);
+                } else {
+                    postImage.setVisibility(View.GONE);
+                }
+            } else {
+                postImage.setVisibility(View.GONE);
             }
 
             String postText = null;
