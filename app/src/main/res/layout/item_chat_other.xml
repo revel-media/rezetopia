@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_huge"
         android:padding="@dimen/padding_small"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="@dimen/progress_bar_small"
         android:textColor="@color/white"
         tools:text="Hello mate ! \ntest"
         android:background="@drawable/round_chat_background_recieve_row"
