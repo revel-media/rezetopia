@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,8 +25,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.HashMap;
+import com.firebase.client.Firebase;
 
 import io.rezetopia.krito.rezetopiakrito.fragments.AlertFragment;
 import io.rezetopia.krito.rezetopiakrito.model.operations.UserOperations;
@@ -61,6 +69,7 @@ public class Registration extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         //Spinner spinner = (Spinner) findViewById(R.eventId.spinner);
         mAuth = FirebaseAuth.getInstance();
+        Firebase.setAndroidContext(this);
 
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.object_array, R.layout.spinner_item);
 
@@ -136,6 +145,43 @@ public class Registration extends AppCompatActivity {
                     UserOperations.setRegistrationCallback(new UserOperations.RegistrationCallback() {
                         @Override
                         public void onResponse(String id) {
+                            String url = "https://rezetopiachat.firebaseio.com/users.json";
+
+                            StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+                                @Override
+                                public void onResponse(String s) {
+                                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/users");
+
+                                    if(s.equals("null")) {
+                                        reference.child(inputFullName.getText().toString()).child("password").setValue(inputPassword.getText().toString());
+                                    }
+                                    else {
+                                        try {
+                                            JSONObject obj = new JSONObject(s);
+
+                                            if (!obj.has(inputFullName.getText().toString())) {
+                                                reference.child(inputFullName.getText().toString()).child("password").setValue(inputPassword.getText().toString());
+                                            } else {
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+
+                                }
+
+                            },new Response.ErrorListener(){
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+                                    System.out.println("" + volleyError );
+
+                                }
+                            });
+
+                            RequestQueue rQueue = Volley.newRequestQueue(Registration.this);
+                            rQueue.add(request);
                             hideDialog();
                             Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                             intent.putExtra("fbname", inputFullName.getText().toString());

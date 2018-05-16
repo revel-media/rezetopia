@@ -73,6 +73,7 @@ dependencies {
 
 //event bus
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.firebase:firebase-client-android:2.5.2+'
 
 }
 

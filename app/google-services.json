@@ -2,21 +2,21 @@
   "project_info": {
     "project_number": "493152873483",
     "firebase_url": "https://rezetopia-eeb36.firebaseio.com",
-    "project_id": "rezetopia-eeb36",
-    "storage_bucket": "rezetopia-eeb36.appspot.com"
+    "project_id": "rezetopiachat",
+    "storage_bucket": "rezetopiachat.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:493152873483:android:07834e5ffb37d6ce",
+        "mobilesdk_app_id": "1:498201414646:android:0a3341ab43963790",
         "android_client_info": {
           "package_name": "io.rezetopia.krito.rezetopiakrito"
         }
       },
       "oauth_client": [
         {
-          "client_id": "493152873483-jre60lrded6mbm3tm97vs59gur7s7p0i.apps.googleusercontent.com",
-          "client_type": 1,
+          "client_id": "498201414646-9io61eetnqp1f51vr2pp6lms6sdb7oao.apps.googleusercontent.com",
+          "client_type": 3,
           "android_info": {
             "package_name": "io.rezetopia.krito.rezetopiakrito",
             "certificate_hash": "ea81ccf7242cbf5bd7f1c58e09f1fccaea187546"
@@ -37,7 +37,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBcM2HP7xh3hJAVGTioJ4AuXoFth2Zr0MQ"
+          "current_key": "AIzaSyBK8V_GUNgWKxLFO4Ap-JO2kQaXosgNF5U"
         }
       ],
       "services": {
@@ -45,13 +45,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "493152873483-uv5688eiitfoaab1115hcgmkb2hs1ebr.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
