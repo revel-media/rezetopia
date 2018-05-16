@@ -17,6 +17,10 @@ public class SearchUserResponse {
     @Expose
     private String username;
 
+    @SerializedName("img_url")
+    @Expose
+    private String imageUrl;
+
     public int getUserId() {
         return userId;
     }
@@ -31,5 +35,13 @@ public class SearchUserResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

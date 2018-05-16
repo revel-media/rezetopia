@@ -29,6 +29,21 @@ public class SearchResponse {
     @Expose
     private EventSearchResponse[] events;
 
+    @SerializedName("error")
+    @Expose
+    private boolean error;
+
+    @SerializedName("cursor")
+    @Expose
+    private String cursor;
+
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
+    }
 
     public SearchVendorResponse[] getVendors() {
         return vendors;
@@ -68,5 +83,13 @@ public class SearchResponse {
 
     public void setGroups(SearchGroupsResponse[] groups) {
         this.groups = groups;
+    }
+
+    public String getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(String cursor) {
+        this.cursor = cursor;
     }
 }

@@ -137,8 +137,8 @@
         <activity
             android:name=".activities.StoreActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.UserImageActivity" />
-        <activity android:name=".activities.SearchActivity"></activity>
+        <activity android:name=".activities.UserImageActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activities.SearchActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

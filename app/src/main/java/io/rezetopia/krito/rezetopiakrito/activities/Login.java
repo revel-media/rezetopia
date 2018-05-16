@@ -133,7 +133,7 @@ public class Login extends AppCompatActivity{
                         public void onError(String error) {
                             hideDialog();
                             String wrong = getResources().getString(R.string.wrong_login);
-                            AlertFragment.createFragment(wrong).show(getFragmentManager(), null);
+                            AlertFragment.createFragment(error).show(getFragmentManager(), null);
                         }
                     });
                 }

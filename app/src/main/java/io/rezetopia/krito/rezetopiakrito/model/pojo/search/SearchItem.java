@@ -10,6 +10,7 @@ public class SearchItem {
     private String name;
     private String description;
     private String type;
+    private String imageUrl;
 
     public int getId() {
         return id;
@@ -41,5 +42,13 @@ public class SearchItem {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

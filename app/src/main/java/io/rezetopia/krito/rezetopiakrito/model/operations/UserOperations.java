@@ -31,6 +31,9 @@ import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.VendorPostsRespons
 import io.rezetopia.krito.rezetopiakrito.model.pojo.post.ApiResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.post.PostResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.product.ProductResponse;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchItem;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchResponse;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchResult;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.user.User;
 
 public class UserOperations {
@@ -42,6 +45,7 @@ public class UserOperations {
     static NewsFeedCallback feedCallback;
     static GetProductsCallback productsCallback;
     static CreateProductsCallback createProductsCallback;
+    static SearchCallback searchCallback;
     static RequestQueue requestQueue;
 
 
@@ -59,6 +63,10 @@ public class UserOperations {
 
     public static void setNewsFeedCallback(NewsFeedCallback call){
         feedCallback = call;
+    }
+
+    public static void setSearchCallback(SearchCallback call){
+        searchCallback = call;
     }
 
     public static void setProductsCallback(GetProductsCallback call){
@@ -99,6 +107,10 @@ public class UserOperations {
         new FetchNewsFeedTask().execute(userId, cursor);
     }
 
+    public static void search(String q, String cursor){
+        new SearchTask().execute(q, cursor);
+    }
+
     public static void fetchProducts(){
         new FetchProductsTask().execute();
     }
@@ -133,6 +145,11 @@ public class UserOperations {
         void onError(String error);
     }
 
+    public interface SearchCallback{
+        void onResponse(SearchResult result);
+        void onError(String error);
+    }
+
     private static class LoginTask extends AsyncTask<String, String, Void>{
 
         @Override
@@ -145,7 +162,7 @@ public class UserOperations {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
                         if (!jsonResponse.getBoolean("error")){
-                            Log.e("login", response);
+                            Log.e("login_response", response);
                             loginCallback.onResponse(jsonResponse.getString("id"));
                         } else {
                             loginCallback.onError(jsonResponse.getString("msg"));
@@ -162,21 +179,27 @@ public class UserOperations {
                     if (error instanceof NetworkError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         loginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof ServerError) {
                         message = "The server could not be found. Please try again after some time!!";
                         loginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof AuthFailureError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         loginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof ParseError) {
                         message = "Parsing error! Please try again after some time!!";
                         loginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof NoConnectionError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         loginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof TimeoutError) {
                         message = "Connection TimeOut! Please check your internet connection.";
                         loginCallback.onError(message.toString());
+                        return;
                     }
                     loginCallback.onError(error.toString());
                 }
@@ -226,21 +249,27 @@ public class UserOperations {
                     if (error instanceof NetworkError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         registrationCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof ServerError) {
                         message = "The server could not be found. Please try again after some time!!";
                         registrationCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof AuthFailureError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         registrationCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof ParseError) {
                         message = "Parsing error! Please try again after some time!!";
                         registrationCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof NoConnectionError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         registrationCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof TimeoutError) {
                         message = "Connection TimeOut! Please check your internet connection.";
                         registrationCallback.onError(message.toString());
+                        return;
                     }
                     registrationCallback.onError("Cannot connect to Internet...Please check your connection!");
                 }
@@ -299,21 +328,27 @@ public class UserOperations {
                     if (error instanceof NetworkError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         fbLoginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof ServerError) {
                         message = "The server could not be found. Please try again after some time!!";
                         fbLoginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof AuthFailureError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         fbLoginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof ParseError) {
                         message = "Parsing error! Please try again after some time!!";
                         fbLoginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof NoConnectionError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         fbLoginCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof TimeoutError) {
                         message = "Connection TimeOut! Please check your internet connection.";
                         fbLoginCallback.onError(message.toString());
+                        return;
                     }
                     fbLoginCallback.onError(error.toString());
                 }
@@ -458,21 +493,27 @@ public class UserOperations {
                     if (error instanceof NetworkError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         feedCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof ServerError) {
                         message = "The server could not be found. Please try again after some time!!";
                         feedCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof AuthFailureError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         feedCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof ParseError) {
                         message = "Parsing error! Please try again after some time!!";
                         feedCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof NoConnectionError) {
                         message = "Cannot connect to Internet...Please check your connection!";
                         feedCallback.onError(message.toString());
+                        return;
                     } else if (error instanceof TimeoutError) {
                         message = "Connection TimeOut! Please check your internet connection.";
                         feedCallback.onError(message.toString());
+                        return;
                     }
                     feedCallback.onError(error.toString());
                 }
@@ -554,6 +595,94 @@ public class UserOperations {
                     params.put("amount", strings[4]);
                     params.put("description", strings[5]);
                     params.put("sale", strings[6]);
+                    return params;
+                }
+            };
+            requestQueue.add(post);
+            return null;
+        }
+    }
+
+    private static class SearchTask extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(final String... strings) {
+            String url = baseUrl + "reze/user_search.php";
+
+            VolleyCustomRequest post = new VolleyCustomRequest(Request.Method.POST, url,
+                    SearchResponse.class, new Response.Listener<SearchResponse>() {
+                @Override
+                public void onResponse(SearchResponse response) {
+                    ArrayList<SearchItem> searchItems = new ArrayList<>();
+
+                    if (response != null) {
+                        if (!response.isError()) {
+                            if (response.getUsers() != null && response.getUsers().length > 0) {
+                                Log.i("volley_response_search", "onResponse: " + response.getUsers()[0].getUsername());
+
+                                for (int i = 0; i < response.getUsers().length; i++) {
+                                    SearchItem item = new SearchItem();
+                                    item.setId(response.getUsers()[i].getUserId());
+                                    item.setName(response.getUsers()[i].getUsername());
+                                    item.setImageUrl(response.getUsers()[i].getImageUrl());
+                                    item.setType("user");
+                                    searchItems.add(item);
+                                }
+
+                                SearchResult result = new SearchResult();
+                                result.setSearchItems(searchItems);
+                                result.setCursor(response.getCursor());
+
+                                searchCallback.onResponse(result);
+                            } else {
+                                searchCallback.onError("empty result");
+                            }
+                        } else {
+                            searchCallback.onError("empty result");
+                        }
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String message = null;
+                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                    if (error instanceof NetworkError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        searchCallback.onError(message.toString());
+                        return;
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                        searchCallback.onError(message.toString());
+                        return;
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        searchCallback.onError(message.toString());
+                        return;
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                        searchCallback.onError(message.toString());
+                        return;
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        searchCallback.onError(message.toString());
+                        return;
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                        searchCallback.onError(message.toString());
+                        return;
+                    }
+                    searchCallback.onError("Cannot connect to Internet...Please check your connection!");
+                }
+            }
+            ){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String>  params = new HashMap<>();
+
+                    params.put("query", strings[0]);
+                    params.put("cursor", strings[1]);
+
                     return params;
                 }
             };
