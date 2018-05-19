@@ -195,6 +195,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                     updatePostsUi();
                 } else {
                     onBackPressed();
+
                 }
             }
         });
