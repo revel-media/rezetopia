@@ -57,6 +57,7 @@ public class WelcomeActivity extends AppCompatActivity {
         
         fbname = inBundle.get("fbname").toString();
         fbpicurl = inBundle.get("fbpicurl").toString();
+
         id = inBundle.get("id").toString();
         SharedPreferences.Editor editor = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit();
         editor.putString(AppConfig.LOGGED_IN_USER_ID_SHARED, id)

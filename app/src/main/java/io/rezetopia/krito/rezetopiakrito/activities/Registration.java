@@ -61,6 +61,7 @@ public class Registration extends AppCompatActivity {
     public static String URL_REGISTER = "https://rezetopia.dev-krito.com/app/register.php";
     public ProgressDialog progress;
     private DatabaseReference mDatabase;
+
     private FirebaseAuth mAuth;
 
     @Override

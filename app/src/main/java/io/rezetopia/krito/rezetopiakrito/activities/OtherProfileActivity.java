@@ -189,6 +189,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 if (searchAdapter != null) {
                     ViewGroup.LayoutParams lp = searchBox.getLayoutParams();
                     lp.width = searchBoxWidth;
+
                     searchBox.setLayoutParams(lp);
                     searchBox.setText("");
                     searchBox.setFocusable(false);

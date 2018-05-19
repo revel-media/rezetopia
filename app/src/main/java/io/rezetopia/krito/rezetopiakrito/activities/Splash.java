@@ -22,6 +22,7 @@ public class Splash extends AppCompatActivity {
         imageView = (ImageView)findViewById(R.id.loading_bar);
          userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
+
         Log.d("id_ooo",userId);
 
  //       AnimationDrawable animationDrawable = new AnimationDrawable();

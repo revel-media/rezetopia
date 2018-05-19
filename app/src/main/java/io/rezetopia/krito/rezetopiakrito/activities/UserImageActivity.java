@@ -58,6 +58,7 @@ public class UserImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_image);
 
         uploadImageView = findViewById(R.id.uploadImageView);

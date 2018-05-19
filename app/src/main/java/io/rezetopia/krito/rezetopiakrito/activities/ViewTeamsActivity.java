@@ -28,6 +28,7 @@ public class ViewTeamsActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.member));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.owner));
 
+
         adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

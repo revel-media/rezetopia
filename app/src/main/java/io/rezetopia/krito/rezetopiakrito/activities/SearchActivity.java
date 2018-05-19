@@ -111,6 +111,7 @@ public class SearchActivity extends AppCompatActivity {
 
                     if (String.valueOf(item.getId()).contentEquals(userId)){
                         setResult(RESULT_OK, null);
+
                         finish();
                     }
 

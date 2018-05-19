@@ -76,6 +76,7 @@ public class Login extends AppCompatActivity{
         fblogin = (LoginButton) findViewById(R.id.login_button);
         fblogin.setReadPermissions("public_profile");
         fblogin.setReadPermissions("email");
+
         fblogin.setReadPermissions("user_friends");
         fblogin.setReadPermissions("user_birthday");
         pDialog = new ProgressDialog(this);

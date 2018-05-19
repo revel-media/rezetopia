@@ -56,6 +56,7 @@ public class BuildProfile2 extends AppCompatActivity {
    public TextView seekval1;
    public TextView seekval2;
    public TextView seekval3;
+
    public TextView seekval4;
    public TextView seekval5;
    public TextView seekval6;

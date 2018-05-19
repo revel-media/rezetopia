@@ -59,6 +59,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     int[] likes;
     RecyclerView commentsRecyclerView;
     RecyclerView.Adapter adapter;
+
     ImageView sendCommentView;
     TextView postLikesView;
     CustomEditText commentEditText;

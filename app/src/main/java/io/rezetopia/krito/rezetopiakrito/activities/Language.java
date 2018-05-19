@@ -30,6 +30,7 @@ public class Language extends AppCompatActivity {
         progressBar = new ProgressDialog(Language.this);
         progressBar.setCancelable(false);
         progressBar.setMessage("Please Wait...");
+
         progressBar.setProgressStyle(R.style.DialogStyle);
        // progressBar.show();
 

@@ -48,6 +48,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
 
     private ProgressDialog dialog = null;
     private List<Image> selectedImages;
+
     private ArrayList<String> encodedImages;
 
     EditText postTextView;

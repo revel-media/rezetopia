@@ -55,6 +55,7 @@ public class CreateGroupPostActivity extends AppCompatActivity implements View.O
     TextView groupNameView;
 
     String groupId;
+
     String groupName;
 
     @Override

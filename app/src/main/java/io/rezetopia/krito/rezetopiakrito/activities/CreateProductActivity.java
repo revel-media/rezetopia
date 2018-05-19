@@ -55,6 +55,7 @@ public class CreateProductActivity extends AppCompatActivity implements View.OnC
 
     private Image selectedImage;
     String encodedImage;
+
     private ProgressDialog dialog = null;
 
     public static Intent createIntent(String id, Context context){

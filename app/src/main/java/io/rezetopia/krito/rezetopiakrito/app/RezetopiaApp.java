@@ -43,6 +43,7 @@ public class RezetopiaApp extends Application {
 
 	public static void setChatActivityOpen(boolean isChatActivityOpen) {
 		sIsChatActivityOpen = isChatActivityOpen;
+
 	}
 		@Override
 	protected void attachBaseContext(Context base) {

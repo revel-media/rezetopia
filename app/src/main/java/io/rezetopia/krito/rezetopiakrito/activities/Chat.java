@@ -100,6 +100,7 @@ public class Chat extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         pd = new ProgressDialog(Chat.this);
         pd.setMessage("Loading...");
+
         pd.show();
 
         String url = "https://rezetopiachat.firebaseio.com/users.json";

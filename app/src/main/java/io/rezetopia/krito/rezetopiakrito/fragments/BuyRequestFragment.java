@@ -60,6 +60,7 @@ public class BuyRequestFragment extends Fragment {
         requestQueue = Volley.newRequestQueue(getActivity());
         recyclerView = view.findViewById(R.id.productRecView);
 
+
         if (getArguments() != null) {
             if (getArguments().getInt(STORE_ID_EXTRA) > 0) {
                 storeId = getArguments().getInt(STORE_ID_EXTRA);

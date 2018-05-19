@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         }
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
+
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_notification_tab));
         //tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_store));

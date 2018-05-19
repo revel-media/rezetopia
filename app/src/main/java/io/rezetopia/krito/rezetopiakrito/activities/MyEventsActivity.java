@@ -28,6 +28,7 @@ public class MyEventsActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.eventTabLayout);
         viewPager = findViewById(R.id.eventViewPager);
+
         createEventView = findViewById(R.id.createEventView);
 
         createEventView.setOnClickListener(new View.OnClickListener() {

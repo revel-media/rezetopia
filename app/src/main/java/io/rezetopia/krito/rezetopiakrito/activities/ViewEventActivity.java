@@ -55,6 +55,7 @@ public class ViewEventActivity extends AppCompatActivity {
     Button goingButton;
     Button interestedButton;
 
+
     android.support.v4.view.PagerAdapter adapter;
 
     public static Intent createIntent(int id, Context context){

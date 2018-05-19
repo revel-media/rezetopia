@@ -60,6 +60,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+
         postId = getIntent().getIntExtra(POST_ID_EXTRA, 0);
         requestQueue = Volley.newRequestQueue(this);
         progressBar = findViewById(R.id.postProgressBar);
