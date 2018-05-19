@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,18 +62,20 @@ import java.util.Map;
 
 public class OtherProfileActivity extends AppCompatActivity {
 
-    private static final String USER_ID_EXTRA = "profile_other_user_id_extra";
-    private static final String USERNAME_EXTRA = "profile_other_username_extra";
-    private static final String PP_IMAGE__EXTRA = "profile_other_username_extra";
-    private static final int COMMENT_ACTIVITY_RESULT = 1001;
-    private static final int CREATE_POST_RESULT = 1002;
-    private static final int VIEW_HEADER = 1;
-    private static final int VIEW_ITEM = 2;
+    private static String USER_ID_EXTRA = "profile_other_user_id_extra";
+    private static String USERNAME_EXTRA = "profile_other_username_extra";
+    private static String PP_IMAGE__EXTRA = "profile_other_username_extra";
+    private static int COMMENT_ACTIVITY_RESULT = 1001;
+    private static int CREATE_POST_RESULT = 1002;
+    private static int VIEW_HEADER = 1;
+    private static int VIEW_ITEM = 2;
+    public static String nf;
 
     boolean searchUsers = false;
     boolean searchGroups = false;
 
     ArrayList<SearchItem> searchItems;
+    LinearLayout rezeAccountLayout;
 
     ImageView backView;
     EditText searchBox;
@@ -104,6 +107,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     RecyclerView searchRecyclerView;
 
     public static Intent createIntent(String userId, String username, String ImageUrl, Context context){
+        nf = username;
         Intent intent = new Intent(context, OtherProfileActivity.class);
         intent.putExtra(USER_ID_EXTRA, userId);
         intent.putExtra(USERNAME_EXTRA, username);
@@ -117,6 +121,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_other_profile);
         final String user_id = getIntent().getStringExtra("user_id");
 
+
         mRootRef = FirebaseDatabase.getInstance().getReference();
         User user = new User();
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(String.valueOf(user.getId()));
@@ -128,6 +133,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         postsRecyclerView = findViewById(R.id.otherProfileRecView);
         searchRecyclerView = findViewById(R.id.otherSearchRecView);
+        rezeAccountLayout = findViewById(R.id.rezeAccountLayout);
 
         searchBox = findViewById(R.id.searchView);
         guestUserId = getIntent().getStringExtra(USER_ID_EXTRA);
@@ -135,6 +141,10 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         userId = OtherProfileActivity.this.getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
+
+        if (Integer.parseInt(userId) == 1){
+            //rezeAccountLayout.setVisibility(View.GONE);
+        }
 //        searchBox.addTextChangedListener(new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -191,7 +201,8 @@ public class OtherProfileActivity extends AppCompatActivity {
 
 
         profileId = getIntent().getStringExtra(USER_ID_EXTRA);
-        username = getIntent().getStringExtra(USERNAME_EXTRA);
+        username = nf;
+       // Toast.makeText(getBaseContext(),nf,Toast.LENGTH_LONG).show();
         requestQueue = Volley.newRequestQueue(this);
         searchBox.setFocusable(false);
         fetchPosts();
@@ -200,6 +211,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     private class HeaderViewHolder extends RecyclerView.ViewHolder{
         TextView usernamePView;
         CircleImageView imageView;
+        ImageView cover;
         Button msgBtn = itemView.findViewById(R.id.msgSend);
 
 
@@ -210,13 +222,23 @@ public class OtherProfileActivity extends AppCompatActivity {
             addBtn = itemView.findViewById(R.id.addfBtn);
             imageView = itemView.findViewById(R.id.imageView2);
 
+            cover = itemView.findViewById(R.id.imageView);
+
+
             msgBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertFragment fragment = AlertFragment.createFragment("قريبا فى النسخة القادمة");
-                    fragment.show(getFragmentManager(), null);
+                    Intent intent = new Intent(OtherProfileActivity.this, Chat.class);
+                    intent.putExtra("guestUserId",guestUserId);
+                    startActivity(intent);
                 }
             });
+
+            if (Integer.parseInt(userId) == 1){
+                addBtn.setVisibility(View.GONE);
+                cover.setBackground(getResources().getDrawable(R.drawable.cover_1));
+                imageView.setBackground(getResources().getDrawable(R.drawable.rezetopia));
+            }
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -275,7 +297,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
 
         public void bind(){
-            //usernamePView.setText(username);
+            usernamePView.setText(username);
             if (getIntent().getStringExtra(PP_IMAGE__EXTRA) != null && !getIntent().getStringExtra(PP_IMAGE__EXTRA).isEmpty()){
                 Picasso.with(OtherProfileActivity.this).load(getIntent().getStringExtra(PP_IMAGE__EXTRA)).into(imageView);
             } else {

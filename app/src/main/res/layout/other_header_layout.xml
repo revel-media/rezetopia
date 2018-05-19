@@ -55,17 +55,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="cairo" />
+                        android:layout_gravity="center"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="play maker" />
+                        android:layout_gravity="center" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/rezeAccountLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -160,7 +159,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="1"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="15dp" />
 
@@ -168,7 +167,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/txt_margin"
-                                android:text="2"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="15dp" />
 
@@ -176,7 +175,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/divider"
-                                android:text="1"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="15dp" />
 

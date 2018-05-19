@@ -145,6 +145,7 @@ public class Registration extends AppCompatActivity {
                     UserOperations.setRegistrationCallback(new UserOperations.RegistrationCallback() {
                         @Override
                         public void onResponse(String id) {
+                            final String uid = id;
                             String url = "https://rezetopiachat.firebaseio.com/users.json";
 
                             StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
@@ -154,6 +155,8 @@ public class Registration extends AppCompatActivity {
 
                                     if(s.equals("null")) {
                                         reference.child(inputFullName.getText().toString()).child("password").setValue(inputPassword.getText().toString());
+                                        reference.child(inputFullName.getText().toString()).child("id").setValue(uid.toString());
+
                                     }
                                     else {
                                         try {
@@ -161,6 +164,7 @@ public class Registration extends AppCompatActivity {
 
                                             if (!obj.has(inputFullName.getText().toString())) {
                                                 reference.child(inputFullName.getText().toString()).child("password").setValue(inputPassword.getText().toString());
+                                                reference.child(inputFullName.getText().toString()).child("id").setValue(uid.toString());
                                             } else {
                                             }
 
@@ -351,7 +355,7 @@ public class Registration extends AppCompatActivity {
                 } else {
 
                     pDialog.hide();
-                    Toast.makeText(Registration.this, "Cannot Sign in. Please check the form and try again.", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(Registration.this, "Cannot Sign in. Please check the form and try again.", Toast.LENGTH_LONG).show();
 
                 }
 

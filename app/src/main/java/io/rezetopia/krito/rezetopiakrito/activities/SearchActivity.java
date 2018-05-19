@@ -1,5 +1,6 @@
 package io.rezetopia.krito.rezetopiakrito.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.rezetopia.krito.rezetopiakrito.R;
+import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
 import io.rezetopia.krito.rezetopiakrito.fragments.AlertFragment;
 import io.rezetopia.krito.rezetopiakrito.model.operations.UserOperations;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchItem;
@@ -92,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
             detailsView = itemView.findViewById(R.id.detailsView);
         }
 
-        public void bind(SearchItem item){
+        public void bind(final SearchItem item){
             if (item.getImageUrl() != null){
                 Picasso.with(SearchActivity.this).load(item.getImageUrl()).into(ppView);
             }
@@ -100,6 +102,30 @@ public class SearchActivity extends AppCompatActivity {
             searchUserName.setText(item.getName());
             if (item.getDescription() != null)
                 detailsView.setText(item.getDescription());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
+                            .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+
+                    if (String.valueOf(item.getId()).contentEquals(userId)){
+                        setResult(RESULT_OK, null);
+                        finish();
+                    }
+
+
+                    if (!String.valueOf(item.getId()).contentEquals(userId)){
+                        Intent intent = OtherProfileActivity.createIntent(
+                                String.valueOf(item.getId()),
+                                item.getName(),
+                                null,
+                                SearchActivity.this
+                        );
+                        startActivity(intent);
+                    }
+                }
+            });
         }
     }
 
@@ -145,7 +171,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 progressBar.setVisibility(View.GONE);
-                AlertFragment.createFragment(error).show(getFragmentManager(), null);
+                //AlertFragment.createFragment(error).show(getFragmentManager(), null);
             }
         });
     }

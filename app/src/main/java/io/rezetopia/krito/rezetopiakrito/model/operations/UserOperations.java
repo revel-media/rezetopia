@@ -166,7 +166,7 @@ public class UserOperations {
                             Log.e("login_response", response);
                             loginCallback.onResponse(jsonResponse.getString("id"));
                         } else {
-                            loginCallback.onError(R.string.ef_msg_empty_images);
+                            loginCallback.onError(R.string.wrong_login);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -455,6 +455,16 @@ public class UserOperations {
 //                                    }
 //                                }
 
+                                for (int i = 0; i < newsFeedItems.size(); i++) {
+                                    if (newsFeedItems.get(i).getOwnerId() == 1){
+                                        NewsFeedItem newsTemp = newsFeedItems.get(0);
+                                        newsFeedItems.set(0, newsFeedItems.get(i));
+                                        newsFeedItems.add(newsTemp);
+                                        break;
+                                    }
+                                }
+
+
                                 NewsFeed newsFeed = new NewsFeed();
                                 int nextCursor = response.getNextCursor();
                                 long now = response.getNow();
@@ -479,7 +489,6 @@ public class UserOperations {
 
                                 }
                             }*/
-
 
 
                             } else {

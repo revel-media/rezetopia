@@ -47,15 +47,27 @@
                     android:text="Amro Tarek"
                     android:textColor="@android:color/black"/>
 
-                    <ImageView
-                        android:visibility="gone"
-                        android:id="@+id/verfiyView"
+                <FrameLayout
+                    android:visibility="gone"
+                    android:id="@+id/verifyHeader"
                     android:layout_marginStart="5dp"
                     android:layout_gravity="center"
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_verified"
-                        android:background="@color/green7"/>
+                    android:layout_height="20dp">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_verified"
+                        android:background="@drawable/verify_circle"/>
+                    <ImageView
+                        android:id="@+id/verfiyView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_verified"/>
+
+                </FrameLayout>
 
             </LinearLayout>
 
@@ -87,7 +99,8 @@
         android:layout_below="@id/ppView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humourThere are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour"
+        android:text="هالو ورلد"
+        android:textDirection="anyRtl"
         android:textColor="@android:color/black"
         android:layout_marginBottom="5dp"
         android:textSize="12sp"

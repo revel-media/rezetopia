@@ -1,5 +1,6 @@
 package io.rezetopia.krito.rezetopiakrito.activities;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -103,12 +104,14 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         reqView = LayoutInflater.from(this).inflate(R.layout.request_tab_icon, null);
         mCustomView = mInflater.inflate(R.layout.action_bar, null);
         searchBox = mCustomView.findViewById(R.id.searchbox);
+//        final Intent emptyIntent = new Intent();
+//        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, NOT_USED, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         searchBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,SearchActivity.class));
+                startActivityForResult(new Intent(MainActivity.this,SearchActivity.class), 1002);
             }
         });
 
@@ -172,6 +175,10 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1002){
+            inflateMainView(3);
+        }
     }
 
     private void inflateMainView(int current){
@@ -183,7 +190,8 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_notification_tab));
         //tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_store));
-        tabLayout.addTab(tabLayout.newTab().setCustomView(reqView));
+        //tabLayout.addTab(tabLayout.newTab().setCustomView(reqView));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_requests_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_profile_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_side_menu));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -196,16 +204,18 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int tabIconColor = ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark);
-                if (tab.getPosition() == 2){
-                    ImageView imageView = tab.getCustomView().findViewById(R.id.icon_in);
-                    TextView textView = tab.getCustomView().findViewById(R.id.req_count);
-                    imageView.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                    textView.setVisibility(View.GONE);
-                    textView.setText("0");
-                    tab.setIcon(R.drawable.ic_requests_tab);
-                }else{
-                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                }
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+
+//                if (tab.getPosition() == 2){
+//                    ImageView imageView = tab.getCustomView().findViewById(R.id.icon_in);
+//                    TextView textView = tab.getCustomView().findViewById(R.id.req_count);
+//                    imageView.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+//                    textView.setVisibility(View.GONE);
+//                    textView.setText("0");
+//                    tab.setIcon(R.drawable.ic_requests_tab);
+//                }else{
+//                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+//                }
                 viewPager.setCurrentItem(tab.getPosition());
                 currentTab = tab.getPosition();
             }

@@ -141,7 +141,7 @@ public class PostsProfile extends Fragment {
             try {
                 postText = URLEncoder.encode(post.getText(), "ISO-8859-1");
                 postText = URLDecoder.decode(postText, "UTF-8");
-                postTextView.setText(postText);
+                postTextView.setText(post.getText());
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
