@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
+import android.support.v7.widget.MenuItemHoverListener;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -309,8 +310,8 @@ public class Home extends Fragment {
                 e.printStackTrace();
             }
             long milliseconds = date.getTime();
-            long millisecondsFromNow = milliseconds - now;
-            dateView.setText(DateUtils.getRelativeDateTimeString(getActivity(), milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
+            //long millisecondsFromNow = milliseconds - now;
+            dateView.setText(item.getCreatedAt());
             if (item.getPostText() != null && !item.getPostText().isEmpty()){
                 postTextView.setText(item.getPostText());
             }
