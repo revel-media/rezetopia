@@ -37,6 +37,8 @@ import io.rezetopia.krito.rezetopiakrito.activities.UserImageActivity;
 import io.rezetopia.krito.rezetopiakrito.helper.ProfilePagerAdapter;
 import io.rezetopia.krito.rezetopiakrito.R;
 import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
+import io.rezetopia.krito.rezetopiakrito.helper.VolleyCustomRequest;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -77,6 +79,7 @@ public class Profile extends Fragment {
     private TextView playerPositionTv;
     private TextView playerMatchesTv;
     private TextView playerPointsTv;
+    private TextView textFriendSize;
     private TextView playerLevelsTv;
     private TextView overview;
     private TextView posts;
@@ -164,6 +167,7 @@ public class Profile extends Fragment {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         playerNameTv=(TextView)v.findViewById(R.id.userNameTv);
         playerCityTv=(TextView)v.findViewById(R.id.playerCityTv);
+        textFriendSize=v.findViewById(R.id.txt_friends_size);
         playerPositionTv=(TextView)v.findViewById(R.id.playerPositionTv);
         playerMatchesTv=(TextView)v.findViewById(R.id.matchesNumbersTv);
         playerPointsTv=(TextView)v.findViewById(R.id.pointsNumbersTv);
@@ -196,7 +200,6 @@ public class Profile extends Fragment {
             public void onClick(View v) {
 //                Intent intent = new Intent(getActivity(), NetworkList.class);
 //                startActivity(intent);
-
                 AlertFragment fragment = AlertFragment.createFragment("قريبا في النسخة القادمة");
                 fragment.show(getActivity().getFragmentManager(), null);
             }
@@ -211,7 +214,6 @@ public class Profile extends Fragment {
                 fragment.show(getActivity().getFragmentManager(), null);
             }
         });
-
 
 
 

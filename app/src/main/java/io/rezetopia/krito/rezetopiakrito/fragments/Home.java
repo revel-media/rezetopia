@@ -304,14 +304,17 @@ public class Home extends Fragment {
                 usernameView.setText(item.getOwnerName());
             }
             Date date = null;
-            try {
-                date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
+           try {
+                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             long milliseconds = date.getTime();
+
+            Date date1=new Date(milliseconds);
+            SimpleDateFormat dateFormat=new SimpleDateFormat("MMM dd, hh:mm aa");
             //long millisecondsFromNow = milliseconds - now;
-            dateView.setText(item.getCreatedAt());
+            dateView.setText(String.valueOf(dateFormat.format(date1)));
             if (item.getPostText() != null && !item.getPostText().isEmpty()){
                 postTextView.setText(item.getPostText());
             }
