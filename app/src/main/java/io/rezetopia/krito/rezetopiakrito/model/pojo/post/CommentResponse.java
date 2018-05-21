@@ -43,9 +43,21 @@ public class CommentResponse implements Serializable{
     @Expose
     private int[] likes;
 
+    @SerializedName("image_url")
+    @Expose
+    private String imageUrl;
+
     @SerializedName("pending")
     @Expose
     private boolean pending;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public boolean isPending() {
         return pending;
