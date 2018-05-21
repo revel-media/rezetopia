@@ -141,7 +141,8 @@
         <activity
             android:name=".activities.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.Chat"/>
+        <activity android:name=".activities.Chat" />
+        <activity android:name=".activities.FriendsListActivity"></activity>
     </application>
 
 </manifest>

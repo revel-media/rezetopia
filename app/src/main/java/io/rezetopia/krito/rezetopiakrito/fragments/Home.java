@@ -722,7 +722,7 @@ public class Home extends Fragment {
             }
             Date date = null;
             try {
-                date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
+                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
