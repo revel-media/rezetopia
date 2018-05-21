@@ -91,6 +91,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_comment);
 
 
+        //todo
         comments = new ArrayList<>();
 
         backView = findViewById(R.id.commentBackView);
