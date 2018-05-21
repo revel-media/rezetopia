@@ -23,7 +23,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.rezetopia.krito.rezetopiakrito.views.CustomEditText;
 import io.rezetopia.krito.rezetopiakrito.R;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.post.ApiCommentResponse;
@@ -162,6 +164,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         TextView commentReplayView;
         TextView commentLikeView;
         TextView postingView;
+        CircleImageView ppView;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
@@ -173,6 +176,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             commentLikeView = itemView.findViewById(R.id.commentLikeView);
             //commentLikeView.setEnabled(false);
             postingView = itemView.findViewById(R.id.postingView);
+            ppView = itemView.findViewById(R.id.commentPPView);
         }
 
         public void bind(final CommentResponse comment, boolean pending, final int position){
@@ -181,6 +185,11 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             } else {
                 postingView.setVisibility(View.GONE);
 
+                if (comment.getImageUrl() != null && !comment.getImageUrl().isEmpty()){
+                    Picasso.with(CommentActivity.this).load(comment.getImageUrl()).into(ppView);
+                } else {
+                    ppView.setImageDrawable(getResources().getDrawable(R.drawable.default_avatar));
+                }
                 commentTextView.setText(comment.getCommentText());
                 createdAtView.setText(comment.getCreatedAt());
                 commenterView.setText(comment.getCommenterName());
