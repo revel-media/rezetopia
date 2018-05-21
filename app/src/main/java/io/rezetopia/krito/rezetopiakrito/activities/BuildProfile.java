@@ -64,6 +64,7 @@ public class BuildProfile extends AppCompatActivity {
     public RadioButton radioButtonptl;
     public RadioButton radioButtonr;
     public ImageView user_img;
+
     public String user_id;
     public Spinner spinnerCarrer;
     public Spinner spinnerCity;

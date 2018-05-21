@@ -51,6 +51,7 @@ public class BuildNetwork1 extends AppCompatActivity {
     public RadioGroup radioGroupr;
     public RequestQueue requestQueue;
     public EditText address;
+
     public EditText phone;
     public RadioButton radioButtonptl;
     public RadioButton radioButtonr;

@@ -37,6 +37,7 @@ public class ForgetPassword extends AppCompatActivity {
     private LoginButton fblogin;
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
+
     private ProfileTracker profileTracker;
 
     private static final int REQUEST_SIGNUP = 0;

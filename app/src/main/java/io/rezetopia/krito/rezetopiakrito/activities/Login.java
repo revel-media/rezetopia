@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -73,6 +76,7 @@ public class Login extends AppCompatActivity{
         fblogin = (LoginButton) findViewById(R.id.login_button);
         fblogin.setReadPermissions("public_profile");
         fblogin.setReadPermissions("email");
+
         fblogin.setReadPermissions("user_friends");
         fblogin.setReadPermissions("user_birthday");
         pDialog = new ProgressDialog(this);
@@ -120,6 +124,46 @@ public class Login extends AppCompatActivity{
                     UserOperations.setLoginCallback(new UserOperations.LoginCallback() {
                         @Override
                         public void onResponse(String id) {
+                            String url = "https://rezetopiachat.firebaseio.com/users.json";
+                            final ProgressDialog pd = new ProgressDialog(Login.this);
+
+                            StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+                                @Override
+                                public void onResponse(String s) {
+                                    if(s.equals("null")){
+
+                                    }
+                                    else{
+                                        try {
+                                            JSONObject obj = new JSONObject(s);
+
+                                            if(!obj.has(name.getText().toString())){
+
+                                            }
+                                            else if(obj.getJSONObject(name.getText().toString()).getString("password").equals(password.getText().toString())){
+
+
+                                            }
+                                            else {
+
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    pd.dismiss();
+                                }
+                            },new Response.ErrorListener(){
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+                                    System.out.println("" + volleyError);
+                                    pd.dismiss();
+                                }
+                            });
+
+                            RequestQueue rQueue = Volley.newRequestQueue(Login.this);
+                            rQueue.add(request);
                             hideDialog();
                             getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
                                     .putString(AppConfig.LOGGED_IN_USER_ID_SHARED, id).apply();

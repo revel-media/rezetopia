@@ -72,6 +72,7 @@ public class SavedPostsActivity extends AppCompatActivity {
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
         posts = new ArrayList<>();
 
+
         recyclerView = findViewById(R.id.savedPostsRecView);
         fetchSavedPosts();
     }

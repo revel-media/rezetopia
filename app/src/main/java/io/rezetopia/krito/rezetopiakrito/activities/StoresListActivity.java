@@ -34,6 +34,7 @@ public class StoresListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(StoresListActivity.this, CreateStoreActivity.class);
                 startActivity(intent);
+
             }
         });
 

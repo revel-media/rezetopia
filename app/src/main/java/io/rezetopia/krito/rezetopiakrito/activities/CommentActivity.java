@@ -61,6 +61,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     int[] likes;
     RecyclerView commentsRecyclerView;
     RecyclerView.Adapter adapter;
+
     ImageView sendCommentView;
     TextView postLikesView;
     CustomEditText commentEditText;
@@ -197,13 +198,15 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
                 Date date = null;
                 try {
-                    date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH).parse(comment.getCreatedAt());
+                    date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(comment.getCreatedAt());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 long milliseconds = date.getTime();
-                long millisecondsFromNow = milliseconds - now;
-                createdAtView.setText(DateUtils.getRelativeTimeSpanString(milliseconds, now, milliseconds - now));
+                Date date1=new Date(milliseconds);
+                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MMM dd, hh:mm aa");
+               // long millisecondsFromNow = milliseconds - now;
+                createdAtView.setText(String.valueOf(simpleDateFormat.format(date1)));
                 if (comment.getReplaySize() > 0) {
                     commentReplayView.setText(comment.getReplaySize() + " " + replay);
                 }

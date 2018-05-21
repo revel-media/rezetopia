@@ -51,6 +51,7 @@ public class GroupActivity extends AppCompatActivity {
 
     android.support.v4.view.PagerAdapter adapter;
     RequestQueue requestQueue;
+
     int groupId;
     String groupName;
     boolean isMember;

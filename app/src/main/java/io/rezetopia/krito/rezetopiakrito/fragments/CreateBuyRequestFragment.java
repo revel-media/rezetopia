@@ -63,6 +63,7 @@ public class CreateBuyRequestFragment extends DialogFragment {
         Bundle bundle = getArguments();
         ownerId = bundle.getInt(OWNER_ID_EXTRA);
         productId = bundle.getInt(PRODUCT_ID_EXTRA);
+
         storeId = bundle.getInt(STORE_ID_EXTRA);
 
 

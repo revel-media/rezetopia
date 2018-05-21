@@ -57,6 +57,7 @@ public class CreateStoreActivity extends AppCompatActivity {
 
         storeImageView = findViewById(R.id.storeImageView);
         storeNameView = findViewById(R.id.storeNameView);
+
         storeDescriptionView = findViewById(R.id.storeDescriptionView);
         storeAddressView = findViewById(R.id.storeAddressView);
         createStoreButton = findViewById(R.id.createStoreButton);

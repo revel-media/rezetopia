@@ -52,6 +52,7 @@ public class ImageActivity extends AppCompatActivity {
     public static Intent createIntent(String url, Context context){
         Intent intent = new Intent(context, ImageActivity.class);
         intent.putExtra(URL_EXTRA, url);
+
         return intent;
     }
 

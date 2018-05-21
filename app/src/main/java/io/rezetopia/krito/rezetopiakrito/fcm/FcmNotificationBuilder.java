@@ -33,6 +33,7 @@ public class FcmNotificationBuilder {
     private static final String KEY_DATA = "data";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_UID = "uid";
+
     private static final String KEY_FCM_TOKEN = "fcm_token";
 
     private String mTitle;

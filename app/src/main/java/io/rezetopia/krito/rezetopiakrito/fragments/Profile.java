@@ -20,6 +20,7 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,12 +30,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.rezetopia.krito.rezetopiakrito.activities.BuildProfile;
 import io.rezetopia.krito.rezetopiakrito.activities.NetworkList;
 import io.rezetopia.krito.rezetopiakrito.activities.UserImageActivity;
 import io.rezetopia.krito.rezetopiakrito.helper.ProfilePagerAdapter;
 import io.rezetopia.krito.rezetopiakrito.R;
 import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
+import io.rezetopia.krito.rezetopiakrito.helper.VolleyCustomRequest;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -75,13 +79,14 @@ public class Profile extends Fragment {
     private TextView playerPositionTv;
     private TextView playerMatchesTv;
     private TextView playerPointsTv;
+    private TextView textFriendSize;
     private TextView playerLevelsTv;
     private TextView overview;
     private TextView posts;
     private TextView videos;
     private TextView photos;
     private ImageView settingView;
-    private ImageView playerImg;
+    private CircleImageView playerImg;
     public RequestQueue requestQueue;
     public static PopupMenu popupMenu;
     public Button btnNetwork,btninvite,btnChallenge;
@@ -89,6 +94,9 @@ public class Profile extends Fragment {
     public ScrollView topScroll;
     public LinearLayout wraper;
     private RelativeLayout probar;
+    LinearLayout profileHeaderReze;
+
+    ImageView cover;
 
     private OnFragmentInteractionListener mListener;
 
@@ -144,25 +152,39 @@ public class Profile extends Fragment {
          viewPager = (ViewPager)v.findViewById(R.id.pager);
         settingView = v.findViewById(R.id.settingView);
 
+        playerImg = v.findViewById(R.id.imageView2);
+        cover = v.findViewById(R.id.imageView);
+        profileHeaderReze = v.findViewById(R.id.profileHeaderReze);
+
+
         View profile_menu = v.findViewById(R.id.profile_menu);
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
+
         Log.i("profile_user_id", "onCreateView: " + userId);
         profile_menu.setOnClickListener(new optionProfile(getContext()));
         //getUser(userId);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         playerNameTv=(TextView)v.findViewById(R.id.userNameTv);
         playerCityTv=(TextView)v.findViewById(R.id.playerCityTv);
+        textFriendSize=v.findViewById(R.id.txt_friends_size);
         playerPositionTv=(TextView)v.findViewById(R.id.playerPositionTv);
         playerMatchesTv=(TextView)v.findViewById(R.id.matchesNumbersTv);
         playerPointsTv=(TextView)v.findViewById(R.id.pointsNumbersTv);
         playerLevelsTv=(TextView)v.findViewById(R.id.levelsNumbersTv);
-        playerImg= (ImageView)v.findViewById(R.id.imageView2);
         btnNetwork=(Button)v.findViewById(R.id.btn_friends);
         btninvite=(Button)v.findViewById(R.id.btninvite);
         btnChallenge=(Button)v.findViewById(R.id.btnchalng);
         topScroll = (ScrollView)v.findViewById(R.id.topScroll);
         wraper = (LinearLayout)v.findViewById(R.id.wraper);
+
+        if (userId.equals("1")){
+            Log.i("here","ifffffffffff");
+            playerImg.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.rezetopia));
+            //profileHeaderReze.setVisibility(View.GONE);
+            cover.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.cover_1));
+        }
+
         btnChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,7 +200,6 @@ public class Profile extends Fragment {
             public void onClick(View v) {
 //                Intent intent = new Intent(getActivity(), NetworkList.class);
 //                startActivity(intent);
-
                 AlertFragment fragment = AlertFragment.createFragment("قريبا في النسخة القادمة");
                 fragment.show(getActivity().getFragmentManager(), null);
             }
@@ -193,7 +214,6 @@ public class Profile extends Fragment {
                 fragment.show(getActivity().getFragmentManager(), null);
             }
         });
-
 
 
 
@@ -372,10 +392,11 @@ public class Profile extends Fragment {
                         playerMatchesTv.setText("0");
                         playerLevelsTv.setText("0");
                         playerPointsTv.setText("0");
-                        Picasso.with(getApplicationContext())
-                                .load("https://rezetopia.dev-krito.com/images/profileImgs/"+jsonObject.getString("img")+".JPG")
-                                .placeholder(R.drawable.circle).into(playerImg);
-
+                        if (!userId.contentEquals("1")) {
+                            Picasso.with(getApplicationContext())
+                                    .load("https://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
+                                    .placeholder(R.drawable.circle).into(playerImg);
+                        }
                         settingView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

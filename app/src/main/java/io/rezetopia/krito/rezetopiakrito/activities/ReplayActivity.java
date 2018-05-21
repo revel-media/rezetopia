@@ -145,6 +145,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
                     adapter.notifyItemInserted(replies.size()-1);
                     repliesRecyclerView.scrollToPosition(replies.size()-1);
                     performReplay();
+
                 }
                 break;
         }

@@ -62,6 +62,7 @@ public class BuildProfile1 extends AppCompatActivity {
     public ArrayList<String> Nagitems=new ArrayList<>();
     public Spinner spinnerPosition;
     public Spinner spinnerNag;
+
     public Spinner spinnerFoot;
     public Button hplus;
     public Button hminus;

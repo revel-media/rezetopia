@@ -35,6 +35,7 @@ public class AlertFragment extends DialogFragment{
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertString = view.findViewById(R.id.alertString);
+
         alertString.setText(getArguments().getString("alert"));
         return view;
     }

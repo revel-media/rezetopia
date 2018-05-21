@@ -51,6 +51,7 @@ public class StoreActivity extends AppCompatActivity {
 
     RequestQueue requestQueue;
 
+
     StoreResponse store;
     int storeId;
 

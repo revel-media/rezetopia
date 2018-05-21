@@ -2,8 +2,39 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_app_bar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:background="@color/colorPrimary"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<ImageView-->
+            <!--android:id="@+id/backView"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:src="@drawable/ic_back_arrow"/>-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ppView"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/backView"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/dimen_40"
+            android:layout_height="@dimen/dimen_40" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/ppView"
+            android:id="@+id/nameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>

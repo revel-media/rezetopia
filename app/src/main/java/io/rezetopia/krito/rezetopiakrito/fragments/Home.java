@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
+import android.support.v7.widget.MenuItemHoverListener;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
@@ -242,6 +244,7 @@ public class Home extends Fragment {
         Button postShareButton;
         ImageView verfiyView;
         ImageView postImage;
+        FrameLayout verifyHeader;
 
         //todo
         public PostViewHolder(final View itemView) {
@@ -257,6 +260,7 @@ public class Home extends Fragment {
             postShareButton = itemView.findViewById(R.id.postShareButton);
             verfiyView = itemView.findViewById(R.id.verfiyView);
             postImage = itemView.findViewById(R.id.postImage);
+            verifyHeader = itemView.findViewById(R.id.verifyHeader);
 
 
             postShareButton.setOnClickListener(new View.OnClickListener() {
@@ -277,15 +281,19 @@ public class Home extends Fragment {
             }
 
             if (item.getOwnerId() == 1){
-                verfiyView.setVisibility(View.VISIBLE);
+                verifyHeader.setVisibility(View.VISIBLE);
+            } else {
+                verifyHeader.setVisibility(View.GONE);
             }
 
-            if (item.getPostAttachment() != null) {
-                if (item.getPostAttachment().getImages()[0].getPath() != null) {
-                    postImage.setVisibility(View.VISIBLE);
-                    Picasso.with(getActivity()).load(item.getPostAttachment().getImages()[0].getPath()).into(postImage);
-                } else {
-                    postImage.setVisibility(View.GONE);
+            if (item.getPostAttachment() != null && item.getPostAttachment().getImages() != null) {
+                if (item.getPostAttachment().getImages().length > 0) {
+                    if (item.getPostAttachment().getImages()[0].getPath() != null) {
+                        postImage.setVisibility(View.VISIBLE);
+                        Picasso.with(getActivity()).load(item.getPostAttachment().getImages()[0].getPath()).into(postImage);
+                    } else {
+                        postImage.setVisibility(View.GONE);
+                    }
                 }
             } else {
                 postImage.setVisibility(View.GONE);
@@ -296,22 +304,36 @@ public class Home extends Fragment {
                 usernameView.setText(item.getOwnerName());
             }
             Date date = null;
-            try {
-                date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
+           try {
+                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             long milliseconds = date.getTime();
-            long millisecondsFromNow = milliseconds - now;
-            dateView.setText(DateUtils.getRelativeDateTimeString(getActivity(), milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
 
-            try {
+            Date date1=new Date(milliseconds);
+            SimpleDateFormat dateFormat=new SimpleDateFormat("MMM dd, hh:mm aa");
+            //long millisecondsFromNow = milliseconds - now;
+            dateView.setText(String.valueOf(dateFormat.format(date1)));
+            if (item.getPostText() != null && !item.getPostText().isEmpty()){
+                postTextView.setText(item.getPostText());
+            }
+
+
+            /*try {
                 postText = URLEncoder.encode(item.getPostText(), "ISO-8859-1");
                 postText = URLDecoder.decode(postText, "UTF-8");
-                postTextView.setText(postText);
+
+                byte[] stringByts = postText.getBytes("UTF-8");
+                StringBuilder builder = new StringBuilder(stringByts.length);
+                for (byte b:stringByts) {
+                    builder.append(b);
+                }
+                postText = builder.toString();
+                Log.i("postText", "bind: " + postText);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-            }
+            }*/
             String likeString = getActivity().getResources().getString(R.string.like);
             if (item.getLikes() != null && item.getLikes().length > 0){
 
@@ -385,30 +407,29 @@ public class Home extends Fragment {
                 }
             });
 
-            if (item.getOwnerId() != 1) {
-                usernameView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (item.getOwnerId() == Integer.parseInt(userId)) {
-                            mListener.onProfile();
-                        } else if (item.getType() == NewsFeedItem.POST_TYPE) {
-                            startOtherProfile(item);
-                        }
+            usernameView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (item.getOwnerId() == Integer.parseInt(userId)) {
+                        mListener.onProfile();
+                    } else if (item.getType() == NewsFeedItem.POST_TYPE) {
+                        startOtherProfile(item);
                     }
-                });
+                }
+            });
 
-                ppView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (item.getOwnerId() == Integer.parseInt(userId)) {
-                            mListener.onProfile();
-                        } else if (item.getType() == NewsFeedItem.POST_TYPE) {
-                            startOtherProfile(item);
-                            //Log.i("IMAGE", "onClick: " + item.getItemImage());
-                        }
+            ppView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (item.getOwnerId() == Integer.parseInt(userId)) {
+                        mListener.onProfile();
+                    } else if (item.getType() == NewsFeedItem.POST_TYPE) {
+                        startOtherProfile(item);
+                        //Log.i("IMAGE", "onClick: " + item.getItemImage());
                     }
-                });
-            }
+                }
+            });
+
 
             postSideMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1111,7 +1132,9 @@ public class Home extends Fragment {
                     item.setLikes(null);
                     item.setPostComments(null);
                     item.setType(NewsFeedItem.POST_TYPE);
+                    NewsFeedItem newsTemp = newsFeedItems.get(0);
                     newsFeedItems.set(0, item);
+                    newsFeedItems.add(newsTemp);
                     //newsFeedItems.add(item);
                 }
 

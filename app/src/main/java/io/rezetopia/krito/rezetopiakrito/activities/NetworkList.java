@@ -47,6 +47,7 @@ public class NetworkList extends AppCompatActivity {
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
+
         LayoutInflater mInflater = LayoutInflater.from(this);
         mCustomView = mInflater.inflate(R.layout.action_bar, null);
         ActionBar.LayoutParams layout = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
@@ -91,7 +92,7 @@ public class NetworkList extends AppCompatActivity {
         }
     }
     private void getUsers(){
-        StringRequest stringRequest = new  StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/friendlist.php",
+        StringRequest stringRequest = new  StringRequest(Request.Method.POST, "https://rezetopia.com/app/friendlist.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
