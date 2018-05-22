@@ -67,7 +67,6 @@
         android:ems="10"
         android:hint="post description"
         android:inputType="textMultiLine"
-        android:maxLength="125"
         android:padding="16dp"
         android:background="@android:color/transparent"
         android:textColor="@color/black"/>

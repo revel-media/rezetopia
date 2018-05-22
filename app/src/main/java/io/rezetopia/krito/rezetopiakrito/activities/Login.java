@@ -1,9 +1,13 @@
 package io.rezetopia.krito.rezetopiakrito.activities;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -115,9 +119,20 @@ public class Login extends AppCompatActivity{
         });
 
 
+
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final String DEBUG_TAG = "NetworkStatusExample";
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                boolean isWifiConn = networkInfo.isConnected();
+                networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                boolean isMobileConn = networkInfo.isConnected();
+                Log.d(DEBUG_TAG, "Wifi connected: " + isWifiConn);
+                Log.d(DEBUG_TAG, "Mobile connected: " + isMobileConn);
+
                 if (validate()) {
                     showDialog();
                     UserOperations.login(name.getText().toString(), password.getText().toString());
@@ -187,6 +202,8 @@ public class Login extends AppCompatActivity{
             }
         });
     }
+
+
     public void fbRegister(final String name, final String mail, final String birthdate, final String imgUrl){
         showDialog();
 
@@ -334,52 +351,7 @@ public class Login extends AppCompatActivity{
             return null;
         }
     }
-    private void loginUser(String userName,String Password) {
 
-
-        mAuth.signInWithEmailAndPassword(userName, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if(task.isSuccessful()){
-
-                    pDialog.dismiss();
-
-                    io.rezetopia.krito.rezetopiakrito.model.pojo.user.User user = new io.rezetopia.krito.rezetopiakrito.model.pojo.user.User();
-                    String current_user_id = mAuth.getCurrentUser().getUid();
-                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
-
-                    mUserDatabase.child(String.valueOf(user.getId())).child("device_token").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                            Intent mainIntent = new Intent(Login.this, MainActivity.class);
-                            //mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(mainIntent);
-                            finish();
-
-
-                        }
-                    });
-
-
-
-
-                } else {
-
-                    pDialog.hide();
-
-                    String task_result = task.getException().getMessage().toString();
-
-                    Toast.makeText(Login.this, "Error : " + task_result, Toast.LENGTH_LONG).show();
-
-                }
-
-            }
-        });
-
-
-    }
 }
 
 

@@ -182,6 +182,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         public void bind(final CommentResponse comment, boolean pending, final int position){
+            Picasso.with(getBaseContext()).load(comment.getImageUrl()).into(ppView);
             if (pending){
                 postingView.setVisibility(View.VISIBLE);
             } else {
@@ -189,6 +190,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
                 if (comment.getImageUrl() != null && !comment.getImageUrl().isEmpty()){
                     Picasso.with(CommentActivity.this).load(comment.getImageUrl()).into(ppView);
+                    Log.i("comment_pp_view", "bind: " + comment.getImageUrl());
                 } else {
                     ppView.setImageDrawable(getResources().getDrawable(R.drawable.default_avatar));
                 }

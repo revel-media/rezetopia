@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/tabs"
         android:minHeight="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorColor="@null"
         app:tabTextColor="#bababa"></android.support.design.widget.TabLayout>
 
@@ -18,14 +22,38 @@
     <android.support.v4.view.ViewPager
 
         android:id="@+id/pager"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/fragment"
         android:paddingTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tablayout"
         tools:layout_marginTop="0dp"></android.support.v4.view.ViewPager>
 
+    <!--<FrameLayout-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="65dp"-->
+        <!--android:layout_height="65dp"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:background="@drawable/ic_float"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent">-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/red"-->
+            <!--android:text="1"-->
+            <!--android:layout_marginTop="3dp"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:textSize="15dp"-->
+            <!--android:paddingRight="2dp"-->
+            <!--android:paddingLeft="2dp"-->
+            <!--android:textColor="@color/white" />-->
+    <!--</FrameLayout>-->
 
 </android.support.constraint.ConstraintLayout>
+

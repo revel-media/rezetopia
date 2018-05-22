@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -55,7 +57,7 @@ public class NetworkList extends AppCompatActivity {
         mActionBar.setDisplayShowCustomEnabled(true);
         friendsRecyclerView = findViewById(R.id.network_list);
         adapter=new UserRecyclerAdapter();
-        getUsers();
+        //getUsers();
     }
     private class CommentViewHolder extends RecyclerView.ViewHolder{
 
@@ -92,49 +94,40 @@ public class NetworkList extends AppCompatActivity {
         }
     }
     private void getUsers(){
-        StringRequest stringRequest = new  StringRequest(Request.Method.POST, "https://rezetopia.com/app/friendlist.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("response", "onResponse: " + response);
-                        users = new ArrayList<>();
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                User userResponse = new User();
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                userResponse.setName(object.getString("username"));
-                                userResponse.setId(object.getInt("eventId"));
-                                users.add(userResponse);
-                                friendsRecyclerView.setLayoutManager(new LinearLayoutManager(NetworkList.this));
-                                friendsRecyclerView.setAdapter(adapter);
-                            }
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        String url = "https://rezetopiachat.firebaseio.com/users.json";
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("volley error", "onErrorResponse: " + error.getMessage());
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            public void onResponse(String s) {
+               // Toast.makeText(getBaseContext(),s, Toast.LENGTH_LONG).show();
+                Log.i("response", "onResponse: " + s);
+                users = new ArrayList<>();
 
-                HashMap<String, String> map = new HashMap<>();
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    Toast.makeText(getBaseContext(),jsonObject.toString(), Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                    /*for (int i = 0; i < jsonArray.length(); i++) {
+                        User userResponse = new User();
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        userResponse.setName(object.getString("username"));
+                        userResponse.setId(object.getInt("eventId"));
+                        users.add(userResponse);
+                        friendsRecyclerView.setLayoutManager(new LinearLayoutManager(NetworkList.this));
+                        friendsRecyclerView.setAdapter(adapter);
+                    }*/
 
-                String userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
-                map.put("eventId", userId);
-
-                return map;
 
             }
-        };
-
-        Volley.newRequestQueue(NetworkList.this).add(stringRequest);
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                System.out.println("" + volleyError);
+            }
+        });
+        RequestQueue rQueue = Volley.newRequestQueue(NetworkList.this);
+        rQueue.add(request);
     }
 }
 

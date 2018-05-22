@@ -45,6 +45,9 @@ public class ImageActivity extends AppCompatActivity {
     ImageView uploadImageView;
     ImageView image_view;
 
+
+    boolean itemView = false;
+
     private ProgressDialog dialog = null;
     Image selectedImage;
     String url;
@@ -63,6 +66,12 @@ public class ImageActivity extends AppCompatActivity {
 
         uploadImageView = findViewById(R.id.uploadImageView);
         image_view = findViewById(R.id.image_view);
+        itemView = getIntent().getBooleanExtra("item_view", false);
+
+        if (itemView){
+            uploadImageView.setVisibility(View.GONE);
+        }
+
 
         url = getIntent().getStringExtra(URL_EXTRA);
         if (url != null){

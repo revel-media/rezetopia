@@ -107,14 +107,14 @@
         android:maxLines="6"/>
 
     <ImageView
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:visibility="gone"
         android:id="@+id/postImage"
         android:layout_below="@id/postTextView"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="300dp" />
 
     <ImageView
         android:id="@+id/lineView"

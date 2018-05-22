@@ -35,6 +35,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import io.rezetopia.krito.rezetopiakrito.activities.ImageActivity;
 import io.rezetopia.krito.rezetopiakrito.model.operations.UserOperations;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.NewsFeed;
 import io.rezetopia.krito.rezetopiakrito.views.CustomButton;
@@ -291,9 +292,21 @@ public class Home extends Fragment {
                     if (item.getPostAttachment().getImages()[0].getPath() != null) {
                         postImage.setVisibility(View.VISIBLE);
                         Picasso.with(getActivity()).load(item.getPostAttachment().getImages()[0].getPath()).into(postImage);
+
+                        postImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getActivity(), ImageActivity.class);
+                                intent.putExtra("url_extra", item.getPostAttachment().getImages()[0].getPath());
+                                intent.putExtra("item_view", true);
+                                startActivity(intent);
+                            }
+                        });
                     } else {
                         postImage.setVisibility(View.GONE);
                     }
+                } else {
+                    postImage.setVisibility(View.GONE);
                 }
             } else {
                 postImage.setVisibility(View.GONE);
@@ -304,17 +317,14 @@ public class Home extends Fragment {
                 usernameView.setText(item.getOwnerName());
             }
             Date date = null;
-           try {
+            try {
                 date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             long milliseconds = date.getTime();
-
-            Date date1=new Date(milliseconds);
-            SimpleDateFormat dateFormat=new SimpleDateFormat("MMM dd, hh:mm aa");
-            //long millisecondsFromNow = milliseconds - now;
-            dateView.setText(String.valueOf(dateFormat.format(date1)));
+            long millisecondsFromNow = milliseconds - now;
+            dateView.setText(DateUtils.getRelativeDateTimeString(getActivity(), milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
             if (item.getPostText() != null && !item.getPostText().isEmpty()){
                 postTextView.setText(item.getPostText());
             }
@@ -1128,7 +1138,7 @@ public class Home extends Fragment {
                     item.setOwnerId(Integer.parseInt(returnPost.getUserId()));
                     item.setOwnerName(returnPost.getUsername());
                     item.setPostText(returnPost.getText());
-                    item.setPostAttachment(null);
+                    item.setPostAttachment(returnPost.getAttachment());
                     item.setLikes(null);
                     item.setPostComments(null);
                     item.setType(NewsFeedItem.POST_TYPE);

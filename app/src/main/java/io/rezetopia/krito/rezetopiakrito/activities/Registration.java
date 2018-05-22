@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,6 +31,8 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
+
 import com.firebase.client.Firebase;
 
 import io.rezetopia.krito.rezetopiakrito.fragments.AlertFragment;
@@ -126,6 +129,7 @@ public class Registration extends AppCompatActivity {
 
         // Register Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
+
 
             @Override
             public void onClick(View view) {
@@ -271,14 +275,14 @@ public class Registration extends AppCompatActivity {
             inputMobile.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            inputPassword.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty() || password.length() < 4) {
+            inputPassword.setError("الباسورد يجب ان يكون اكثر من 4 ارقام او احرف");
             valid = false;
         } else {
             inputPassword.setError(null);
         }
 
-        if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
+        if (reEnterPassword.isEmpty() || !(reEnterPassword.equals(password))) {
             inputRepassword.setError("Password Do not match");
             valid = false;
         } else {

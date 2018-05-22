@@ -1,7 +1,9 @@
 package io.rezetopia.krito.rezetopiakrito.model.operations;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -175,6 +177,8 @@ public class UserOperations {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+
+
                     String message = null;
                     Log.i("volley error", "onErrorResponse: " + error.getMessage());
                     if (error instanceof NetworkError) {
@@ -182,27 +186,31 @@ public class UserOperations {
                         loginCallback.onError(R.string.netwok_error);
                         return;
                     } else if (error instanceof ServerError) {
-                        message = "The server could not be found. Please try again after some time!!";
+                        message = "The server could not be found. Please try again after some time!!";                        Log.i("1",error.getMessage());
+                        Log.i("4",error.getMessage());
                         loginCallback.onError(R.string.server_error);
                         return;
                     } else if (error instanceof AuthFailureError) {
                         message = "Cannot connect to Internet...Please check your connection!";
+                        Log.i("3",error.getMessage());
                         loginCallback.onError(R.string.authi_failure);
                         return;
                     } else if (error instanceof ParseError) {
                         message = "Parsing error! Please try again after some time!!";
+                        Log.i("2",error.getMessage());
                         loginCallback.onError(R.string.parse_error);
                         return;
                     } else if (error instanceof NoConnectionError) {
                         message = "Cannot connect to Internet...Please check your connection!";
+                        Log.i("1",error.getMessage());
                         loginCallback.onError(R.string.no_connection);
                         return;
-                    } else if (error instanceof TimeoutError) {
+                    } /*else if (error instanceof TimeoutError) {
                         message = "Connection TimeOut! Please check your internet connection.";
                         loginCallback.onError(R.string.time_out);
                         return;
                     }
-                    loginCallback.onError(R.string.netwok_error);
+                    loginCallback.onError(R.string.netwok_error);*/
                 }
             }
             ){

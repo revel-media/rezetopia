@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,6 +28,8 @@ import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 
 import io.rezetopia.krito.rezetopiakrito.R;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.post.AttachmentResponse;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.post.MediaResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.post.PostResponse;
 import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
 
@@ -35,6 +40,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,6 +49,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 public class CreatePostActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -56,6 +64,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
     TextView postButton;
     String userId;
     LinearLayout newPostHeader;
+    String encodedImage;
 
 
     @Override
@@ -128,6 +137,20 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
             selectedImages = ImagePicker.getImages(data);
+            ((ImageView)findViewById(R.id.postImage)).setImageBitmap(BitmapFactory.decodeFile(selectedImages.get(0).getPath()));
+            //Bitmap per_img = ((BitmapDrawable) ((ImageView)findViewById(R.id.postImage)).getDrawable()).getBitmap();
+            ((ImageView)findViewById(R.id.postImage)).setAdjustViewBounds(true);
+            ((ImageView)findViewById(R.id.postImage)).setMaxHeight(500);
+            /*if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+                Uri imgSelectedUri = data.getData();
+                ((ImageView)findViewById(R.id.postImage)).setImageURI(imgSelectedUri);
+                Bitmap per_img = ((BitmapDrawable) ((ImageView)findViewById(R.id.postImage)).getDrawable()).getBitmap();
+                ((ImageView)findViewById(R.id.postImage)).setAdjustViewBounds(true);
+                ((ImageView)findViewById(R.id.postImage)).setMaxHeight(200);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                per_img.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+                encodedImage = android.util.Base64.encodeToString(byteArrayOutputStream.toByteArray(), android.util.Base64.DEFAULT);
+            }*/
         }
 
 
@@ -167,7 +190,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("volley response", "onResponse: " + response);
+                        Log.i("create_post_response", "onResponse: " + response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             PostResponse postResponse = new PostResponse();
@@ -177,6 +200,12 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
                             postResponse.setText(jsonObject.getString("text"));
                             postResponse.setPostId(jsonObject.getInt("post_id"));
                             postResponse.setCreatedAt(jsonObject.getString("createdAt"));
+                            JSONArray urls = jsonObject.getJSONArray("urls");
+                            MediaResponse media = new MediaResponse();
+                            media.setPath(urls.getString(0));
+                            AttachmentResponse attachmentResponse = new AttachmentResponse();
+                            attachmentResponse.setImages(new MediaResponse[]{media});
+                            postResponse.setAttachment(attachmentResponse);
                             postResponse.setUserId(userId);
                             Intent intent = new Intent();
                             intent.putExtra("post", postResponse);
