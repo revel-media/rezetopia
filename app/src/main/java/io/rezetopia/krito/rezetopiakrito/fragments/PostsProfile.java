@@ -130,7 +130,7 @@ public class PostsProfile extends Fragment {
             }
             Date date = null;
             try {
-                date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH).parse(post.getCreatedAt());
+                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(post.getCreatedAt());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

@@ -38,13 +38,17 @@ import io.rezetopia.krito.rezetopiakrito.helper.ProfilePagerAdapter;
 import io.rezetopia.krito.rezetopiakrito.R;
 import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
 import io.rezetopia.krito.rezetopiakrito.helper.VolleyCustomRequest;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.user.ApiResponse;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.user.User;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,6 +86,7 @@ public class Profile extends Fragment {
     private TextView playerMatchesTv;
     private TextView playerPointsTv;
     private TextView textFriendSize;
+    private TextView textFriends;
     private TextView playerLevelsTv;
     private TextView overview;
     private TextView posts;
@@ -91,6 +96,7 @@ public class Profile extends Fragment {
     private CircleImageView playerImg;
     public RequestQueue requestQueue;
     public static PopupMenu popupMenu;
+    public ArrayList<User> friendsList;
     public Button btnNetwork, btninvite, btnChallenge;
     public String userId;
     public ScrollView topScroll;
@@ -129,6 +135,7 @@ public class Profile extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestQueue = Volley.newRequestQueue(getContext());
+        friendsList = new ArrayList<>();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -155,12 +162,9 @@ public class Profile extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         viewPager = (ViewPager) v.findViewById(R.id.pager);
         settingView = v.findViewById(R.id.settingView);
-
         playerImg = v.findViewById(R.id.imageView2);
         cover = v.findViewById(R.id.imageView);
         profileHeaderReze = v.findViewById(R.id.profileHeaderReze);
-
-
         View profile_menu = v.findViewById(R.id.profile_menu);
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
@@ -220,12 +224,14 @@ public class Profile extends Fragment {
         });
 
 
-        textFriendSize.setOnClickListener(new View.OnClickListener() {
+        textFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =new Intent();
-                intent.putExtra("userID", userId);
-                startActivity(intent);
+                AlertFragment alertFragment=AlertFragment.createFragment("جاري العمل عليها");
+                alertFragment.show(getActivity().getFragmentManager(),null);
+                //Intent intent = new Intent();
+                //intent.putExtra("userID", userId);
+                //startActivity(intent);
             }
         });
 

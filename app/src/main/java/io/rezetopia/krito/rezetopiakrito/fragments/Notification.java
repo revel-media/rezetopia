@@ -27,8 +27,14 @@ import io.rezetopia.krito.rezetopiakrito.activities.PostActivity;
 import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
 import io.rezetopia.krito.rezetopiakrito.helper.VolleyCustomRequest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.rezetopia.krito.rezetopiakrito.model.pojo.notification.ApiResponse;
@@ -172,7 +178,17 @@ public class Notification extends Fragment {
         public void bind(io.rezetopia.krito.rezetopiakrito.model.pojo.notification.Notification notification) {
             usernameView.setText(notification.getUsername());
             detailsView.setText(notification.getMessage());
-            createdAtView.setText(notification.getCreatedAt());
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(notification.getCreatedAt());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long milliseconds = date.getTime();
+            Date date1=new Date(milliseconds);
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MMM dd, hh:mm aa");
+            // long millisecondsFromNow = milliseconds - now;
+            createdAtView.setText(String.valueOf(simpleDateFormat.format(date1)));
         }
     }
 
@@ -218,6 +234,7 @@ public class Notification extends Fragment {
                             if (response.getNotifications() != null) {
                                 Log.i("volley response", "onResponse: " + response.getNotifications().get(0).getCreatedAt());
                                 notifications = response.getNotifications();
+                                Collections.reverse(notifications);
                                 updateUi();
                             }
                         }
