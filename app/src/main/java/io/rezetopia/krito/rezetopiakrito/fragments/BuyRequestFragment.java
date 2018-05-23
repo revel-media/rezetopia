@@ -127,7 +127,7 @@ public class BuyRequestFragment extends Fragment {
 
     private void fetchRequests(){
         //todo
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_store.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_store.php",
                 RequestApiResponse.class,
                 new Response.Listener<RequestApiResponse>() {
                     @Override

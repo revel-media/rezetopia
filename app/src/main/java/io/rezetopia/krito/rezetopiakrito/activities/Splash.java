@@ -50,23 +50,18 @@ public class Splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
                                       @Override
                                       public void run() {
-                                          getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
-                                                  .putString(AppConfig.LOGGED_IN_USER_ID_SHARED, "4").apply();
 
-                                          Intent intent = new Intent(Splash.this, MainActivity.class);
-                                          startActivity(intent);
-                                          finish();
-//                                          if (!userId.contentEquals("0")){
-//                                              Intent myIntent = new Intent(Splash.this, MainActivity.class);
-//                                              //myIntent.putExtra("user_id",3101);
-//                                              startActivity(myIntent);
-//                                              finish();
-//                                          } else {
-//                                              Intent myIntent = new Intent(getApplicationContext(), Login.class);
-//                                              //myIntent.putExtra("user_id",3101);
-//                                              startActivity(myIntent);
-//                                              finish();
-//                                          }
+                                          if (!userId.contentEquals("0")){
+                                              Intent myIntent = new Intent(Splash.this, MainActivity.class);
+                                              //myIntent.putExtra("user_id",3101);
+                                              startActivity(myIntent);
+                                              finish();
+                                          } else {
+                                              Intent myIntent = new Intent(getApplicationContext(), Login.class);
+                                              //myIntent.putExtra("user_id",3101);
+                                              startActivity(myIntent);
+                                              finish();
+                                          }
 
                                       }
                                   }

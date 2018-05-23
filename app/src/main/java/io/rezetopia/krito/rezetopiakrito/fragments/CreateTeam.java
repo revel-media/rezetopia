@@ -68,7 +68,7 @@ public class CreateTeam extends DialogFragment {
     }
 
     private void performCreateTeam(){
-        StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_team.php",
+        StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_team.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

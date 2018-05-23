@@ -140,7 +140,7 @@ public class Products extends Fragment {
 
         @Override
         protected Void doInBackground(final Void... voids) {
-            String url = "https://rezetopia.dev-krito.com/app/reze/user_store.php";
+            String url = "http://rezetopia.dev-krito.com/app/reze/user_store.php";
 
             VolleyCustomRequest post = new VolleyCustomRequest(Request.Method.POST, url,
                     io.rezetopia.krito.rezetopiakrito.model.pojo.product.ApiResponse.class, new Response.Listener<io.rezetopia.krito.rezetopiakrito.model.pojo.product.ApiResponse>() {

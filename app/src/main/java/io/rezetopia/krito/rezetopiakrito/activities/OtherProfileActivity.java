@@ -309,7 +309,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
 
         private void performFriendStatus(){
-            StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/addfriend.php",
+            StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -352,7 +352,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
 
         private void performAddFriend(){
-            StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/addfriend.php",
+            StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -390,7 +390,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
 
         private void performUnFriend(){
-            StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/addfriend.php",
+            StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -526,7 +526,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         private void performLike(final PostResponse postResponse, final int pos){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -572,7 +572,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
 
         private void reverseLike(final PostResponse postResponse, final int pos){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -682,7 +682,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     }
 
     private void fetchPosts(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php", ApiResponse.class,
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php", ApiResponse.class,
                 new Response.Listener<ApiResponse>() {
                     @Override
                     public void onResponse(ApiResponse response) {
@@ -936,7 +936,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     }
 
     private void performSearch(final String query){
-        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_search.php", SearchResponse.class,
+        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_search.php", SearchResponse.class,
                 new Response.Listener<SearchResponse>() {
                     @Override
                     public void onResponse(SearchResponse response) {

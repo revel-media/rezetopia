@@ -110,7 +110,7 @@ public class TeamFragment extends Fragment {
     }
 
     private void performHostingTeams(){
-        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_team.php",
+        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_team.php",
                 ApiResponse.class,
                 new Response.Listener<ApiResponse>() {
                     @Override

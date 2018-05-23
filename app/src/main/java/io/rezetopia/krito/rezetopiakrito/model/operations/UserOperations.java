@@ -1,9 +1,7 @@
 package io.rezetopia.krito.rezetopiakrito.model.operations;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -17,12 +15,15 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 import io.rezetopia.krito.rezetopiakrito.R;
 import io.rezetopia.krito.rezetopiakrito.helper.VolleyCustomRequest;
@@ -39,9 +40,9 @@ import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchResult;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.user.User;
 
-public class UserOperations {
+public class UserOperations{
 
-    private static final String baseUrl = "https://rezetopia.dev-krito.com/app/";
+    private static final String baseUrl = "http://rezetopia.dev-krito.com/app/";
     static RegistrationCallback registrationCallback;
     static LoginCallback loginCallback;
     static FBLoginCallback fbLoginCallback;
@@ -50,6 +51,8 @@ public class UserOperations {
     static CreateProductsCallback createProductsCallback;
     static SearchCallback searchCallback;
     static RequestQueue requestQueue;
+    static RequestQueue rq;
+    static UserOperations userOperations;
 
 
     public static void setRegistrationCallback(RegistrationCallback call){
@@ -153,11 +156,16 @@ public class UserOperations {
         void onError(String error);
     }
 
+
     private static class LoginTask extends AsyncTask<String, String, Void>{
 
         @Override
         protected Void doInBackground(final String... strings) {
+
             String url = baseUrl + "login.php";
+            //Login  login = new Login();
+           // rq = Volley.newRequestQueue(login.getApplicationContext(), new HurlStack(null, login.getSocketFactory()));
+
 
             StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -205,12 +213,12 @@ public class UserOperations {
                         Log.i("1",error.getMessage());
                         loginCallback.onError(R.string.no_connection);
                         return;
-                    } /*else if (error instanceof TimeoutError) {
+                    } else if (error instanceof TimeoutError) {
                         message = "Connection TimeOut! Please check your internet connection.";
                         loginCallback.onError(R.string.time_out);
                         return;
                     }
-                    loginCallback.onError(R.string.netwok_error);*/
+                    loginCallback.onError(R.string.netwok_error);
                 }
             }
             ){
@@ -227,6 +235,7 @@ public class UserOperations {
             requestQueue.add(post);
             return null;
         }
+
     }
 
     private static class RegisterTask extends AsyncTask<User, String, Void>{
@@ -384,7 +393,7 @@ public class UserOperations {
         @Override
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "reze/user_post.php";
-            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php", ApiResponse.class,
+            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php", ApiResponse.class,
                     new Response.Listener<ApiResponse>() {
                         @Override
                         public void onResponse(ApiResponse response) {
@@ -708,4 +717,5 @@ public class UserOperations {
             return null;
         }
     }
+
 }

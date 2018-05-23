@@ -13,7 +13,7 @@ public class WebActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_web);
 
         webView = new WebView(this);
-        webView.loadUrl("https://rezetopia.dev-krito.com/terms");
+        webView.loadUrl("http://rezetopia.dev-krito.com/terms");
 
         setContentView(webView);
     }

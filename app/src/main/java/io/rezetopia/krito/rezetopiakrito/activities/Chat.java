@@ -206,7 +206,7 @@ public class Chat extends AppCompatActivity {
 
 
     private void getUser(final String id,RequestQueue requestQueue) {
-        StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/getInfo.php", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/getInfo.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -222,7 +222,7 @@ public class Chat extends AppCompatActivity {
 
                         if (jsonObject.getString("img") != null) {
                             Picasso.with(getApplicationContext())
-                                    .load("https://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
+                                    .load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
                                     .placeholder(R.drawable.circle).into(ppView);
                         } else {
                             ppView.setBackground(getResources().getDrawable(R.drawable.default_avatar));

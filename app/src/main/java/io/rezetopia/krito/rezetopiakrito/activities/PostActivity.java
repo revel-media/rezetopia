@@ -87,7 +87,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void fetchPost(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 PostResponse.class,
                 new Response.Listener<PostResponse>() {
                     @Override
@@ -176,7 +176,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
 
     private void performLike(){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -221,7 +221,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void reverseLike(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

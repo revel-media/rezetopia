@@ -241,7 +241,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
 
         private void performLike(final CommentReplyResponse replay){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -288,7 +288,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         private void reverseLike(final CommentReplyResponse replay){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -369,7 +369,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
         if (replayEditText.getText().toString().length() > 0){
             final String replayText = replayEditText.getText().toString();
             replayEditText.setText(null);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -437,7 +437,7 @@ public class ReplayActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void fetchReplies(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 ApiReplayResponse.class,
                 new Response.Listener<ApiReplayResponse>() {
                     @Override

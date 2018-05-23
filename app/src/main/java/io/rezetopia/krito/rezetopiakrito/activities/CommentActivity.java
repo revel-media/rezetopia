@@ -285,7 +285,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
         private void performLike(final CommentResponse comment, final int position){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -332,7 +332,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         private void reverseLike(final CommentResponse comment, final int position){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -413,7 +413,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         if (commentEditText.getText().toString().length() > 0){
             final String commentText = commentEditText.getText().toString();
             commentEditText.setText(null);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -509,7 +509,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void fetchComments(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 ApiCommentResponse.class,
                 new Response.Listener<ApiCommentResponse>() {
                     @Override

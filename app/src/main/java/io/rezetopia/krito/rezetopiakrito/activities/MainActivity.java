@@ -554,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     }
 
     private void performSearch(final String query){
-        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_search.php", SearchResponse.class,
+        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_search.php", SearchResponse.class,
                 new Response.Listener<SearchResponse>() {
                     @Override
                     public void onResponse(SearchResponse response) {

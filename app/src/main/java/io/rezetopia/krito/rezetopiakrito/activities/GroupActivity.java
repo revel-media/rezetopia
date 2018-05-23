@@ -188,7 +188,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void performIsMember(){
-        StringRequest customRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_group.php",
+        StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_group.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -234,7 +234,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void performGetGroup(){
-        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_group.php",
+        VolleyCustomRequest customRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_group.php",
                 GroupResponse.class,
                 new Response.Listener<GroupResponse>() {
                     @Override

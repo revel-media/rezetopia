@@ -86,7 +86,7 @@ public class ContactAdapter extends ArrayAdapter<String> {
                    entireBtn = v;
                    buttonC = (Button)v.findViewById(entireBtn.getId());
                    if (buttonC.getText().equals("Add")){
-                    StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/addfriend.php", new Response.Listener<String>() {
+                    StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                           //  Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
@@ -129,7 +129,7 @@ public class ContactAdapter extends ArrayAdapter<String> {
                    }
                    else if(buttonC.getText().equals("Remove")){
                    //  Toast.makeText(getContext(),"remove freind",Toast.LENGTH_LONG).show();
-                       StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/removefriend.php", new Response.Listener<String>() {
+                       StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/removefriend.php", new Response.Listener<String>() {
                            @Override
                            public void onResponse(String response) {
                              //  Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();

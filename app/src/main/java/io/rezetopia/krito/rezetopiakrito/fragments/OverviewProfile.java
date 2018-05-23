@@ -136,7 +136,7 @@ public class OverviewProfile extends Fragment {
         protected Void doInBackground(final String... strings) {
 
 
-            StringRequest post = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/get_skills.php", new Response.Listener<String>() {
+            StringRequest post = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/get_skills.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {

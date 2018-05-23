@@ -125,7 +125,7 @@ public class BuildProfile extends AppCompatActivity {
                     if (encodedImage != null) {
                         new UploadImage(encodedImage, (String.valueOf(System.currentTimeMillis() / 100))).execute();
                     }
-                    StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/rcp.php", new Response.Listener<String>() {
+                    StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/rcp.php", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             //Toast.makeText(getBaseContext(),"test",Toast.LENGTH_LONG).show();
@@ -388,7 +388,7 @@ public class BuildProfile extends AppCompatActivity {
             /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
             final String enI = android.util.Base64.encodeToString(byteArrayOutputStream.toByteArray(), android.util.Base64.DEFAULT);*/
-            StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/upload.php", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/upload.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     //Toast.makeText(getBaseContext(),"test",Toast.LENGTH_LONG).show();

@@ -146,7 +146,7 @@ public class BuildProfile2 extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 progress.dismiss();
-                StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/us.php", new Response.Listener<String>() {
+                StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/us.php", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //Toast.makeText(getBaseContext(),"test",Toast.LENGTH_LONG).show();

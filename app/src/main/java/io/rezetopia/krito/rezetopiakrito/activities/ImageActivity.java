@@ -118,7 +118,7 @@ public class ImageActivity extends AppCompatActivity {
     private void performUpload(){
         dialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/vendor_operation.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/vendor_operation.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

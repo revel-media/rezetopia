@@ -393,7 +393,7 @@ public class Profile extends Fragment {
     }
 
     private void getUser(final String id, RequestQueue requestQueue) {
-        StringRequest request = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/getInfo.php", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/getInfo.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -412,7 +412,7 @@ public class Profile extends Fragment {
                         playerPointsTv.setText("0");
                         if (!userId.contentEquals("1")) {
                             Picasso.with(getApplicationContext())
-                                    .load("https://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
+                                    .load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
                                     .placeholder(R.drawable.circle).into(playerImg);
                         }
                         settingView.setOnClickListener(new View.OnClickListener() {
@@ -421,7 +421,7 @@ public class Profile extends Fragment {
                                 Intent intent = new Intent(getActivity(), BuildProfile.class);
                                 try {
                                     intent.putExtra("fbname", jsonObject.getString("name"));
-                                    intent.putExtra("fbpicurl", "https://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG");
+                                    intent.putExtra("fbpicurl", "http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG");
                                     intent.putExtra("id", id);
                                     startActivity(intent);
                                 } catch (JSONException e) {
@@ -436,7 +436,7 @@ public class Profile extends Fragment {
                                 String url = null;
                                 try {
                                     if (jsonObject.getString("img") != null && !jsonObject.getString("img").contentEquals("")) {
-                                        url = "https://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG";
+                                        url = "http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG";
                                         Intent intent = UserImageActivity.createIntent(url, getActivity());
                                         startActivityForResult(intent, 2002);
                                     }
@@ -447,7 +447,7 @@ public class Profile extends Fragment {
                         });
 
                         probar.setVisibility(View.GONE);
-                        // new DownloadImage(playerImg).execute("https://rezetopia.dev-krito.com/images/profileImgs/"+jsonObject.getString("img")+".JPG");
+                        // new DownloadImage(playerImg).execute("http://rezetopia.dev-krito.com/images/profileImgs/"+jsonObject.getString("img")+".JPG");
                     } else {
 
                     }

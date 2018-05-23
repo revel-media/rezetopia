@@ -98,7 +98,7 @@ public class CreateEventFragment extends DialogFragment {
     }
 
     private void performCreateEvent(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_event.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_event.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
