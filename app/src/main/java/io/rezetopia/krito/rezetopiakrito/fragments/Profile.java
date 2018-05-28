@@ -224,16 +224,16 @@ public class Profile extends Fragment {
         });
 
 
-        textFriends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertFragment alertFragment=AlertFragment.createFragment("جاري العمل عليها");
-                alertFragment.show(getActivity().getFragmentManager(),null);
-                //Intent intent = new Intent();
-                //intent.putExtra("userID", userId);
-                //startActivity(intent);
-            }
-        });
+//        textFriends.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AlertFragment alertFragment=AlertFragment.createFragment("جاري العمل عليها");
+//                alertFragment.show(getActivity().getFragmentManager(),null);
+//                //Intent intent = new Intent();
+//                //intent.putExtra("userID", userId);
+//                //startActivity(intent);
+//            }
+//        });
 
 
         // Toast.makeText(getContext(),wraper.getHeight()+"",Toast.LENGTH_LONG).show();

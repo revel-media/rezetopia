@@ -5,7 +5,7 @@ android {
         applicationId "io.rezetopia.krito.rezetopiakrito"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 5
+        versionCode 6
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -74,6 +74,9 @@ dependencies {
 //event bus
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.firebase:firebase-client-android:2.5.2+'
+    compile 'com.github.AnyChart:AnyChart-Android:0.1.9'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
 
 }
 

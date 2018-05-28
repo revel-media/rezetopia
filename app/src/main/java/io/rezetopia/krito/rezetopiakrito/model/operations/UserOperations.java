@@ -2,6 +2,7 @@ package io.rezetopia.krito.rezetopiakrito.model.operations;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -326,6 +327,7 @@ public class UserOperations{
             StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    Log.i("facebook", "onErrorResponse: " + response);
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
                         if (!jsonResponse.getBoolean("error")){

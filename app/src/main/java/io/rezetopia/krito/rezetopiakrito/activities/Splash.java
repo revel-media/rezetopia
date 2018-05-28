@@ -1,6 +1,8 @@
 package io.rezetopia.krito.rezetopiakrito.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,16 +16,19 @@ public class Splash extends AppCompatActivity {
  private ImageView imageView;
  int duration = 500;
     String userId;
-
+    String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         imageView = (ImageView)findViewById(R.id.loading_bar);
          userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
-                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
+                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED,"0");
+        SharedPreferences sharedPref = Splash.this.getPreferences(Context.MODE_PRIVATE);
+        id = sharedPref.getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
 
         Log.d("id_ooo",userId);
+        Log.d("new",id);
 
  //       AnimationDrawable animationDrawable = new AnimationDrawable();
  //       animationDrawable.addFrame(getResources().getDrawable(R.drawable.ic_image2vector_1), duration);
@@ -50,6 +55,10 @@ public class Splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
                                       @Override
                                       public void run() {
+//                                          Intent myIntent = new Intent(Splash.this, MainActivity.class);
+//                                          //myIntent.putExtra("user_id",3101);
+//                                          startActivity(myIntent);
+//                                          finish();
 
                                           if (!userId.contentEquals("0")){
                                               Intent myIntent = new Intent(Splash.this, MainActivity.class);

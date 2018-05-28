@@ -223,7 +223,7 @@ public class Home extends Fragment {
 
             createPostLayout = itemView.findViewById(R.id.createPostLayout);
 
-            createPostLayout.setOnClickListener(new View.OnClickListener() {
+            createPostLayout.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), CreatePostActivity.class);

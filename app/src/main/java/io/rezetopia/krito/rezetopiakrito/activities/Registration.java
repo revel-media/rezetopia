@@ -171,6 +171,7 @@ public class Registration extends AppCompatActivity {
                                                 reference.child(inputFullName.getText().toString()).child("password").setValue(inputPassword.getText().toString());
                                                 reference.child(inputFullName.getText().toString()).child("id").setValue(uid.toString());
                                             } else {
+
                                             }
 
                                         } catch (JSONException e) {
@@ -185,7 +186,6 @@ public class Registration extends AppCompatActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError volleyError) {
                                     System.out.println("" + volleyError );
-
                                 }
                             });
 
@@ -336,7 +336,6 @@ public class Registration extends AppCompatActivity {
                     userMap.put("name", display_name);
                     userMap.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
                     userMap.put("device_token", device_token);
-
 
                     mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

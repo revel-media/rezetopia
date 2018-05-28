@@ -64,6 +64,7 @@
                 android:paddingRight="10dp"
                 android:scrollHorizontally="false"
                 android:text="@string/comment"
+                android:gravity="start"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
         </RelativeLayout>

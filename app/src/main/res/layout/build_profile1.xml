@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:paddingBottom="100dp"
+        android:padding="10dp"
         android:orientation="vertical">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_upload_image"
@@ -50,6 +51,30 @@
         android:paddingRight="25dp"
         android:text="Change picture"
         android:textColor="@color/white" />
+        <ImageView
+            android:id="@+id/cover_upload_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/settings_cover_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:onClick="gallary"
+            android:background="@drawable/roundone_green"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:text="Change COVER"
+            android:textColor="@color/white" />
 
     <Spinner
         android:id="@+id/spinner_city"

@@ -1,12 +1,14 @@
 package io.rezetopia.krito.rezetopiakrito.fragments;
 
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.anychart.anychart.AnyChart;
+import com.anychart.anychart.AnyChartView;
+import com.anychart.anychart.ChartsRadar;
+import com.anychart.anychart.DataEntry;
+import com.anychart.anychart.EnumsAlign;
+import com.anychart.anychart.Mapping;
+import com.anychart.anychart.MarkerType;
+import com.anychart.anychart.Pie;
+import com.anychart.anychart.RadarSeriesLine;
+import com.anychart.anychart.Set;
+import com.anychart.anychart.ValueDataEntry;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.json.JSONException;
@@ -30,6 +46,7 @@ import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -72,6 +89,8 @@ public class OverviewProfile extends Fragment {
     public DiscreteSeekBar discreteSeekBar12;
 
     ProgressBar overviewProgress ;
+    List<DataEntry> data;
+
 
     @Nullable
     @Override
@@ -81,53 +100,118 @@ public class OverviewProfile extends Fragment {
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
 
-        overviewLayout = view.findViewById(R.id.overviewLayout);
-        overviewLayout.setVisibility(View.GONE);
+        AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
 
-        discreteSeekBar1 = (DiscreteSeekBar) view.findViewById(R.id.discrete1);
-        seekval1 = (TextView)view.findViewById(R.id.perval1);
+        ChartsRadar radar = AnyChart.radar();
 
-        discreteSeekBar2 = (DiscreteSeekBar) view.findViewById(R.id.discrete2);
-        seekval2 = (TextView)view.findViewById(R.id.perval2);
+        radar.setTitle("will be available soon");
 
-        discreteSeekBar3 = (DiscreteSeekBar) view.findViewById(R.id.discrete3);
-        seekval3 = (TextView)view.findViewById(R.id.perval3);
+        radar.getYScale().setMinimum(0d);
+        radar.getYScale().setMinimumGap(0d);
+        radar.getYScale().getTicks().setInterval(50d);
+        //radar.getXAxis().getLabels().setPadding(3d, 3d, 3d, 3d);
+        radar.getLegend()
+                .setAlign(EnumsAlign.CENTER)
+                .setEnabled(true);
+        data = new ArrayList<>();
+        data.add(new CustomDataEntry("Strength", 136, 199, 43));
+        data.add(new CustomDataEntry("Agility", 79, 125, 56));
+        data.add(new CustomDataEntry("Stamina", 149, 173, 101));
+        data.add(new CustomDataEntry("Intellect", 135, 33, 202));
+        data.add(new CustomDataEntry("Spirit", 158, 64, 196));
+        Set set = new Set(data);
+        Mapping shamanData = set.mapAs("{ x: 'x', value: 'value' }");
+        Mapping warriorData = set.mapAs("{ x: 'x', value: 'value2' }");
+        Mapping priestData = set.mapAs("{ x: 'x', value: 'value3' }");
+        RadarSeriesLine shamanLine = radar.line(shamanData);
+        shamanLine.setName("Attack");
+        shamanLine.getMarkers().setEnabled(true);
+        shamanLine.getMarkers()
+                .setType(MarkerType.CIRCLE)
+                .setSize(3d);
 
-        discreteSeekBar4 = (DiscreteSeekBar) view.findViewById(R.id.discrete4);
-        seekval4 = (TextView)view.findViewById(R.id.perval4);
+        RadarSeriesLine warriorLine = radar.line(warriorData);
+        warriorLine.setName("Defence");
+        warriorLine.getMarkers().setEnabled(true);
+        warriorLine.getMarkers()
+                .setType(MarkerType.CIRCLE)
+                .setSize(3d);
 
-        discreteSeekBar5 = (DiscreteSeekBar) view.findViewById(R.id.discrete5);
-        seekval5 = (TextView)view.findViewById(R.id.perval5);
+        RadarSeriesLine priestLine = radar.line(priestData);
+        priestLine.setName("Speed");
+        priestLine.getMarkers().setEnabled(true);
+        priestLine.getMarkers()
+                .setType(MarkerType.CIRCLE)
+                .setSize(3d);
 
-        discreteSeekBar6 = (DiscreteSeekBar) view.findViewById(R.id.discrete6);
-        seekval6 = (TextView)view.findViewById(R.id.perval6);
+        radar.getTooltip().setFormat("Value: {%Value}");
 
-        discreteSeekBar7 = (DiscreteSeekBar) view.findViewById(R.id.discrete7);
-        seekval7 = (TextView)view.findViewById(R.id.perval7);
+        anyChartView.setChart(radar);
 
-        discreteSeekBar8 = (DiscreteSeekBar) view.findViewById(R.id.discrete8);
-        seekval8 = (TextView)view.findViewById(R.id.perval8);
+        Pie pie = AnyChart.pie();
 
-        discreteSeekBar9 = (DiscreteSeekBar) view.findViewById(R.id.discrete9);
-        seekval9 = (TextView)view.findViewById(R.id.perval9);
+//        List<DataEntry> data = new ArrayList<>();
+//        data.add(new ValueDataEntry("John", 10000));
+//        data.add(new ValueDataEntry("Jake", 12000));
+//        data.add(new ValueDataEntry("Peter", 18000));
+//
+//        AnyChartView anyChartView = (AnyChartView)view.findViewById(R.id.any_chart_view);
+//        anyChartView.setChart(pie);
 
-        discreteSeekBar10 = (DiscreteSeekBar) view.findViewById(R.id.discrete10);
-        seekval10 = (TextView)view.findViewById(R.id.perval10);
-
-        discreteSeekBar11 = (DiscreteSeekBar) view.findViewById(R.id.discrete11);
-        seekval11 = (TextView)view.findViewById(R.id.perval11);
-
-        discreteSeekBar12 = (DiscreteSeekBar) view.findViewById(R.id.discrete12);
-        seekval12 = (TextView)view.findViewById(R.id.perval12);
-
-
-        overviewProgress = view.findViewById(R.id.overviewProgress);
-        overviewProgress.getIndeterminateDrawable().setColorFilter(getResources()
-                .getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
-
-        new SkillsTask().execute();
+//        overviewLayout = view.findViewById(R.id.overviewLayout);
+//        overviewLayout.setVisibility(View.GONE);
+//
+//        discreteSeekBar1 = (DiscreteSeekBar) view.findViewById(R.id.discrete1);
+//        seekval1 = (TextView)view.findViewById(R.id.perval1);
+//
+//        discreteSeekBar2 = (DiscreteSeekBar) view.findViewById(R.id.discrete2);
+//        seekval2 = (TextView)view.findViewById(R.id.perval2);
+//
+//        discreteSeekBar3 = (DiscreteSeekBar) view.findViewById(R.id.discrete3);
+//        seekval3 = (TextView)view.findViewById(R.id.perval3);
+//
+//        discreteSeekBar4 = (DiscreteSeekBar) view.findViewById(R.id.discrete4);
+//        seekval4 = (TextView)view.findViewById(R.id.perval4);
+//
+//        discreteSeekBar5 = (DiscreteSeekBar) view.findViewById(R.id.discrete5);
+//        seekval5 = (TextView)view.findViewById(R.id.perval5);
+//
+//        discreteSeekBar6 = (DiscreteSeekBar) view.findViewById(R.id.discrete6);
+//        seekval6 = (TextView)view.findViewById(R.id.perval6);
+//
+//        discreteSeekBar7 = (DiscreteSeekBar) view.findViewById(R.id.discrete7);
+//        seekval7 = (TextView)view.findViewById(R.id.perval7);
+//
+//        discreteSeekBar8 = (DiscreteSeekBar) view.findViewById(R.id.discrete8);
+//        seekval8 = (TextView)view.findViewById(R.id.perval8);
+//
+//        discreteSeekBar9 = (DiscreteSeekBar) view.findViewById(R.id.discrete9);
+//        seekval9 = (TextView)view.findViewById(R.id.perval9);
+//
+//        discreteSeekBar10 = (DiscreteSeekBar) view.findViewById(R.id.discrete10);
+//        seekval10 = (TextView)view.findViewById(R.id.perval10);
+//
+//        discreteSeekBar11 = (DiscreteSeekBar) view.findViewById(R.id.discrete11);
+//        seekval11 = (TextView)view.findViewById(R.id.perval11);
+//
+//        discreteSeekBar12 = (DiscreteSeekBar) view.findViewById(R.id.discrete12);
+//        seekval12 = (TextView)view.findViewById(R.id.perval12);
+//
+//
+//        overviewProgress = view.findViewById(R.id.overviewProgress);
+//        overviewProgress.getIndeterminateDrawable().setColorFilter(getResources()
+//                .getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+//
+//        new SkillsTask().execute();
 
         return view;
+    }
+    private class CustomDataEntry extends ValueDataEntry {
+        public CustomDataEntry(String x, Number value, Number value2, Number value3) {
+            super(x, value);
+            setValue("value2", value2);
+            setValue("value3", value3);
+        }
     }
 
     private class SkillsTask extends AsyncTask<String, String, Void> {

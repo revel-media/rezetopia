@@ -1,6 +1,11 @@
 package io.rezetopia.krito.rezetopiakrito.activities;
 
+import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -9,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.text.emoji.EmojiCompat;
 import android.support.text.emoji.bundled.BundledEmojiCompatConfig;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +23,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +40,17 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import io.rezetopia.krito.rezetopiakrito.fragments.Home;
 import io.rezetopia.krito.rezetopiakrito.fragments.Notification;
@@ -47,6 +62,7 @@ import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchResponse;
 import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
 import io.rezetopia.krito.rezetopiakrito.helper.VolleyCustomRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -78,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     ImageView chatButton;
     String userType;
     String userId;
+    Firebase reference1;
+    Firebase reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +103,162 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         setContentView(R.layout.activity_main);
         //mAuth = FirebaseAuth.getInstance();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        //FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getBaseContext(), NetworkList.class);
-//                startActivity(intent);
-//            }
-//        });
+        FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
+        Firebase.setAndroidContext(this);
+        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        String url = "https://rezetopiachat.firebaseio.com/friends_"+userId+".json";
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String s) {
+                Log.d("check_rse",s.toString());
+                Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends"+userId);
+
+                if(s.equals("null")) {
+                    reference.child("1").child("last_message").setValue("2020");
+                    reference.child("1").child("order").setValue("5");
+                }
+                else {
+                    try {
+                        JSONObject obj = new JSONObject(s);
+
+                        if (!obj.has("1")) {
+                            reference.child("1").child("last_message").setValue("2020");
+                            reference.child("1").child("order").setValue("5");
+                        } else {
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                System.out.println("" + volleyError );
+            }
+        });
+
+        RequestQueue rQueue = Volley.newRequestQueue(MainActivity.this);
+        rQueue.add(request);
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
+                if (snapshot.hasChild("friend_"+userId)) {
+                    Log.d("check_child","exsist child");
+                }
+                else{
+                    Log.d("check_child","not exsist child");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        reference1 = new Firebase("https://rezetopiachat.firebaseio.com/noteall");
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), NetworkList.class);
+                startActivity(intent);
+            }
+        });
+        reference1.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+//                        getApplicationContext()).setAutoCancel(true)
+//                        .setContentTitle("رزيتوبيا")
+//                        .setSmallIcon(R.drawable.rezetopia)
+//                        .setContentText("رزيتوبيا");
+//                NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+//                bigText.bigText(dataSnapshot.getValue().toString());
+//                bigText.setBigContentTitle("رزيتوبيا");
+//                bigText.setSummaryText("المدير التنفيذي");
+//                mBuilder.setStyle(bigText);
+//                mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+//                Intent resultIntent = new Intent(getApplicationContext(),
+//                        MainActivity.class);
+//                TaskStackBuilder stackBuilder = TaskStackBuilder
+//                        .create(getApplicationContext());
+//                stackBuilder.addParentStack(MainActivity.class);
+//                stackBuilder.addNextIntent(resultIntent);
+//                PendingIntent resultPendingIntent = stackBuilder
+//                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//                mBuilder.setContentIntent(resultPendingIntent);
+//                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                mNotificationManager.notify(100, mBuilder.build());
+                AlertDialog.Builder popupBuilder = new AlertDialog.Builder(MainActivity.this);
+                //popupBuilder.setIcon(R.drawable.rezetopia);
+                popupBuilder.setTitle("RezeTopia");
+                TextView myMsg = new TextView(MainActivity.this);
+                myMsg.setText(dataSnapshot.getValue().toString());
+                myMsg.setPadding(10,10,10,10);
+                myMsg.setGravity(Gravity.CENTER_HORIZONTAL);
+                popupBuilder.setPositiveButton("ok",null);
+                popupBuilder.setCancelable(false);
+                popupBuilder.setView(myMsg);
+                popupBuilder.show();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+//                        getApplicationContext()).setAutoCancel(true)
+//                        .setContentTitle("رزيتوبيا")
+//                        .setSmallIcon(R.drawable.rezetopia)
+//                        .setContentText("رزيتوبيا");
+//                NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+//                bigText.bigText(dataSnapshot.getValue().toString());
+//                bigText.setBigContentTitle("رزيتوبيا");
+//                bigText.setSummaryText("المدير التنفيذي");
+//                mBuilder.setStyle(bigText);
+//                mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+//                Intent resultIntent = new Intent(getApplicationContext(),
+//                        MainActivity.class);
+//                TaskStackBuilder stackBuilder = TaskStackBuilder
+//                        .create(getApplicationContext());
+//                stackBuilder.addParentStack(MainActivity.class);
+//                stackBuilder.addNextIntent(resultIntent);
+//                PendingIntent resultPendingIntent = stackBuilder
+//                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//                mBuilder.setContentIntent(resultPendingIntent);
+//                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                mNotificationManager.notify(100, mBuilder.build());
+                AlertDialog.Builder popupBuilder = new AlertDialog.Builder(MainActivity.this);
+                //popupBuilder.setIcon(R.drawable.rezetopia);
+                popupBuilder.setTitle("RezeTopia");
+                TextView myMsg = new TextView(MainActivity.this);
+                myMsg.setText(dataSnapshot.getValue().toString());
+                myMsg.setPadding(10,10,10,10);
+                myMsg.setGravity(Gravity.CENTER_HORIZONTAL);
+                popupBuilder.setPositiveButton("ok",null);
+                popupBuilder.setCancelable(false);
+                popupBuilder.setView(myMsg);
+                popupBuilder.show();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
       //  Toast.makeText(getBaseContext(),SocketConnect.socket+"",Toast.LENGTH_LONG).show();
         EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
         EmojiCompat.init(config);
@@ -147,12 +313,18 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
            //  finish();
             }
         });
+
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
     }
 
     public void active(View view){
@@ -734,15 +906,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     @Override
     protected void onStop() {
         super.onStop();
-
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//
-//        if(currentUser != null) {
-//
-//            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
-//
-//        }
-
+        Toast.makeText(getBaseContext(),userId,Toast.LENGTH_LONG).show();
     }
 
     private void sendToStart() {

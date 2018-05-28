@@ -180,8 +180,8 @@
                     android:textSize="@dimen/bigger_text_size" />
 
                 <com.facebook.login.widget.LoginButton
-                    android:visibility="gone"
                     android:id="@+id/login_button"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -200,6 +200,7 @@
 
                 <io.rezetopia.krito.rezetopiakrito.views.CustomTextView
                     android:layout_marginTop="@dimen/dimen_20"
+                    android:visibility="gone"
                     android:id="@+id/forgetPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

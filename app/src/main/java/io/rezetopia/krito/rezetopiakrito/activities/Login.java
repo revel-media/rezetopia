@@ -205,6 +205,10 @@ public class Login extends AppCompatActivity{
                             hideDialog();
                             getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
                                     .putString(AppConfig.LOGGED_IN_USER_ID_SHARED, id).apply();
+                            SharedPreferences sharedPref = Login.this.getPreferences(Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString(AppConfig.LOGGED_IN_USER_ID_SHARED,id);
+                            editor.commit();
 
                             Intent intent = new Intent(Login.this, MainActivity.class);
                             startActivity(intent);
@@ -227,30 +231,90 @@ public class Login extends AppCompatActivity{
     }
 
 
+//    public void fbRegister(final String name, final String mail, final String birthdate, final String imgUrl){
+//        showDialog();
+//
+//        UserOperations.FBLogin(name, mail, birthdate, imgUrl);
+//        UserOperations.setFBLoginCallback(new UserOperations.FBLoginCallback() {
+//            @Override
+//            public void onResponse(String id) {
+//                getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
+//                        .putString(AppConfig.LOGGED_IN_USER_ID_SHARED, id).apply();
+//
+//                hideDialog();
+//
+//                Intent intent = new Intent(Login.this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//                String wrong = getResources().getString(R.string.wrong_login);
+//                AlertFragment.createFragment(error).show(getFragmentManager(), null);
+//            }
+//        });
+//    }
     public void fbRegister(final String name, final String mail, final String birthdate, final String imgUrl){
+
         showDialog();
-
-        UserOperations.FBLogin(name, mail, birthdate, imgUrl);
-        UserOperations.setFBLoginCallback(new UserOperations.FBLoginCallback() {
+        StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/fbregister.php", new Response.Listener<String>() {
             @Override
-            public void onResponse(String id) {
-                getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
-                        .putString(AppConfig.LOGGED_IN_USER_ID_SHARED, id).apply();
-
+            public void onResponse(String response) {
                 hideDialog();
-
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                Toast.makeText(getBaseContext(),response,Toast.LENGTH_LONG).show();
+//                try {
+//                    JSONObject jsonObject;
+//                    jsonObject = new JSONObject(response);
+//                    //Toast.makeText(getBaseContext(),jsonObject.getString("msg"),Toast.LENGTH_LONG).show();
+//                    if(jsonObject.getString("msg").equals("done")){
+//                        Toast.makeText(getApplicationContext(),jsonObject.getString("id"),Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+//                        intent.putExtra("fbname",name);
+//                        intent.putExtra("fbpicurl",imgUrl);
+//                        intent.putExtra("id",jsonObject.getString("id"));
+//                        startActivityForResult(intent, 0);
+//                        finish();
+//                    }else if(jsonObject.getString("msg").equals("This mail is already exsist you can log in")){
+//                        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+//                        intent.putExtra("fbname",name);
+//                        intent.putExtra("fbpicurl",imgUrl);
+//                        intent.putExtra("id",jsonObject.getString("id"));
+//                        startActivityForResult(intent, 0);
+//                        finish();
+//
+//                        //Toast.makeText(getBaseContext(),R.string.exsistEmail,Toast.LENGTH_LONG).show();
+//                    }
+//                    else {
+//                        Toast.makeText(getBaseContext(),response.toString(),Toast.LENGTH_LONG).show();
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
 
             @Override
-            public void onError(String error) {
-                String wrong = getResources().getString(R.string.wrong_login);
-                AlertFragment.createFragment(error).show(getFragmentManager(), null);
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parameters  = new HashMap<String, String>();
+
+                parameters.put("name",name);
+                parameters.put("mail",mail);
+                parameters.put("birthday",birthdate);
+                parameters.put("img_url",imgUrl);
+
+                return parameters;
             }
-        });
+        };
+        requestQueue.add(request);
     }
+
 
     public void showDialog() {
         if (!pDialog.isShowing())
@@ -374,72 +438,6 @@ public class Login extends AppCompatActivity{
             return null;
         }
     }
-//    public SSLSocketFactory getSocketFactory() {
-//
-//        CertificateFactory cf = null;
-//        try {
-//            cf = CertificateFactory.getInstance("X.509");
-//            InputStream caInput = getResources().openRawResource(R.raw.server);
-//            Certificate ca;
-//            try {
-//                ca = cf.generateCertificate(caInput);
-//                Log.e("CERT", "ca=" + ((X509Certificate) ca).getSubjectDN());
-//            } finally {
-//                caInput.close();
-//            }
-//
-//
-//            String keyStoreType = KeyStore.getDefaultType();
-//            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-//            keyStore.load(null, null);
-//            keyStore.setCertificateEntry("ca", ca);
-//
-//
-//            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-//            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-//            tmf.init(keyStore);
-//
-//
-//            HostnameVerifier hostnameVerifier = new HostnameVerifier() {
-//                @Override
-//                public boolean verify(String hostname, SSLSession session) {
-//
-//                    Log.e("CipherUsed", session.getCipherSuite());
-//                    return hostname.compareTo("https://rezetopia.dev-krito.com/app/")==0; //The Hostname of your server
-//
-//                }
-//            };
-//
-//
-//            HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
-//            SSLContext context = null;
-//            context = SSLContext.getInstance("TLS");
-//
-//            context.init(null, tmf.getTrustManagers(), null);
-//            HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
-//
-//            SSLSocketFactory sf = context.getSocketFactory();
-//
-//
-//            return sf;
-//
-//        } catch (CertificateException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (KeyStoreException e) {
-//            e.printStackTrace();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (KeyManagementException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return  null;
-//    }
-
 
 }
 

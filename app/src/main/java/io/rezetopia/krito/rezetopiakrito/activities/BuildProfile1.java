@@ -389,30 +389,30 @@ public class BuildProfile1 extends AppCompatActivity {
 
                 public void onTextChanged(CharSequence s, int start, int before,
                                           int count) {
-                    inputHeight = Integer.parseInt(s.toString());
-                    if (inputHeight > 100){
-                        hminus.setTextColor(getResources().getColor(R.color.btn_on));
-                    }
-                    else{
-                        hminus.setTextColor(getResources().getColor(R.color.btn_off));
-                    }
-                    if (inputHeight < 200){
-                        hplus.setTextColor(getResources().getColor(R.color.btn_on));
-                    }
-                    else{
-                        hplus.setTextColor(getResources().getColor(R.color.btn_off));
-                    }
-                    if(inputHeight < minHeight )
-                    {
-                        heightPlayer.setText("100");
-                        //hplus.setTextColor(getResources().getColor(R.color.btn_on));
-                        //hminus.setTextColor(getResources().getColor(R.color.btn_off));
-                    }
-                    if(inputHeight > maxHeight){
-                        heightPlayer.setText("200");
-                        //hplus.setTextColor(getResources().getColor(R.color.btn_off));
-                        //hminus.setTextColor(getResources().getColor(R.color.btn_on));
-                    }
+//                    inputHeight = Integer.parseInt(s.toString());
+//                    if (inputHeight > 100){
+//                        hminus.setTextColor(getResources().getColor(R.color.btn_on));
+//                    }
+//                    else{
+//                        hminus.setTextColor(getResources().getColor(R.color.btn_off));
+//                    }
+//                    if (inputHeight < 200){
+//                        hplus.setTextColor(getResources().getColor(R.color.btn_on));
+//                    }
+//                    else{
+//                        hplus.setTextColor(getResources().getColor(R.color.btn_off));
+//                    }
+//                    if(inputHeight < minHeight )
+//                    {
+//                        heightPlayer.setText("100");
+//                        //hplus.setTextColor(getResources().getColor(R.color.btn_on));
+//                        //hminus.setTextColor(getResources().getColor(R.color.btn_off));
+//                    }
+//                    if(inputHeight > maxHeight){
+//                        heightPlayer.setText("200");
+//                        //hplus.setTextColor(getResources().getColor(R.color.btn_off));
+//                        //hminus.setTextColor(getResources().getColor(R.color.btn_on));
+//                    }
 
                 }
 
@@ -431,31 +431,31 @@ public class BuildProfile1 extends AppCompatActivity {
 
                 public void onTextChanged(CharSequence s, int start, int before,
                                           int count) {
-                    inputWeight = Integer.parseInt(s.toString());
-                    if (inputWeight > 20){
-                        wminus.setTextColor(getResources().getColor(R.color.btn_on));
-                    }
-                    else{
-                        wminus.setTextColor(getResources().getColor(R.color.btn_off));
-                    }
-                    if (inputWeight < 80){
-                        wplus.setTextColor(getResources().getColor(R.color.btn_on));
-                    }
-                    else{
-                        wplus.setTextColor(getResources().getColor(R.color.btn_off));
-                    }
-
-                    if(inputWeight < minWeight )
-                    {
-                        weightPlayer.setText("20");
-                        //wplus.setTextColor(getResources().getColor(R.color.btn_on));
-                        //wminus.setTextColor(getResources().getColor(R.color.btn_off));
-                    }
-                    if(inputWeight > maxWeight){
-                        weightPlayer.setText("80");
-                        //wplus.setTextColor(getResources().getColor(R.color.btn_off));
-                        //wminus.setTextColor(getResources().getColor(R.color.btn_on));
-                    }
+//                    inputWeight = Integer.parseInt(s.toString());
+//                    if (inputWeight > 20){
+//                        wminus.setTextColor(getResources().getColor(R.color.btn_on));
+//                    }
+//                    else{
+//                        wminus.setTextColor(getResources().getColor(R.color.btn_off));
+//                    }
+//                    if (inputWeight < 80){
+//                        wplus.setTextColor(getResources().getColor(R.color.btn_on));
+//                    }
+//                    else{
+//                        wplus.setTextColor(getResources().getColor(R.color.btn_off));
+//                    }
+//
+//                    if(inputWeight < minWeight )
+//                    {
+//                        weightPlayer.setText("20");
+//                        //wplus.setTextColor(getResources().getColor(R.color.btn_on));
+//                        //wminus.setTextColor(getResources().getColor(R.color.btn_off));
+//                    }
+//                    if(inputWeight > maxWeight){
+//                        weightPlayer.setText("80");
+//                        //wplus.setTextColor(getResources().getColor(R.color.btn_off));
+//                        //wminus.setTextColor(getResources().getColor(R.color.btn_on));
+//                    }
 
                 }
 
