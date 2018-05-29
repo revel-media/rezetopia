@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
@@ -245,7 +246,78 @@ public class OtherProfileActivity extends AppCompatActivity {
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String url = "https://rezetopiachat.firebaseio.com/friends_pending_"+userId+".json";
+                    StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+                        @Override
+                        public void onResponse(String s) {
+                            Log.d("check_rse",s.toString());
+                            Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends_pending_"+userId);
 
+                            if(s.equals("null")) {
+                                reference.child(guestUserId).child("id").setValue(guestUserId);
+                            }
+                            else {
+                                try {
+                                    JSONObject obj = new JSONObject(s);
+
+                                    if (!obj.has("1")) {
+                                        reference.child(guestUserId).child("id").setValue(guestUserId);
+                                    } else {
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                        }
+
+                    },new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            System.out.println("" + volleyError );
+                        }
+                    });
+
+                    RequestQueue rQueue = Volley.newRequestQueue(OtherProfileActivity.this);
+                    rQueue.add(request);
+                    String url2 = "https://rezetopiachat.firebaseio.com/friends_pending_"+guestUserId+".json";
+                    StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
+                        @Override
+                        public void onResponse(String s) {
+                            Log.d("check_rse",s.toString());
+                            Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends_pending_"+guestUserId);
+
+                            if(s.equals("null")) {
+                                reference.child(userId).child("id").setValue(userId);
+                            }
+                            else {
+                                try {
+                                    JSONObject obj = new JSONObject(s);
+
+                                    if (!obj.has("1")) {
+                                        reference.child(userId).child("id").setValue(userId);
+                                    } else {
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                        }
+
+                    },new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            System.out.println("" + volleyError );
+                        }
+                    });
+
+                    RequestQueue rQueue1 = Volley.newRequestQueue(OtherProfileActivity.this);
+                    rQueue1.add(request2);
                     if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.add))){
                         performAddFriend();
                     } else if(addBtn.getText().toString().contentEquals(getResources().getString(R.string.unfriend))) {

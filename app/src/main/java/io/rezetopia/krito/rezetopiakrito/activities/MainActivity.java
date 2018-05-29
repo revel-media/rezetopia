@@ -103,52 +103,14 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         setContentView(R.layout.activity_main);
         //mAuth = FirebaseAuth.getInstance();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
+        //FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
         Firebase.setAndroidContext(this);
         final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        String url = "https://rezetopiachat.firebaseio.com/friends_"+userId+".json";
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-            @Override
-            public void onResponse(String s) {
-                Log.d("check_rse",s.toString());
-                Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends"+userId);
 
-                if(s.equals("null")) {
-                    reference.child("1").child("last_message").setValue("2020");
-                    reference.child("1").child("order").setValue("5");
-                }
-                else {
-                    try {
-                        JSONObject obj = new JSONObject(s);
-
-                        if (!obj.has("1")) {
-                            reference.child("1").child("last_message").setValue("2020");
-                            reference.child("1").child("order").setValue("5");
-                        } else {
-
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-            }
-
-        },new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                System.out.println("" + volleyError );
-            }
-        });
-
-        RequestQueue rQueue = Volley.newRequestQueue(MainActivity.this);
-        rQueue.add(request);
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
-                if (snapshot.hasChild("friend_"+userId)) {
+                if (snapshot.hasChild("friends_pending_"+userId)) {
                     Log.d("check_child","exsist child");
                 }
                 else{
@@ -162,13 +124,13 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             }
         });
         reference1 = new Firebase("https://rezetopiachat.firebaseio.com/noteall");
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), NetworkList.class);
-                startActivity(intent);
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getBaseContext(), NetworkList.class);
+//                startActivity(intent);
+//            }
+//        });
         reference1.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -906,7 +868,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     @Override
     protected void onStop() {
         super.onStop();
-        Toast.makeText(getBaseContext(),userId,Toast.LENGTH_LONG).show();
+       // Toast.makeText(getBaseContext(),userId,Toast.LENGTH_LONG).show();
     }
 
     private void sendToStart() {

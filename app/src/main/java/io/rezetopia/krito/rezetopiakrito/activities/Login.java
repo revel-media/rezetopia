@@ -262,7 +262,7 @@ public class Login extends AppCompatActivity{
             @Override
             public void onResponse(String response) {
                 hideDialog();
-                Toast.makeText(getBaseContext(),response,Toast.LENGTH_LONG).show();
+               // Toast.makeText(getBaseContext(),response,Toast.LENGTH_LONG).show();
 //                try {
 //                    JSONObject jsonObject;
 //                    jsonObject = new JSONObject(response);
