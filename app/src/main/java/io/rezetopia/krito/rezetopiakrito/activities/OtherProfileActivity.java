@@ -246,42 +246,42 @@ public class OtherProfileActivity extends AppCompatActivity {
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = "https://rezetopiachat.firebaseio.com/friends_pending_"+userId+".json";
-                    StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-                        @Override
-                        public void onResponse(String s) {
-                            Log.d("check_rse",s.toString());
-                            Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends_pending_"+userId);
-
-                            if(s.equals("null")) {
-                                reference.child(guestUserId).child("id").setValue(guestUserId);
-                            }
-                            else {
-                                try {
-                                    JSONObject obj = new JSONObject(s);
-
-                                    if (!obj.has("1")) {
-                                        reference.child(guestUserId).child("id").setValue(guestUserId);
-                                    } else {
-
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-
-                        }
-
-                    },new Response.ErrorListener(){
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            System.out.println("" + volleyError );
-                        }
-                    });
-
-                    RequestQueue rQueue = Volley.newRequestQueue(OtherProfileActivity.this);
-                    rQueue.add(request);
+//                    String url = "https://rezetopiachat.firebaseio.com/friends_pending_"+userId+".json";
+//                    StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+//                        @Override
+//                        public void onResponse(String s) {
+//                            Log.d("check_rse",s.toString());
+//                            Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends_pending_"+userId);
+//
+//                            if(s.equals("null")) {
+//                                reference.child(guestUserId).child("id").setValue(guestUserId);
+//                            }
+//                            else {
+//                                try {
+//                                    JSONObject obj = new JSONObject(s);
+//
+//                                    if (!obj.has("1")) {
+//                                        reference.child(guestUserId).child("id").setValue(guestUserId);
+//                                    } else {
+//
+//                                    }
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//
+//
+//                        }
+//
+//                    },new Response.ErrorListener(){
+//                        @Override
+//                        public void onErrorResponse(VolleyError volleyError) {
+//                            System.out.println("" + volleyError );
+//                        }
+//                    });
+//
+//                    RequestQueue rQueue = Volley.newRequestQueue(OtherProfileActivity.this);
+//                    rQueue.add(request);
                     String url2 = "https://rezetopiachat.firebaseio.com/friends_pending_"+guestUserId+".json";
                     StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
                         @Override

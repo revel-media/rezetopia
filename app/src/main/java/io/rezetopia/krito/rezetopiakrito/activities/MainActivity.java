@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     String userType;
     String userId;
     Firebase reference1;
-    Firebase reference;
+    Firebase reference2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,14 +103,19 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         setContentView(R.layout.activity_main);
         //mAuth = FirebaseAuth.getInstance();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+        userId = getBaseContext().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
+                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
         //FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
         Firebase.setAndroidContext(this);
         final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
+
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
+
                 if (snapshot.hasChild("friends_pending_"+userId)) {
+                    Toast.makeText(getBaseContext(),"1",Toast.LENGTH_LONG).show();
                     Log.d("check_child","exsist child");
                 }
                 else{
@@ -124,6 +129,38 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             }
         });
         reference1 = new Firebase("https://rezetopiachat.firebaseio.com/noteall");
+        reference2 = new Firebase("https://rezetopiachat.firebaseio.com/friends_pending_"+userId);
+        reference2.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Toast.makeText(getBaseContext(),dataSnapshot.toString(),Toast.LENGTH_LONG).show();
+                TextView textView = reqView.findViewById(R.id.req_count);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("1");
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -131,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
 //                startActivity(intent);
 //            }
 //        });
+
         reference1.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -224,8 +262,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
       //  Toast.makeText(getBaseContext(),SocketConnect.socket+"",Toast.LENGTH_LONG).show();
         EmojiCompat.Config config = new BundledEmojiCompatConfig(this);
         EmojiCompat.init(config);
-        userId = getBaseContext().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
-                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+
 //        if (mAuth.getCurrentUser() != null) {
 //            User user = new User();
 //
@@ -335,8 +372,8 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_notification_tab));
         //tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_store));
-        //tabLayout.addTab(tabLayout.newTab().setCustomView(reqView));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_requests_tab));
+        tabLayout.addTab(tabLayout.newTab().setCustomView(reqView));
+        //tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_requests_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_profile_tab));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_side_menu));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -349,18 +386,18 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int tabIconColor = ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark);
-                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+               // tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
 
-//                if (tab.getPosition() == 2){
-//                    ImageView imageView = tab.getCustomView().findViewById(R.id.icon_in);
-//                    TextView textView = tab.getCustomView().findViewById(R.id.req_count);
-//                    imageView.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-//                    textView.setVisibility(View.GONE);
-//                    textView.setText("0");
-//                    tab.setIcon(R.drawable.ic_requests_tab);
-//                }else{
-//                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-//                }
+                if (tab.getPosition() == 2){
+                    ImageView imageView = tab.getCustomView().findViewById(R.id.icon_in);
+                    TextView textView = tab.getCustomView().findViewById(R.id.req_count);
+                    imageView.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                    textView.setVisibility(View.GONE);
+                    textView.setText("0");
+                    tab.setIcon(R.drawable.ic_requests_tab);
+                }else{
+                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                }
                 viewPager.setCurrentItem(tab.getPosition());
                 currentTab = tab.getPosition();
             }
@@ -368,8 +405,14 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 int tabIconColor = ContextCompat.getColor(MainActivity.this, R.color.tabs);
-
+                if (tab.getPosition() == 2){
+                    ImageView imageView = tab.getCustomView().findViewById(R.id.icon_in);
+                    TextView textView = tab.getCustomView().findViewById(R.id.req_count);
+                    imageView.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                    tab.setIcon(R.drawable.ic_requests_tab);
+                }else{
                     tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                }
 
             }
 

@@ -642,6 +642,7 @@ public class UserOperations{
                     SearchResponse.class, new Response.Listener<SearchResponse>() {
                 @Override
                 public void onResponse(SearchResponse response) {
+                    Log.i("volley_response_search", "onResponse: " + response.toString());
                     ArrayList<SearchItem> searchItems = new ArrayList<>();
 
                     if (response != null) {
