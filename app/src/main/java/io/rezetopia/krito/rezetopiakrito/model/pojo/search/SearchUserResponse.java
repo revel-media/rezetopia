@@ -21,6 +21,18 @@ public class SearchUserResponse {
     @Expose
     private String imageUrl;
 
+    @SerializedName("uesrmail")
+    @Expose
+    private String uesrmail;
+
+    public String getUesrmail() {
+        return uesrmail;
+    }
+
+    public void setUesrmail(String uesrmail) {
+        this.uesrmail = uesrmail;
+    }
+
     public int getUserId() {
         return userId;
     }

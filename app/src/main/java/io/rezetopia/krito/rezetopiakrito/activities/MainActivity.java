@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.text.emoji.EmojiCompat;
@@ -42,6 +43,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -94,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     ImageView chatButton;
     String userType;
     String userId;
+    public int requestsNumber;
     Firebase reference1;
     Firebase reference2;
 
@@ -101,10 +113,15 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
+                .putInt(AppConfig.REQUEST_NOTIFICATIONS_NUMBER, 0).apply();
         //mAuth = FirebaseAuth.getInstance();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         userId = getBaseContext().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+
+        new getTask().execute();
+
         //FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
         Firebase.setAndroidContext(this);
         final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -129,15 +146,11 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             }
         });
         reference1 = new Firebase("https://rezetopiachat.firebaseio.com/noteall");
-        reference2 = new Firebase("https://rezetopiachat.firebaseio.com/friends_pending_"+userId);
+        reference2 = new Firebase("https://rezetopiachat.firebaseio.com/requests/friends_pending_"+userId);
         reference2.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Toast.makeText(getBaseContext(),dataSnapshot.toString(),Toast.LENGTH_LONG).show();
-                TextView textView = reqView.findViewById(R.id.req_count);
-                textView.setVisibility(View.VISIBLE);
-                textView.setText("1");
-
+                new getTask().execute();
             }
 
             @Override
@@ -147,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                new getTask().execute();
             }
 
             @Override
@@ -277,6 +290,11 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
         reqView = LayoutInflater.from(this).inflate(R.layout.request_tab_icon, null);
+        TextView textView = reqView.findViewById(R.id.req_count);
+//        if (requestsNumber != 0){
+//            textView.setText(String.valueOf(requestsNumber));
+//            textView.setVisibility(View.VISIBLE);
+//        }
         mCustomView = mInflater.inflate(R.layout.action_bar, null);
         searchBox = mCustomView.findViewById(R.id.searchbox);
 //        final Intent emptyIntent = new Intent();
@@ -393,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
                     TextView textView = tab.getCustomView().findViewById(R.id.req_count);
                     imageView.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
                     textView.setVisibility(View.GONE);
-                    textView.setText("0");
+                    //textView.setText("0");
                     tab.setIcon(R.drawable.ic_requests_tab);
                 }else{
                     tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
@@ -920,6 +938,52 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         startActivity(startIntent);
         finish();
 
+    }
+    private class getTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            String url2 = "https://rezetopiachat.firebaseio.com/requests.json";
+            StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
+                @Override
+                public void onResponse(String s) {
+
+                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/requests");
+                    try {
+                        JSONObject obj = new JSONObject(s);
+                        JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+userId));
+                        Log.d("check_count",obj2.getString("count"));
+                        Toast.makeText(MainActivity.this, obj2.getString("count"), Toast.LENGTH_SHORT).show();
+                        if (obj2.getString("count").equals("0")){
+                            TextView textView = reqView.findViewById(R.id.req_count);
+                            textView.setVisibility(View.GONE);
+                        }else{
+                            TextView textView = reqView.findViewById(R.id.req_count);
+                            textView.setVisibility(View.VISIBLE);
+                            textView.setText(obj2.getString("count"));
+                        }
+
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            },new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    System.out.println("" + volleyError );
+                }
+            });
+
+            RequestQueue rQueue1 = Volley.newRequestQueue(MainActivity.this);
+            rQueue1.add(request2);
+            return null;
+        }
     }
 
 }

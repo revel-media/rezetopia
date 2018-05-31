@@ -642,19 +642,20 @@ public class UserOperations{
                     SearchResponse.class, new Response.Listener<SearchResponse>() {
                 @Override
                 public void onResponse(SearchResponse response) {
-                    Log.i("volley_response_search", "onResponse: " + response.toString());
+                   // Log.i("volley_response_search", "onResponse: " + response.toString());
                     ArrayList<SearchItem> searchItems = new ArrayList<>();
 
                     if (response != null) {
                         if (!response.isError()) {
                             if (response.getUsers() != null && response.getUsers().length > 0) {
-                                Log.i("volley_response_search", "onResponse: " + response.getUsers()[0].getUsername());
+                                Log.i("volley_response_search", "onResponse: " + response.getUsers()[0].getUesrmail());
 
                                 for (int i = 0; i < response.getUsers().length; i++) {
                                     SearchItem item = new SearchItem();
                                     item.setId(response.getUsers()[i].getUserId());
                                     item.setName(response.getUsers()[i].getUsername());
                                     item.setImageUrl(response.getUsers()[i].getImageUrl());
+                                    item.setEmail(response.getUsers()[i].getUesrmail());
                                     item.setType("user");
                                     searchItems.add(item);
                                 }
