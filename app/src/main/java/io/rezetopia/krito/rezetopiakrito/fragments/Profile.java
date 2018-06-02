@@ -2,6 +2,9 @@ package io.rezetopia.krito.rezetopiakrito.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -43,6 +46,7 @@ import io.rezetopia.krito.rezetopiakrito.model.pojo.user.User;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -163,7 +167,7 @@ public class Profile extends Fragment {
         viewPager = (ViewPager) v.findViewById(R.id.pager);
         settingView = v.findViewById(R.id.settingView);
         playerImg = v.findViewById(R.id.imageView2);
-        cover = v.findViewById(R.id.imageView);
+        cover = v.findViewById(R.id.coverView);
         profileHeaderReze = v.findViewById(R.id.profileHeaderReze);
         View profile_menu = v.findViewById(R.id.profile_menu);
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
@@ -410,11 +414,30 @@ public class Profile extends Fragment {
                         playerMatchesTv.setText("0");
                         playerLevelsTv.setText("0");
                         playerPointsTv.setText("0");
-                        if (!userId.contentEquals("1")) {
+
                             Picasso.with(getApplicationContext())
                                     .load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
                                     .placeholder(R.drawable.circle).into(playerImg);
-                        }
+//                            Picasso.with(getApplicationContext())
+//                                    .load("http://rezetopia.dev-krito.com/images/coverImgs/" + jsonObject.getString("cover") + ".JPG")
+//                                    .placeholder(R.drawable.cover).into(cover);
+                        Picasso.with(getApplicationContext()).load("http://rezetopia.dev-krito.com/images/coverImgs/" + jsonObject.getString("cover") + ".JPG").into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                cover.setBackground(new BitmapDrawable(bitmap));
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+
                         settingView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

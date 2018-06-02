@@ -207,6 +207,37 @@ public class Requests extends Fragment {
 
         @Override
         protected Void doInBackground(final String... strings) {
+            String url4 = "https://rezetopiachat.firebaseio.com/requests.json";
+            StringRequest request4 = new StringRequest(Request.Method.GET, url4, new Response.Listener<String>(){
+                @Override
+                public void onResponse(String s) {
+
+                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/requests");
+                    try {
+                        JSONObject obj = new JSONObject(s);
+                        JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+userId));
+                        Log.d("check_remove",obj2.getString("count"));
+                        reference.child("friends_pending_"+userId).child(strings[0]).removeValue();
+                        int val = Integer.parseInt(obj2.getString("count"));
+                        if (val !=0){
+                            val = val-=1;
+                            reference.child("friends_pending_"+userId).child("count").setValue(val);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            },new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    System.out.println("" + volleyError );
+                }
+            });
+
+            RequestQueue rQueue4 = Volley.newRequestQueue(getActivity());
+            rQueue4.add(request4);
             String url2 = "https://rezetopiachat.firebaseio.com/friends/friends_"+userId+".json";
             StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
                 @Override

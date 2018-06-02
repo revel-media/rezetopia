@@ -17,7 +17,7 @@ public class SearchUserResponse {
     @Expose
     private String username;
 
-    @SerializedName("img_url")
+    @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
 

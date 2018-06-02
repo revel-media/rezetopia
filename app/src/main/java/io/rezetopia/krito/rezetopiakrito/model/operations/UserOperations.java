@@ -648,9 +648,9 @@ public class UserOperations{
                     if (response != null) {
                         if (!response.isError()) {
                             if (response.getUsers() != null && response.getUsers().length > 0) {
-                                Log.i("volley_response_search", "onResponse: " + response.getUsers()[0].getUesrmail());
 
                                 for (int i = 0; i < response.getUsers().length; i++) {
+                                  //  Log.i("volley_response_search", "onResponse: " + response.getUsers()[i].getImageUrl());
                                     SearchItem item = new SearchItem();
                                     item.setId(response.getUsers()[i].getUserId());
                                     item.setName(response.getUsers()[i].getUsername());

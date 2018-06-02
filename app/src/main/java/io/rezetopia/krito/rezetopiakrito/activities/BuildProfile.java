@@ -64,12 +64,15 @@ public class BuildProfile extends AppCompatActivity {
     public RadioButton radioButtonptl;
     public RadioButton radioButtonr;
     public ImageView user_img;
+    public ImageView user_cover;
 
     public String user_id;
     public Spinner spinnerCarrer;
     public Spinner spinnerCity;
     public static final int PICK_IMAGE = 1;
+    public static final int PICK_cover = 2;
     String encodedImage;
+    String encodedImage2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +128,10 @@ public class BuildProfile extends AppCompatActivity {
                     if (encodedImage != null) {
                         new UploadImage(encodedImage, (String.valueOf(System.currentTimeMillis() / 100))).execute();
                     }
+                    if (encodedImage2 != null){
+                        new UploadCover(encodedImage2, (String.valueOf(System.currentTimeMillis() / 100))).execute();
+                    }
+
                     StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/rcp.php", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -237,6 +244,17 @@ public class BuildProfile extends AppCompatActivity {
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
+    public void gallary2(View view){
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select App");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+        startActivityForResult(chooserIntent, PICK_cover);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
@@ -246,6 +264,14 @@ public class BuildProfile extends AppCompatActivity {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             per_img.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
             encodedImage = android.util.Base64.encodeToString(byteArrayOutputStream.toByteArray(), android.util.Base64.DEFAULT);
+        }
+        if (requestCode == PICK_cover && resultCode == RESULT_OK && data != null) {
+            Uri imgSelectedUri = data.getData();
+            ((ImageView)findViewById(R.id.cover_upload_image)).setImageURI(imgSelectedUri);
+            Bitmap cover_img = ((BitmapDrawable) user_cover.getDrawable()).getBitmap();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            cover_img.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            encodedImage2 = android.util.Base64.encodeToString(byteArrayOutputStream.toByteArray(), android.util.Base64.DEFAULT);
         }
     }
     /**
@@ -275,6 +301,7 @@ public class BuildProfile extends AppCompatActivity {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(layouts[position], container, false);
             user_img = (ImageView)view.findViewById(R.id.profile_upload_image);
+            user_cover = (ImageView)view.findViewById(R.id.cover_upload_image);
 
             if(position == 0){
 
@@ -450,6 +477,83 @@ public class BuildProfile extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
            // Toast.makeText(getBaseContext(),"image sent",Toast.LENGTH_LONG).show();
+        }
+    }
+    public class UploadCover extends AsyncTask<Void,Void,Void>{
+        String image;
+        String imgName;
+
+        public UploadCover(String image,String imgName){
+            this.image = image;
+            this.imgName = imgName;
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            final String enI = android.util.Base64.encodeToString(byteArrayOutputStream.toByteArray(), android.util.Base64.DEFAULT);*/
+            StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/upload.php", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    //Toast.makeText(getBaseContext(),"test",Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getBaseContext(),response,Toast.LENGTH_LONG).show();
+                    Log.i("ImageUpload", "onResponse: " + response);
+
+
+                    //progress.dismiss();
+                    btnNext.setEnabled(true);
+                    try {
+                        JSONObject jsonObject;
+                        jsonObject = new JSONObject(response);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        // Toast.makeText(getBaseContext(),e.toString(),Toast.LENGTH_LONG).show();
+
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Toast.makeText(getBaseContext(),error.toString(),Toast.LENGTH_LONG).show();
+                    Log.i("ImageUpload", "onResponse: " + error.toString());
+
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> parameters  = new HashMap<String, String>();
+
+                    parameters.put("cover", encodedImage2);
+                    parameters.put("cover_name", imgName.toString());
+                    parameters.put("id", user_id.toString());
+                    return parameters;
+                }
+            };
+            requestQueue.add(request);
+//            ArrayList<NameValuePair> data = new ArrayList<>();
+//            data.add(new BasicNameValuePair("image",enI));
+//            data.add(new BasicNameValuePair("img_name",imgName));
+//            data.add(new BasicNameValuePair("eventId",user_id));
+//            HttpParams httpParams = httpRequest();
+//            HttpClient httpClient = new DefaultHttpClient(httpParams);
+//            HttpPost httpPost = new HttpPost("");
+//            try {
+//                httpPost.setEntity(new UrlEncodedFormEntity(data));
+//                httpClient.execute(httpPost);
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            } catch (ClientProtocolException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            // Toast.makeText(getBaseContext(),"image sent",Toast.LENGTH_LONG).show();
         }
     }
 

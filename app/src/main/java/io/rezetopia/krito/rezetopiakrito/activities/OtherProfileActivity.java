@@ -2,6 +2,9 @@ package io.rezetopia.krito.rezetopiakrito.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +42,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import io.rezetopia.krito.rezetopiakrito.fragments.AlertFragment;
 import io.rezetopia.krito.rezetopiakrito.R;
@@ -72,6 +76,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class OtherProfileActivity extends AppCompatActivity {
 
@@ -118,6 +124,11 @@ public class OtherProfileActivity extends AppCompatActivity {
     public Button addBtn;
     private RecyclerView.Adapter searchAdapter;
     RecyclerView searchRecyclerView;
+    TextView usernamePView;
+    CircleImageView imageView;
+    ImageView cover;
+    TextView location;
+    TextView position;
 
     public static Intent createIntent(String userId, String username, String ImageUrl, Context context){
         nf = username;
@@ -155,9 +166,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         userId = OtherProfileActivity.this.getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
 
-        if (Integer.parseInt(userId) == 1){
-            //rezeAccountLayout.setVisibility(View.GONE);
-        }
+
 //        searchBox.addTextChangedListener(new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -224,9 +233,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     }
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder{
-        TextView usernamePView;
-        CircleImageView imageView;
-        ImageView cover;
+
         Button msgBtn = itemView.findViewById(R.id.msgSend);
 
 
@@ -236,10 +243,9 @@ public class OtherProfileActivity extends AppCompatActivity {
             usernamePView = itemView.findViewById(R.id.otherUsernameView);
             addBtn = itemView.findViewById(R.id.addfBtn);
             imageView = itemView.findViewById(R.id.imageView2);
-
             cover = itemView.findViewById(R.id.imageView);
-
-
+            location = itemView.findViewById(R.id.loca);
+            position = itemView.findViewById(R.id.pos);
             msgBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -249,11 +255,11 @@ public class OtherProfileActivity extends AppCompatActivity {
                 }
             });
 
-            if (Integer.parseInt(userId) == 1){
-                addBtn.setVisibility(View.GONE);
-                cover.setBackground(getResources().getDrawable(R.drawable.cover_1));
-                imageView.setBackground(getResources().getDrawable(R.drawable.rezetopia));
-            }
+//            if (Integer.parseInt(userId) == 1){
+//                addBtn.setVisibility(View.GONE);
+//                cover.setBackground(getResources().getDrawable(R.drawable.cover_1));
+//                imageView.setBackground(getResources().getDrawable(R.drawable.rezetopia));
+//            }
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -276,11 +282,12 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         public void bind(){
             usernamePView.setText(username);
-            if (getIntent().getStringExtra(PP_IMAGE__EXTRA) != null && !getIntent().getStringExtra(PP_IMAGE__EXTRA).isEmpty()){
-                Picasso.with(OtherProfileActivity.this).load(getIntent().getStringExtra(PP_IMAGE__EXTRA)).into(imageView);
-            } else {
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.default_avatar));
-            }
+//            if (getIntent().getStringExtra(PP_IMAGE__EXTRA) != null && !getIntent().getStringExtra(PP_IMAGE__EXTRA).isEmpty()){
+//                Picasso.with(OtherProfileActivity.this).load(getIntent().getStringExtra(PP_IMAGE__EXTRA)).into(imageView);
+//            } else {
+//                imageView.setImageDrawable(getResources().getDrawable(R.drawable.default_avatar));
+//            }
+            new getUser().execute(profileId);
             performFriendStatus();
         }
 
@@ -758,12 +765,18 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         TextView searchUsername;
         TextView detailsView;
+        TextView location;
+        TextView position;
+        CircleImageView personalImg;
 
         public SearchViewHolder(View itemView) {
             super(itemView);
 
             searchUsername = itemView.findViewById(R.id.searchUserName);
             detailsView = itemView.findViewById(R.id.detailsView);
+            location = itemView.findViewById(R.id.loca);
+            position = itemView.findViewById(R.id.pos);
+            personalImg = itemView.findViewById(R.id.imageView2);
         }
 
         public void bind(final SearchItem item){
@@ -948,6 +961,15 @@ public class OtherProfileActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             performUnFriend();
+            return null;
+        }
+    }
+    private class getUser extends AsyncTask<String, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            getUser(strings[0]);
             return null;
         }
     }
@@ -1154,5 +1176,79 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         RequestQueue rQueue1 = Volley.newRequestQueue(OtherProfileActivity.this);
         rQueue1.add(request2);
+    }
+    private void getUser(final String id) {
+        StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/getInfo.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                //Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                try {
+                    final JSONObject jsonObject;
+                    jsonObject = new JSONObject(response);
+                    //Toast.makeText(getApplicationContext(),jsonObject.getString("msg"),Toast.LENGTH_LONG).show();
+                    if (jsonObject.getString("msg").equals("succ")) {
+
+                        location.setText(jsonObject.getString("city"));
+                        position.setText(jsonObject.getString("position"));
+                       // playerNameTv.setText(jsonObject.getString("name"));
+//                        playerMatchesTv.setText("0");
+//                        playerLevelsTv.setText("0");
+//                        playerPointsTv.setText("0");
+                            Picasso.with(getApplicationContext())
+                                    .load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
+                                    .placeholder(R.drawable.circle).into(imageView);
+//                            Picasso.with(getApplicationContext())
+//                                    .load("http://rezetopia.dev-krito.com/images/coverImgs/" + jsonObject.getString("cover") + ".JPG")
+//                                    .placeholder(R.drawable.cover).into(cover);
+                        Picasso.with(getApplicationContext()).load("http://rezetopia.dev-krito.com/images/coverImgs/" + jsonObject.getString("cover") + ".JPG").into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                cover.setBackground(new BitmapDrawable(bitmap));
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+
+
+
+
+
+                    } else {
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+
+                parameters.put("id", id);
+                parameters.put("getInfo", "");
+
+
+                return parameters;
+            }
+        };
+        Volley.newRequestQueue(OtherProfileActivity.this).add(request);;
+
     }
 }

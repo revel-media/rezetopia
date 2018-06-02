@@ -2,7 +2,11 @@ package io.rezetopia.krito.rezetopiakrito.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -20,9 +25,16 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.rezetopia.krito.rezetopiakrito.R;
+import io.rezetopia.krito.rezetopiakrito.activities.OtherProfileActivity;
 import io.rezetopia.krito.rezetopiakrito.activities.PostActivity;
 import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
 import io.rezetopia.krito.rezetopiakrito.helper.VolleyCustomRequest;
@@ -38,6 +50,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.rezetopia.krito.rezetopiakrito.model.pojo.notification.ApiResponse;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 /**
@@ -58,7 +72,8 @@ public class Notification extends Fragment {
     private ArrayList<io.rezetopia.krito.rezetopiakrito.model.pojo.notification.Notification> notifications;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-
+    public ImageView imageView;
+   Bitmap poster;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -173,10 +188,13 @@ public class Notification extends Fragment {
             usernameView = itemView.findViewById(R.id.notificationUsernameView);
             detailsView = itemView.findViewById(R.id.notificationMsgView);
             createdAtView = itemView.findViewById(R.id.notificationCreatedAtView);
+            imageView = itemView.findViewById(R.id.notificationPPView);
         }
 
         public void bind(io.rezetopia.krito.rezetopiakrito.model.pojo.notification.Notification notification) {
             usernameView.setText(notification.getUsername());
+            //new MyAsyncTask3().execute(String.valueOf(notification.getUserFromId()));
+           // imageView.setBackground(new BitmapDrawable(poster));
             detailsView.setText(notification.getMessage());
             Date date = null;
             try {
@@ -261,4 +279,93 @@ public class Notification extends Fragment {
 
         requestQueue.add(stringRequest);
     }
+    public class MyAsyncTask3 extends AsyncTask<String, Void, Void> {
+
+
+
+        public MyAsyncTask3() {
+
+
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            getUser(strings[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+    private void getUser(final String id) {
+        StringRequest request = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/getInfo.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                //Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                try {
+                    final JSONObject jsonObject;
+                    jsonObject = new JSONObject(response);
+                    //Toast.makeText(getApplicationContext(),jsonObject.getString("msg"),Toast.LENGTH_LONG).show();
+                    if (jsonObject.getString("msg").equals("succ")) {
+
+
+//                        Picasso.with(getApplicationContext())
+//                                .load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
+//                                .placeholder(R.drawable.circle).into(imageView);
+                        Picasso.with(getApplicationContext()).load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG").into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                               // imageView.setBackground(new BitmapDrawable(bitmap));
+                                poster = bitmap;
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+
+
+
+
+
+
+                    } else {
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+
+                parameters.put("id", id);
+                parameters.put("getInfo", "");
+
+
+                return parameters;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(request);;
+
+    }
+
 }

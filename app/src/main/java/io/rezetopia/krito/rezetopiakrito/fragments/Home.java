@@ -1107,21 +1107,7 @@ public class Home extends Fragment {
                             int commentSize = data.getIntExtra("added_size", newsFeedItems.get(i).getCommentSize());
                             newsFeedItems.get(i).setCommentSize(commentSize);
                             adapter.notifyItemChanged(i);
-                            /*int c_size = 0;
-                            if (newsFeedItems.get(i).getPostComments() != null)
-                                c_size = newsFeedItems.get(i).getPostComments().length ;
-                            CommentResponse[] c_resArray = new CommentResponse[c_size + 1];
-                            if (newsFeedItems.get(i).getPostComments() != null) {
-                                for (int j = 0; j < newsFeedItems.get(i).getPostComments().length; j++) {
-                                    c_resArray[j] = newsFeedItems.get(i).getPostComments()[j];
-                                }
-                            }
 
-                            c_resArray[c_size] = commentResponse;
-                            newsFeedItems.get(i).setPostComments(c_resArray);
-                            adapter.notifyDataSetChanged();
-                            Toast.makeText(getActivity(), "result", Toast.LENGTH_SHORT).show();
-                            break;*/
                         }
                     }
                 }

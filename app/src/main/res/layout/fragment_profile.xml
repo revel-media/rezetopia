@@ -42,7 +42,7 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/coverView"
                     android:layout_width="match_parent"
                     android:layout_height="124dp"
                     android:background="@drawable/cover" />

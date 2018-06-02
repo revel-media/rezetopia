@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,10 +98,12 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         public void bind(final SearchItem item){
-
-
+            Log.i("search_img", "onResponse: " + item.getImageUrl());
                 if (item.getImageUrl() != null){
-                    Picasso.with(SearchActivity.this).load(item.getImageUrl()).into(ppView);
+                    //Picasso.with(SearchActivity.this).load(item.getImageUrl()).into(ppView);
+                    Picasso.with(getApplicationContext())
+                            .load("http://rezetopia.dev-krito.com/images/profileImgs/" + item.getImageUrl() + ".JPG")
+                            .placeholder(R.drawable.post_pp_circle).into(ppView);
                 }
 
                 searchUserName.setText(item.getName());
