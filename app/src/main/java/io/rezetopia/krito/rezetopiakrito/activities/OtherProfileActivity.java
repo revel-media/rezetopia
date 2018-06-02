@@ -2,6 +2,7 @@ package io.rezetopia.krito.rezetopiakrito.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,9 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -36,9 +42,15 @@ import com.squareup.picasso.Picasso;
 
 import io.rezetopia.krito.rezetopiakrito.fragments.AlertFragment;
 import io.rezetopia.krito.rezetopiakrito.R;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.EventResponse;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.GroupPostResponse;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.NewsFeed;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.NewsFeedItem;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.news_feed.VendorPostsResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.post.ApiResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.post.CommentResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.post.PostResponse;
+import io.rezetopia.krito.rezetopiakrito.model.pojo.product.ProductResponse;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchItem;
 import io.rezetopia.krito.rezetopiakrito.model.pojo.search.SearchResponse;
 import io.rezetopia.krito.rezetopiakrito.app.AppConfig;
@@ -122,7 +134,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_other_profile);
         final String user_id = getIntent().getStringExtra("user_id");
 
-
+       Firebase.setAndroidContext(this);
         mRootRef = FirebaseDatabase.getInstance().getReference();
         User user = new User();
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(String.valueOf(user.getId()));
@@ -246,126 +258,18 @@ public class OtherProfileActivity extends AppCompatActivity {
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    String url = "https://rezetopiachat.firebaseio.com/friends_pending_"+userId+".json";
-//                    StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-//                        @Override
-//                        public void onResponse(String s) {
-//                            Log.d("check_rse",s.toString());
-//                            Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends_pending_"+userId);
-//
-//                            if(s.equals("null")) {
-//                                reference.child(guestUserId).child("id").setValue(guestUserId);
-//                            }
-//                            else {
-//                                try {
-//                                    JSONObject obj = new JSONObject(s);
-//
-//                                    if (!obj.has("1")) {
-//                                        reference.child(guestUserId).child("id").setValue(guestUserId);
-//                                    } else {
-//
-//                                    }
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//
-//
-//                        }
-//
-//                    },new Response.ErrorListener(){
-//                        @Override
-//                        public void onErrorResponse(VolleyError volleyError) {
-//                            System.out.println("" + volleyError );
-//                        }
-//                    });
-//
-//                    RequestQueue rQueue = Volley.newRequestQueue(OtherProfileActivity.this);
-//                    rQueue.add(request);
-//                    String url2 = "https://rezetopiachat.firebaseio.com/friends_pending_"+guestUserId+".json";
-//                    StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
-//                        @Override
-//                        public void onResponse(String s) {
-//                            Log.d("check_rse",s.toString());
-//                            Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends_pending_"+guestUserId);
-//
-//                            if(s.equals("null")) {
-//                                reference.child(userId).child("id").setValue(userId);
-//                            }
-//                            else {
-//                                try {
-//                                    JSONObject obj = new JSONObject(s);
-//
-//                                    if (!obj.has("1")) {
-//                                        reference.child(userId).child("id").setValue(userId);
-//                                    } else {
-//
-//                                    }
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//
-//
-//                        }
-//
-//                    },new Response.ErrorListener(){
-//                        @Override
-//                        public void onErrorResponse(VolleyError volleyError) {
-//                            System.out.println("" + volleyError );
-//                        }
-//                    });
-//
-//                    RequestQueue rQueue1 = Volley.newRequestQueue(OtherProfileActivity.this);
-//                    rQueue1.add(request2);
+
                     if (addBtn.getText().toString().contentEquals(getResources().getString(R.string.add))){
-                        performAddFriend();
+                        new performAddFriend().execute();
+                        //addBtn.setText(getResources().getString(R.string.pendding));
+                       // performAddFriend();
                     } else if(addBtn.getText().toString().contentEquals(getResources().getString(R.string.unfriend))) {
+                        new performUnFriend().execute();
                         performUnFriend();
                     } else {
                         performUnFriend();
                     }
 
-//                    AlertFragment fragment = AlertFragment.createFragment("coming soon");
-//                    fragment.show(getFragmentManager(), null);
-                    final String user_id = getIntent().getStringExtra("user_id");
-                    User user = new User();
-                    final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
-
-                    Map friendsMap = new HashMap();
-                    friendsMap.put("Friends/" +user.getId() + "/" + user.getId()+ "/date", currentDate);
-                    friendsMap.put("Friends/" + user.getId() + "/"  +user.getId() + "/date", currentDate);
-
-
-                    friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
-                    friendsMap.put("Friend_req/" + user.getId() + "/" + user.getId(), null);
-
-
-                    mRootRef.updateChildren(friendsMap, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-
-                            if(databaseError == null){
-
-                                addBtn.setEnabled(true);
-                                mCurrent_state = "friends";
-                                //  addBtn.setText("Unfriend this Person");
-
-                                //  mDeclineBtn.setVisibility(View.INVISIBLE);
-                                //  mDeclineBtn.setEnabled(false);
-
-                            } else {
-
-                                String error = databaseError.getMessage();
-
-                                Toast.makeText(OtherProfileActivity.this, error, Toast.LENGTH_SHORT).show();
-
-
-                            }
-
-                        }
-                    });
                 }
             });
         }
@@ -381,144 +285,30 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
 
         private void performFriendStatus(){
-            StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                Log.i("friend", "onErrorResponse: " + response);
-                                JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
-                                    int friendState = jsonObject.getInt("state");
-                                    if (friendState == 0){
-                                        addBtn.setText(R.string.cancel_request);
-                                    } else if (friendState == 1){
-                                        addBtn.setText(R.string.unfriend);
-                                    }
-                                } else {
-                                    addBtn.setText(R.string.add);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
-                }
-            }){
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> map = new HashMap<>();
-
-                    Log.i("isFriend", "getParams: " + userId + " " + guestUserId);
-                    map.put("isFriend", String.valueOf(true));
-                    map.put("from", userId);
-                    map.put("to", guestUserId);
-                    return map;
-                }
-            };
-
-            Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
-        }
-
-        private void performAddFriend(){
-            String url2 = "https://rezetopiachat.firebaseio.com/requests/friends_pending_"+guestUserId+".json";
-            StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
-                @Override
-                public void onResponse(String s) {
-                    Log.d("check_rse",s.toString());
-                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/requests/friends_pending_"+guestUserId);
-
-                    if(s.equals("null")) {
-                        reference.child("count").setValue(1);
-                        reference.child(userId).child("id").setValue(userId);
-                    }
-                    else {
-
-                        try {
-                            JSONObject obj = new JSONObject(s);
-                            Log.d("check_rse",obj.getString("count"));
-                            if (obj.has("count")) {
-                                int val = Integer.parseInt(obj.getString("count"));
-                                val = val+=1;
-
-                                reference.child("count").setValue(val);
-                                reference.child(userId).child("id").setValue(userId);
-                            } else {
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-
-                }
-
-            },new Response.ErrorListener(){
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    System.out.println("" + volleyError );
-                }
-            });
-
-            RequestQueue rQueue1 = Volley.newRequestQueue(OtherProfileActivity.this);
-            rQueue1.add(request2);
-            StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                Log.i("add_friend", "onErrorResponse: " + response);
-                                JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
-                                    addBtn.setText(R.string.cancel_request);
-                                } else {
-                                    addBtn.setText(R.string.add);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
-                }
-            }){
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> map = new HashMap<>();
-
-                    map.put("add", String.valueOf(true));
-                    map.put("from", userId);
-                    map.put("to", guestUserId);
-                    return map;
-                }
-            };
-
-            Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
-        }
-
-        private void performUnFriend(){
             String url2 = "https://rezetopiachat.firebaseio.com/requests.json";
             StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
                 @Override
                 public void onResponse(String s) {
 
                     Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/requests");
-                    reference.child("friends_pending_"+guestUserId).child(userId).removeValue();
                     try {
                         JSONObject obj = new JSONObject(s);
-                        JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+guestUserId));
-                        Log.d("check_remove",obj2.getString("count"));
-                            int val = Integer.parseInt(obj2.getString("count"));
-                            val = val-=1;
+                        if (obj.has("friends_pending_"+guestUserId)){
+                            JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+guestUserId));
+                            if (obj2.has(userId)){
+                                addBtn.setText(getResources().getString(R.string.unfriend));
+                            }else{
+                                addBtn.setText(getResources().getString(R.string.add));
+                            }
+                        }else if (obj.has("friends_pending_"+userId)){
+                            JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+userId));
+                            if (obj2.has(guestUserId)){
+                                addBtn.setText(getResources().getString(R.string.unfriend));
+                            }else{
+                                addBtn.setText(getResources().getString(R.string.add));
+                            }
+                        }
 
-                            reference.child("friends_pending_"+guestUserId).child("count").setValue(val);
 
 
                     } catch (JSONException e) {
@@ -536,45 +326,11 @@ public class OtherProfileActivity extends AppCompatActivity {
 
             RequestQueue rQueue1 = Volley.newRequestQueue(OtherProfileActivity.this);
             rQueue1.add(request2);
-            StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                Log.i("unFriend", "onErrorResponse: " + response);
-                                JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
-                                    addBtn.setText(R.string.add);
-                                } else if (jsonObject.getInt("state") == 0){
-                                    addBtn.setText(R.string.cancel_request);
-                                } else if (jsonObject.getInt("state") > 1){
-                                    addBtn.setText(R.string.unfriend);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
-                }
-            }){
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> map = new HashMap<>();
-
-                    Log.i("unFriend", "getParams: " + userId + " " + guestUserId);
-                    map.put("unFriend", String.valueOf(true));
-                    map.put("from", userId);
-                    map.put("to", guestUserId);
-                    return map;
-                }
-            };
-
-            Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
         }
+
+
+
+
 
     }
 
@@ -1176,5 +932,227 @@ public class OtherProfileActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+    private class performAddFriend extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            performAddFriend();
+            return null;
+        }
+    }
+    private class performUnFriend extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            performUnFriend();
+            return null;
+        }
+    }
+    public void performAddFriend(){
+        String url2 = "https://rezetopiachat.firebaseio.com/requests/friends_pending_"+guestUserId+".json";
+        StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String s) {
+                Log.d("check_rse",s.toString());
+                Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/requests/friends_pending_"+guestUserId);
+                addBtn.setText(R.string.cancel_request);
+                if(s.equals("null")) {
+                    reference.child("count").setValue(1);
+                    reference.child(userId).child("id").setValue(userId);
+                }
+                else {
+
+                    try {
+                        JSONObject obj = new JSONObject(s);
+                        Log.d("check_rse",obj.getString("count"));
+                        if (obj.has("count")) {
+                            int val = Integer.parseInt(obj.getString("count"));
+                            val = val+=1;
+                            reference.child("count").setValue(val);
+                            reference.child(userId).child("id").setValue(userId);
+                        } else {
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                System.out.println("" + volleyError );
+            }
+        });
+
+        RequestQueue rQueue1 = Volley.newRequestQueue(OtherProfileActivity.this);
+        rQueue1.add(request2);
+
+        StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("add_friend", "onErrorResponse: " + response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (!jsonObject.getBoolean("error")){
+                                addBtn.setText(R.string.cancel_request);
+                            } else {
+                                addBtn.setText(R.string.add);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("volley error", "onErrorResponse: " + error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+
+                map.put("add", String.valueOf(true));
+                map.put("from", userId);
+                map.put("to", guestUserId);
+                return map;
+            }
+        };
+
+        Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
+    }
+    public void performUnFriend(){
+        String url2 = "https://rezetopiachat.firebaseio.com/requests.json";
+        StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String s) {
+
+                Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/requests");
+                try {
+                    JSONObject obj = new JSONObject(s);
+                    if (obj.has("friends_pending_"+guestUserId)){
+                        JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+guestUserId));
+                        Log.d("check_remove",obj2.getString("count"));
+                        reference.child("friends_pending_"+guestUserId).child(userId).removeValue();
+                        addBtn.setText(R.string.add);
+                        int val = Integer.parseInt(obj2.getString("count"));
+                        if (val != 0){
+                            val = val-=1;
+                            reference.child("friends_pending_"+guestUserId).child("count").setValue(val);
+                        }
+                        StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            Log.i("unFriend", "onErrorResponse: " + response);
+                                            JSONObject jsonObject = new JSONObject(response);
+                                            if (!jsonObject.getBoolean("error")){
+                                                addBtn.setText(R.string.add);
+                                            } else if (jsonObject.getInt("state") == 0){
+                                                addBtn.setText(R.string.cancel_request);
+                                            } else if (jsonObject.getInt("state") > 1){
+                                                addBtn.setText(R.string.unfriend);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                            }
+                        }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                HashMap<String, String> map = new HashMap<>();
+
+                                Log.i("unFriend", "getParams: " + userId + " " + guestUserId);
+                                map.put("unFriend", String.valueOf(true));
+                                map.put("from", userId);
+                                map.put("to", guestUserId);
+                                return map;
+                            }
+                        };
+
+                        Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
+                    }else if (obj.has("friends_pending_"+userId)){
+                        JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+userId));
+                        Log.d("check_remove",obj2.getString("count"));
+                        reference.child("friends_pending_"+userId).child(guestUserId).removeValue();
+                        addBtn.setText(R.string.add);
+                        int val = Integer.parseInt(obj2.getString("count"));
+                        if (val != 0){
+                            val = val-=1;
+                            reference.child("friends_pending_"+userId).child("count").setValue(val);
+                        }
+                        StringRequest customRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/addfriend.php",
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            Log.i("unFriend", "onErrorResponse: " + response);
+                                            JSONObject jsonObject = new JSONObject(response);
+                                            if (!jsonObject.getBoolean("error")){
+                                                addBtn.setText(R.string.add);
+                                            } else if (jsonObject.getInt("state") == 0){
+                                                addBtn.setText(R.string.cancel_request);
+                                            } else if (jsonObject.getInt("state") > 1){
+                                                addBtn.setText(R.string.unfriend);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                            }
+                        }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                HashMap<String, String> map = new HashMap<>();
+
+                                Log.i("unFriend", "getParams: " + guestUserId + " " + userId);
+                                map.put("unFriend", String.valueOf(true));
+                                map.put("from", guestUserId);
+                                map.put("to", userId);
+                                return map;
+                            }
+                        };
+
+                        Volley.newRequestQueue(OtherProfileActivity.this).add(customRequest);
+                    }
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                System.out.println("" + volleyError );
+            }
+        });
+
+        RequestQueue rQueue1 = Volley.newRequestQueue(OtherProfileActivity.this);
+        rQueue1.add(request2);
     }
 }

@@ -17,6 +17,7 @@
     <string name="posting">جاري النشر&#8230;</string>
     <string name="image">صورة</string>
     <string name="video">فيديو</string>
+    <string name="pendding">إنتظار</string>
     <string name="check_in">مكان</string>
     <string name="tag">الاشارة لصديق</string>
     <string name="slide_4_title">اعرف اكتر </string>
@@ -66,6 +67,7 @@
     <string name="unfriend">حذف</string>
     <string name="search">بحث</string>
     <string name="booking">حجز</string>
+    <string name="startMsg">إبدا المحادثة</string>
 
 
 

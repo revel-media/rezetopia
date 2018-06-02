@@ -67,7 +67,7 @@
     <string name="tell_something">Tell something to your team&#8230;</string>
     <string name="add">Add +</string>
     <string name="unfriend">Unfriend</string>
-
+    <string name="startMsg">start chat</string>
     <string name="follow">Follow</string>
     <string name="schedule">Schedule</string>
     <string name="details">Details</string>
@@ -151,6 +151,7 @@
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="accept_friend_request">accept</string>
     <string name="cancel_request">remove</string>
+    <string name="pendding">pendding</string>
     <string-array name="object_array">
 
         <item>010</item>

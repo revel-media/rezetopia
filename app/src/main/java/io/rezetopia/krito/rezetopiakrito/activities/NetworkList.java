@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +57,7 @@ public class NetworkList extends AppCompatActivity {
     View mCustomView;
     public RequestQueue requestQueue;
     String userId;
+    Firebase reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,9 @@ public class NetworkList extends AppCompatActivity {
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
+
+        reference = new Firebase("https://rezetopiachat.firebaseio.com/friends/friends_"+userId);
+        reference.orderByChild("time");
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         LayoutInflater mInflater = LayoutInflater.from(this);
         userId = NetworkList.this.getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
@@ -79,17 +84,20 @@ public class NetworkList extends AppCompatActivity {
     private class CommentViewHolder extends RecyclerView.ViewHolder{
 
         TextView username;
+        TextView lastmsg;
 
 
         public CommentViewHolder(View itemView) {
             super(itemView);
             username=itemView.findViewById(R.id.friendName);
+            lastmsg=itemView.findViewById(R.id.lastMessage);
 
 
         }
 
         public void bind(final User user){
             username.setText(user.getName());
+            lastmsg.setText(user.getLastMsg());
             ((TextView)itemView.findViewById(R.id.id)).setText(String.valueOf(user.getId()));
             new MyAsyncTask(String.valueOf(user.getId()),(ImageView) itemView.findViewById(R.id.ppView)).execute();
             new MyAsyncTask1(String.valueOf(user.getId())).execute();
@@ -126,29 +134,38 @@ public class NetworkList extends AppCompatActivity {
         }
     }
     private void getUsers(){
-        String url = "https://rezetopiachat.firebaseio.com/users.json";
+        String url = "https://rezetopiachat.firebaseio.com/friends/friends_"+userId+".json";
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
             public void onResponse(String s) {
-                // Toast.makeText(getBaseContext(),s, Toast.LENGTH_LONG).show();
                 Log.i("response", "onResponse: " + s);
                 users = new ArrayList<>();
 
                 try {
                     JSONObject jsonObject = new JSONObject(s);
+                    Toast.makeText(NetworkList.this, jsonObject.toString(), Toast.LENGTH_SHORT).show();
                     Iterator i = jsonObject.keys();
                     String name = "";
                     String id = "";
+                    String lastMsg = "";
+                    String title = "";
                     while (i.hasNext()){
-                        name = i.next().toString();
-                        id = new JSONObject(jsonObject.getString(name)).getString("id");
-                        Log.i("response", "onResponse: " + name +" "+id);
-                        User userResponse = new User();
-                        userResponse.setName(name);
-                        userResponse.setId(Integer.parseInt(id));
-                        users.add(userResponse);
-                        friendsRecyclerView.setLayoutManager(new LinearLayoutManager(NetworkList.this));
-                        friendsRecyclerView.setAdapter(adapter);
+                        title = i.next().toString();
+                        if (!title.equals("count")){
+                            Toast.makeText(NetworkList.this, title, Toast.LENGTH_SHORT).show();
+                            name = new JSONObject(jsonObject.getString(title)).getString("name");
+                            id = new JSONObject(jsonObject.getString(title)).getString("id");
+                            lastMsg = new JSONObject(jsonObject.getString(title)).getString("lastMsg");
+                            Log.i("response", "onResponse: " + name +" "+id);
+                            User userResponse = new User();
+                            userResponse.setName(name);
+                            userResponse.setId(Integer.parseInt(id));
+                            userResponse.setLastMsg(lastMsg);
+                            users.add(userResponse);
+                            friendsRecyclerView.setLayoutManager(new LinearLayoutManager(NetworkList.this));
+                            friendsRecyclerView.setAdapter(adapter);
+                        }
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

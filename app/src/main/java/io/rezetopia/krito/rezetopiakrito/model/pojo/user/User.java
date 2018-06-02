@@ -11,6 +11,17 @@ public class User {
     @SerializedName("id")
     @Expose
     private int id;
+    @SerializedName("lastMsg")
+    @Expose
+    private String lastMsg;
+
+    public String getLastMsg() {
+        return lastMsg;
+    }
+
+    public void setLastMsg(String lastMsg) {
+        this.lastMsg = lastMsg;
+    }
 
     @SerializedName("request_id")
     @Expose

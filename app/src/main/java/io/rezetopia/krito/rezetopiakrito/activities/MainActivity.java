@@ -122,35 +122,36 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
 
         new getTask().execute();
 
-        //FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
+        FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
         Firebase.setAndroidContext(this);
-        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-
-
-        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
-
-                if (snapshot.hasChild("friends_pending_"+userId)) {
-                    Toast.makeText(getBaseContext(),"1",Toast.LENGTH_LONG).show();
-                    Log.d("check_child","exsist child");
-                }
-                else{
-                    Log.d("check_child","not exsist child");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//
+//
+//        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
+//
+//                if (snapshot.hasChild("friends_pending_"+userId)) {
+//                    Toast.makeText(getBaseContext(),"1",Toast.LENGTH_LONG).show();
+//                    Log.d("check_child","exsist child");
+//                }
+//                else{
+//                    Log.d("check_child","not exsist child");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         reference1 = new Firebase("https://rezetopiachat.firebaseio.com/noteall");
         reference2 = new Firebase("https://rezetopiachat.firebaseio.com/requests/friends_pending_"+userId);
         reference2.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 new getTask().execute();
+                Toast.makeText(MainActivity.this, "add", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 new getTask().execute();
+                Toast.makeText(MainActivity.this, "remove", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -174,13 +176,13 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             }
         });
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getBaseContext(), NetworkList.class);
-//                startActivity(intent);
-//            }
-//        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), NetworkList.class);
+                startActivity(intent);
+            }
+        });
 
         reference1.addChildEventListener(new ChildEventListener() {
             @Override
@@ -342,6 +344,15 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        Toast.makeText(this, "resume main ac", Toast.LENGTH_SHORT).show();
+        FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), NetworkList.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void active(View view){
@@ -955,6 +966,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
                         JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+userId));
                         Log.d("check_count",obj2.getString("count"));
                         Toast.makeText(MainActivity.this, obj2.getString("count"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "500500", Toast.LENGTH_SHORT).show();
                         if (obj2.getString("count").equals("0")){
                             TextView textView = reqView.findViewById(R.id.req_count);
                             textView.setVisibility(View.GONE);

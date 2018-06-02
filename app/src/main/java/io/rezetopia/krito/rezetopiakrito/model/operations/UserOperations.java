@@ -395,7 +395,7 @@ public class UserOperations{
         @Override
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "reze/user_post.php";
-            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php", ApiResponse.class,
+            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.com/app/reze/user_post.php", ApiResponse.class,
                     new Response.Listener<ApiResponse>() {
                         @Override
                         public void onResponse(ApiResponse response) {
