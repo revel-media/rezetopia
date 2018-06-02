@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -65,6 +66,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import io.rezetopia.krito.rezetopiakrito.fragments.Home;
 import io.rezetopia.krito.rezetopiakrito.fragments.Notification;
+import io.rezetopia.krito.rezetopiakrito.fragments.Requests;
 import io.rezetopia.krito.rezetopiakrito.helper.MainPagerAdapter;
 import io.rezetopia.krito.rezetopiakrito.fragments.Profile;
 import io.rezetopia.krito.rezetopiakrito.R;
@@ -108,20 +110,24 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     public int requestsNumber;
     Firebase reference1;
     Firebase reference2;
+    Firebase reference3;
+    String state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        state = intent.getStringExtra("notify");
         getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
                 .putInt(AppConfig.REQUEST_NOTIFICATIONS_NUMBER, 0).apply();
         //mAuth = FirebaseAuth.getInstance();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         userId = getBaseContext().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
-
-        new getTask().execute();
-
+        if (state == null){
+            new getTask().execute();
+        }
         FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
         Firebase.setAndroidContext(this);
 //        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -151,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 new getTask().execute();
-                Toast.makeText(MainActivity.this, "add", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(MainActivity.this, "add", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -162,7 +168,34 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 new getTask().execute();
-                Toast.makeText(MainActivity.this, "remove", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(MainActivity.this, "remove", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        reference3 = new Firebase("https://rezetopiachat.firebaseio.com/friends");
+        reference3.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                new getMessage().execute();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                new getMessage().execute();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
             }
 
             @Override
@@ -187,28 +220,6 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
         reference1.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-//                        getApplicationContext()).setAutoCancel(true)
-//                        .setContentTitle("رزيتوبيا")
-//                        .setSmallIcon(R.drawable.rezetopia)
-//                        .setContentText("رزيتوبيا");
-//                NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-//                bigText.bigText(dataSnapshot.getValue().toString());
-//                bigText.setBigContentTitle("رزيتوبيا");
-//                bigText.setSummaryText("المدير التنفيذي");
-//                mBuilder.setStyle(bigText);
-//                mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
-//                Intent resultIntent = new Intent(getApplicationContext(),
-//                        MainActivity.class);
-//                TaskStackBuilder stackBuilder = TaskStackBuilder
-//                        .create(getApplicationContext());
-//                stackBuilder.addParentStack(MainActivity.class);
-//                stackBuilder.addNextIntent(resultIntent);
-//                PendingIntent resultPendingIntent = stackBuilder
-//                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-//                mBuilder.setContentIntent(resultPendingIntent);
-//                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                mNotificationManager.notify(100, mBuilder.build());
                 AlertDialog.Builder popupBuilder = new AlertDialog.Builder(MainActivity.this);
                 //popupBuilder.setIcon(R.drawable.rezetopia);
                 popupBuilder.setTitle("RezeTopia");
@@ -344,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        Toast.makeText(this, "resume main ac", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "resume main ac", Toast.LENGTH_SHORT).show();
         FrameLayout fab = (FrameLayout) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -965,14 +976,106 @@ public class MainActivity extends AppCompatActivity implements Home.OnCallback,N
                         JSONObject obj = new JSONObject(s);
                         JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+userId));
                         Log.d("check_count",obj2.getString("count"));
-                        Toast.makeText(MainActivity.this, obj2.getString("count"), Toast.LENGTH_SHORT).show();
-                        Toast.makeText(MainActivity.this, "500500", Toast.LENGTH_SHORT).show();
                         if (obj2.getString("count").equals("0")){
                             TextView textView = reqView.findViewById(R.id.req_count);
                             textView.setVisibility(View.GONE);
                         }else{
                             TextView textView = reqView.findViewById(R.id.req_count);
                             textView.setVisibility(View.VISIBLE);
+                            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                                    getApplicationContext()).setAutoCancel(true)
+                                    .setContentTitle("رزيتوبيا")
+                                    .setSmallIcon(R.drawable.rezetopia)
+                                    .setContentText("رزيتوبيا");
+                            NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+                            bigText.bigText("لديك طلب صداقة جديد");
+                            bigText.setBigContentTitle("رزيتوبيا");
+                            bigText.setSummaryText("Friend Request");
+                            mBuilder.setStyle(bigText);
+                            mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+                            Intent resultIntent = new Intent(getApplicationContext(),
+                                    MainActivity.class);
+                            resultIntent.putExtra("notify","1");
+                            TaskStackBuilder stackBuilder = TaskStackBuilder
+                                    .create(getApplicationContext());
+                            stackBuilder.addParentStack(MainActivity.class);
+                            stackBuilder.addNextIntent(resultIntent);
+                            PendingIntent resultPendingIntent = stackBuilder
+                                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                            mBuilder.setContentIntent(resultPendingIntent);
+                            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            mBuilder.setSound(alarmSound);
+                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            mNotificationManager.notify(100, mBuilder.build());
+                            textView.setText(obj2.getString("count"));
+                        }
+
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            },new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    System.out.println("" + volleyError );
+                }
+            });
+
+            RequestQueue rQueue1 = Volley.newRequestQueue(MainActivity.this);
+            rQueue1.add(request2);
+            return null;
+        }
+    }
+    private class getMessage extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            String url2 = "https://rezetopiachat.firebaseio.com/friends.json";
+            StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
+                @Override
+                public void onResponse(String s) {
+
+                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends");
+                    try {
+                        JSONObject obj = new JSONObject(s);
+                        JSONObject obj2 = new JSONObject(obj.getString("friends_"+userId));
+                        Log.d("check_count",obj2.getString("count"));
+                        if (obj2.getString("count").equals("0")){
+                            TextView textView = findViewById(R.id.msgNote);
+                            textView.setVisibility(View.GONE);
+                        }else{
+                            TextView textView = findViewById(R.id.msgNote);
+                            textView.setVisibility(View.VISIBLE);
+                            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                                    getApplicationContext()).setAutoCancel(true)
+                                    .setContentTitle("رزيتوبيا")
+                                    .setSmallIcon(R.drawable.rezetopia)
+                                    .setContentText("رزيتوبيا");
+                            NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+                            bigText.bigText("لديك رسالة جديده");
+                            bigText.setBigContentTitle("رزيتوبيا");
+                            bigText.setSummaryText("New Message");
+                            mBuilder.setStyle(bigText);
+                            mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+                            Intent resultIntent = new Intent(getApplicationContext(),
+                                    MainActivity.class);
+                            TaskStackBuilder stackBuilder = TaskStackBuilder
+                                    .create(getApplicationContext());
+                            stackBuilder.addParentStack(MainActivity.class);
+                            stackBuilder.addNextIntent(resultIntent);
+                            PendingIntent resultPendingIntent = stackBuilder
+                                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                            mBuilder.setContentIntent(resultPendingIntent);
+                            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            mBuilder.setSound(alarmSound);
+                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            mNotificationManager.notify(100, mBuilder.build());
                             textView.setText(obj2.getString("count"));
                         }
 

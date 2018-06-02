@@ -414,10 +414,14 @@ public class Profile extends Fragment {
                         playerMatchesTv.setText("0");
                         playerLevelsTv.setText("0");
                         playerPointsTv.setText("0");
+                         if (userId.equals("1")){
+                             playerImg.setImageResource(R.drawable.rezetopia);
+                         }else{
+                             Picasso.with(getApplicationContext())
+                                     .load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
+                                     .placeholder(R.drawable.circle).into(playerImg);
+                         }
 
-                            Picasso.with(getApplicationContext())
-                                    .load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
-                                    .placeholder(R.drawable.circle).into(playerImg);
 //                            Picasso.with(getApplicationContext())
 //                                    .load("http://rezetopia.dev-krito.com/images/coverImgs/" + jsonObject.getString("cover") + ".JPG")
 //                                    .placeholder(R.drawable.cover).into(cover);

@@ -3,10 +3,12 @@ package io.rezetopia.krito.rezetopiakrito.activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.text.emoji.widget.EmojiTextView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,7 +94,7 @@ public class Chat extends AppCompatActivity {
         scrollView = (ScrollView)findViewById(R.id.scrollView);
         scrollView.fullScroll(View.FOCUS_DOWN);
         guestUserId = getIntent().getStringExtra("guestUserId");
-
+        new openAsync().execute();
         getUser(guestUserId, Volley.newRequestQueue(this));
         userId = Chat.this.getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
@@ -109,6 +111,7 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onResponse(String s) {
                 pd.dismiss();
+
             }
         },new Response.ErrorListener(){
             @Override
@@ -128,6 +131,7 @@ public class Chat extends AppCompatActivity {
                 String messageText = messageArea.getText().toString();
 
                 if(!messageText.equals("")){
+                    new lastMsg().execute(messageText);
                     Map<String, String> map = new HashMap<String, String>();
                     map.put("message", messageText);
                     map.put("user", userId);
@@ -257,6 +261,93 @@ public class Chat extends AppCompatActivity {
             }
         };
         requestQueue.add(request);
+
+    }
+    private class lastMsg extends AsyncTask<String, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(final String... strings) {
+            String url2 = "https://rezetopiachat.firebaseio.com/friends/friends_"+userId+".json";
+            StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
+                @Override
+                public void onResponse(String s) {
+                    Log.d("check_rse",s.toString());
+                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends/friends_"+userId);
+                        reference.child(guestUserId).child("time").setValue(System.currentTimeMillis()/1000);
+                        reference.child(guestUserId).child("lastMsg").setValue(strings[0]);
+                }
+
+            },new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    System.out.println("" + volleyError );
+                }
+            });
+
+            RequestQueue rQueue1 = Volley.newRequestQueue(Chat.this);
+            rQueue1.add(request2);
+            String url3 = "https://rezetopiachat.firebaseio.com/friends/friends_"+guestUserId+".json";
+            StringRequest request3 = new StringRequest(Request.Method.GET, url3, new Response.Listener<String>(){
+                @Override
+                public void onResponse(String s) {
+                    Log.d("check_rse",s.toString());
+                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends/friends_"+guestUserId);
+                    reference.child(userId).child("time").setValue(System.currentTimeMillis()/1000);
+                    reference.child(userId).child("lastMsg").setValue(strings[0]);
+                    reference.child(userId).child("read").setValue(0);
+                    try {
+                        JSONObject obj = new JSONObject(s);
+                        Log.d("check_rse",obj.getString("count"));
+                        if (obj.has("count")) {
+                            int val = Integer.parseInt(obj.getString("count"));
+                            val = val+=1;
+                            reference.child("count").setValue(val);
+                        } else {
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            },new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    System.out.println("" + volleyError );
+                }
+            });
+
+            RequestQueue rQueue2 = Volley.newRequestQueue(Chat.this);
+            rQueue2.add(request3);
+            return null;
+        }
+    }
+    private class openAsync extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(final Void... voids) {
+
+            String url2 = "https://rezetopiachat.firebaseio.com/friends/friends_"+userId+".json";
+            StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
+                @Override
+                public void onResponse(String s) {
+                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends/friends_"+userId);
+                    reference.child(guestUserId).child("read").setValue("1");
+
+                }
+
+            },new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    System.out.println("" + volleyError );
+                }
+            });
+
+            RequestQueue rQueue1 = Volley.newRequestQueue(Chat.this);
+            rQueue1.add(request2);
+            return null;
+        }
 
     }
 

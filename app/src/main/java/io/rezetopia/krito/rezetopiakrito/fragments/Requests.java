@@ -60,7 +60,7 @@ public class Requests extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(getActivity(), "open", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), "open", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class Requests extends Fragment {
         }
 
         public void bind(final User user, final int position){
-            Toast.makeText(getActivity(), "inner", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "inner", Toast.LENGTH_SHORT).show();
             new NameAsync().execute();
             new ReadAsync().execute();
             if (user.getImageUrl() != null){
@@ -217,7 +217,7 @@ public class Requests extends Fragment {
                         JSONObject obj = new JSONObject(s);
                         JSONObject obj2 = new JSONObject(obj.getString("friends_pending_"+userId));
                         Log.d("check_remove",obj2.getString("count"));
-                        reference.child("friends_pending_"+userId).child(strings[0]).removeValue();
+                       // reference.child("friends_pending_"+userId).child(strings[0]).removeValue();
                         int val = Integer.parseInt(obj2.getString("count"));
                         if (val !=0){
                             val = val-=1;
@@ -247,10 +247,12 @@ public class Requests extends Fragment {
 
                     if(s.equals("null")) {
                         reference.child("count").setValue(1);
+                       // reference.child("messages").setValue(1);
                         reference.child(strings[0]).child("id").setValue(strings[0]);
                         reference.child(strings[0]).child("name").setValue(strings[2]);
                         reference.child(strings[0]).child("time").setValue(System.currentTimeMillis()/1000);
                         reference.child(strings[0]).child("lastMsg").setValue(getResources().getString(R.string.startMsg));
+                        reference.child(strings[0]).child("read").setValue("0");
                     }
                     else {
 
@@ -262,10 +264,12 @@ public class Requests extends Fragment {
                                 val = val+=1;
 
                                 reference.child("count").setValue(val);
+                               // reference.child("messages").setValue(1);
                                 reference.child(strings[0]).child("id").setValue(strings[0]);
                                 reference.child(strings[0]).child("name").setValue(strings[2]);
                                 reference.child(strings[0]).child("time").setValue(System.currentTimeMillis()/1000);
                                 reference.child(strings[0]).child("lastMsg").setValue(getResources().getString(R.string.startMsg));
+                                reference.child(strings[0]).child("read").setValue("0");
                             } else {
 
                             }
@@ -295,10 +299,12 @@ public class Requests extends Fragment {
 
                     if(s.equals("null")) {
                         reference.child("count").setValue(1);
+                        //reference.child("messages").setValue(1);
                         reference.child(userId).child("id").setValue(userId);
                         reference.child(userId).child("name").setValue(strings[3]);
                         reference.child(userId).child("time").setValue(System.currentTimeMillis()/1000);
                         reference.child(userId).child("lastMsg").setValue(getResources().getString(R.string.startMsg));
+                        reference.child(userId).child("read").setValue("0");
                     }
                     else {
 
@@ -310,10 +316,12 @@ public class Requests extends Fragment {
                                 val = val+=1;
 
                                 reference.child("count").setValue(val);
+                               // reference.child("messages").setValue(1);
                                 reference.child(userId).child("id").setValue(userId);
                                 reference.child(userId).child("name").setValue(strings[3]);
                                 reference.child(userId).child("time").setValue(System.currentTimeMillis()/1000);
                                 reference.child(userId).child("lastMsg").setValue(getResources().getString(R.string.startMsg));
+                                reference.child(userId).child("read").setValue("0");
                             } else {
 
                             }

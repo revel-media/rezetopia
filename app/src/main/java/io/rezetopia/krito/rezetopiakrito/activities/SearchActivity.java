@@ -177,7 +177,7 @@ public class SearchActivity extends AppCompatActivity {
             }else{
                 progressBar.setVisibility(View.VISIBLE);
             }
-        Toast.makeText(SearchActivity.this, q, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(SearchActivity.this, q, Toast.LENGTH_SHORT).show();
             UserOperations.setSearchCallback(new UserOperations.SearchCallback() {
                 @Override
                 public void onResponse(SearchResult result) {

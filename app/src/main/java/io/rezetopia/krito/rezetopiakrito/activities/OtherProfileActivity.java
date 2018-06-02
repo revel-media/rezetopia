@@ -1195,9 +1195,14 @@ public class OtherProfileActivity extends AppCompatActivity {
 //                        playerMatchesTv.setText("0");
 //                        playerLevelsTv.setText("0");
 //                        playerPointsTv.setText("0");
+                        if (profileId.equals("1")){
+                            imageView.setImageResource(R.drawable.rezetopia);
+                        }else{
                             Picasso.with(getApplicationContext())
                                     .load("http://rezetopia.dev-krito.com/images/profileImgs/" + jsonObject.getString("img") + ".JPG")
                                     .placeholder(R.drawable.circle).into(imageView);
+                        }
+
 //                            Picasso.with(getApplicationContext())
 //                                    .load("http://rezetopia.dev-krito.com/images/coverImgs/" + jsonObject.getString("cover") + ".JPG")
 //                                    .placeholder(R.drawable.cover).into(cover);
@@ -1206,7 +1211,6 @@ public class OtherProfileActivity extends AppCompatActivity {
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                                 cover.setBackground(new BitmapDrawable(bitmap));
                             }
-
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
 

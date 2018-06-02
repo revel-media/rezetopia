@@ -67,7 +67,6 @@ public class NetworkList extends AppCompatActivity {
         mActionBar.setDisplayShowTitleEnabled(false);
 
         reference = new Firebase("https://rezetopiachat.firebaseio.com/friends/friends_"+userId);
-        reference.orderByChild("time");
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         LayoutInflater mInflater = LayoutInflater.from(this);
         userId = NetworkList.this.getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
@@ -97,13 +96,20 @@ public class NetworkList extends AppCompatActivity {
 
         public void bind(final User user){
             username.setText(user.getName());
+            if (user.getRead().equals("0")){
+                lastmsg.setTextColor(getResources().getColor(R.color.black));
+            }
             lastmsg.setText(user.getLastMsg());
             ((TextView)itemView.findViewById(R.id.id)).setText(String.valueOf(user.getId()));
             new MyAsyncTask(String.valueOf(user.getId()),(ImageView) itemView.findViewById(R.id.ppView)).execute();
             new MyAsyncTask1(String.valueOf(user.getId())).execute();
             new MyAsyncTask3().execute();
+            new ReadAsync().execute();
         }
     }
+
+
+
     private class UserRecyclerAdapter extends RecyclerView.Adapter<CommentViewHolder>{
 
         @NonNull
@@ -122,6 +128,7 @@ public class NetworkList extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(NetworkList.this, Chat.class);
                     intent.putExtra("guestUserId",((TextView)holder.itemView.findViewById(R.id.id)).getText());
+
                     startActivity(intent);
                    // Toast.makeText(getBaseContext(),((TextView)holder.itemView.findViewById(R.id.id)).getText(),Toast.LENGTH_LONG).show();
                 }
@@ -143,24 +150,27 @@ public class NetworkList extends AppCompatActivity {
 
                 try {
                     JSONObject jsonObject = new JSONObject(s);
-                    Toast.makeText(NetworkList.this, jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(NetworkList.this, jsonObject.toString(), Toast.LENGTH_SHORT).show();
                     Iterator i = jsonObject.keys();
                     String name = "";
                     String id = "";
                     String lastMsg = "";
+                    String read = "";
                     String title = "";
                     while (i.hasNext()){
                         title = i.next().toString();
                         if (!title.equals("count")){
-                            Toast.makeText(NetworkList.this, title, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(NetworkList.this, title, Toast.LENGTH_SHORT).show();
                             name = new JSONObject(jsonObject.getString(title)).getString("name");
                             id = new JSONObject(jsonObject.getString(title)).getString("id");
                             lastMsg = new JSONObject(jsonObject.getString(title)).getString("lastMsg");
+                            read = new JSONObject(jsonObject.getString(title)).getString("read");
                             Log.i("response", "onResponse: " + name +" "+id);
                             User userResponse = new User();
                             userResponse.setName(name);
                             userResponse.setId(Integer.parseInt(id));
                             userResponse.setLastMsg(lastMsg);
+                            userResponse.setRead(read);
                             users.add(userResponse);
                             friendsRecyclerView.setLayoutManager(new LinearLayoutManager(NetworkList.this));
                             friendsRecyclerView.setAdapter(adapter);
@@ -385,6 +395,45 @@ public class NetworkList extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
         }
+    }
+    private class ReadAsync extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(final Void... voids) {
+
+            String url2 = "https://rezetopiachat.firebaseio.com/friends.json";
+            StringRequest request2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>(){
+                @Override
+                public void onResponse(String s) {
+
+                    Firebase reference = new Firebase("https://rezetopiachat.firebaseio.com/friends");
+                    try {
+                        JSONObject obj = new JSONObject(s);
+                        JSONObject obj2 = new JSONObject(obj.getString("friends_"+userId));
+                        Log.d("check_remove",obj2.getString("count"));
+                        int val = Integer.parseInt(obj2.getString("count"));
+                        if (val !=0){
+                            val = val-=1;
+                            reference.child("friends_"+userId).child("count").setValue(val);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            },new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    System.out.println("" + volleyError );
+                }
+            });
+
+            RequestQueue rQueue1 = Volley.newRequestQueue(NetworkList.this);
+            rQueue1.add(request2);
+            return null;
+        }
+
     }
 }
 

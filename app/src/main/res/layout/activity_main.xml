@@ -43,10 +43,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
         <TextView
+            android:id="@+id/msgNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/red"
-            android:text="1"
+            android:text="0"
+            android:visibility="gone"
             android:layout_marginTop="3dp"
             android:layout_marginLeft="5dp"
             android:textSize="15dp"

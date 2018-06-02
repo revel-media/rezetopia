@@ -3,6 +3,7 @@ package io.rezetopia.krito.rezetopiakrito.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -1054,8 +1055,6 @@ public class Home extends Fragment {
 
             @Override
             public void onError(String error) {
-//                AlertFragment fragment = AlertFragment.createFragment(error);
-//                fragment.show(getActivity().getFragmentManager(), null);
                 homeProgress.setVisibility(View.GONE);
             }
         });
@@ -1072,7 +1071,8 @@ public class Home extends Fragment {
 
                     if (visibleItemCount == totalItemCount) {
                         Log.v("ScrollRecView", "Last Item");
-                        fetchNews(String.valueOf(newsFeed.getNextCursor()), false);
+                        //fetchNews(String.valueOf(newsFeed.getNextCursor()), false);
+                        new news().execute();
                     }
                 }
             }
@@ -1274,5 +1274,14 @@ public class Home extends Fragment {
             }
         });
         popupWindow.show();
+    }
+    private class news extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            fetchNews(String.valueOf(newsFeed.getNextCursor()), false);
+            return null;
+        }
     }
 }
