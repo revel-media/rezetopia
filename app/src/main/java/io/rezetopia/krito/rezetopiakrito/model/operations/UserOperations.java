@@ -552,7 +552,7 @@ public class UserOperations{
                     HashMap<String, String> map = new HashMap<>();
                     map.put("method", "get_news_feed");
                     map.put("userId", strings[0]);
-                    map.put("cursor", strings[1]);
+                   // map.put("cursor", strings[1]);
 
                     return map;
                 }

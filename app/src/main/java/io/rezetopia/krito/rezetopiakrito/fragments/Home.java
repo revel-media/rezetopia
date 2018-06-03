@@ -276,59 +276,59 @@ public class Home extends Fragment {
 
         public void bind(final NewsFeedItem item, final int pos) {
 
-            if (item.getItemImage() != null){
-                Picasso.with(getActivity()).load(item.getItemImage()).into(ppView);
-            } else {
-                ppView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_avatar));
-            }
-
-            if (item.getOwnerId() == 1){
-                verifyHeader.setVisibility(View.VISIBLE);
-            } else {
-                verifyHeader.setVisibility(View.GONE);
-            }
-
-            if (item.getPostAttachment() != null && item.getPostAttachment().getImages() != null) {
-                if (item.getPostAttachment().getImages().length > 0) {
-                    if (item.getPostAttachment().getImages()[0].getPath() != null) {
-                        postImage.setVisibility(View.VISIBLE);
-                        Picasso.with(getActivity()).load(item.getPostAttachment().getImages()[0].getPath()).into(postImage);
-
-                        postImage.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(getActivity(), ImageActivity.class);
-                                intent.putExtra("url_extra", item.getPostAttachment().getImages()[0].getPath());
-                                intent.putExtra("item_view", true);
-                                startActivity(intent);
-                            }
-                        });
-                    } else {
-                        postImage.setVisibility(View.GONE);
-                    }
-                } else {
-                    postImage.setVisibility(View.GONE);
-                }
-            } else {
-                postImage.setVisibility(View.GONE);
-            }
-
-            String postText = null;
-            if (item.getOwnerName() != null){
-                usernameView.setText(item.getOwnerName());
-            }
-            Date date = null;
-            try {
-                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            long milliseconds = date.getTime();
-            long millisecondsFromNow = milliseconds - now;
-            dateView.setText(DateUtils.getRelativeDateTimeString(getActivity(), milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
-            if (item.getPostText() != null && !item.getPostText().isEmpty()){
-                postTextView.setText(item.getPostText());
-            }
+//            if (item.getItemImage() != null){
+//                Picasso.with(getActivity()).load(item.getItemImage()).into(ppView);
+//            } else {
+//                ppView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.default_avatar));
+//            }
+//
+//            if (item.getOwnerId() == 1){
+//                verifyHeader.setVisibility(View.VISIBLE);
+//            } else {
+//                verifyHeader.setVisibility(View.GONE);
+//            }
+//
+//            if (item.getPostAttachment() != null && item.getPostAttachment().getImages() != null) {
+//                if (item.getPostAttachment().getImages().length > 0) {
+//                    if (item.getPostAttachment().getImages()[0].getPath() != null) {
+//                        postImage.setVisibility(View.VISIBLE);
+//                        Picasso.with(getActivity()).load(item.getPostAttachment().getImages()[0].getPath()).into(postImage);
+//
+//                        postImage.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                Intent intent = new Intent(getActivity(), ImageActivity.class);
+//                                intent.putExtra("url_extra", item.getPostAttachment().getImages()[0].getPath());
+//                                intent.putExtra("item_view", true);
+//                                startActivity(intent);
+//                            }
+//                        });
+//                    } else {
+//                        postImage.setVisibility(View.GONE);
+//                    }
+//                } else {
+//                    postImage.setVisibility(View.GONE);
+//                }
+//            } else {
+//                postImage.setVisibility(View.GONE);
+//            }
+//
+//            String postText = null;
+//            if (item.getOwnerName() != null){
+//                usernameView.setText(item.getOwnerName());
+//            }
+//            Date date = null;
+//            try {
+//                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            long milliseconds = date.getTime();
+//            long millisecondsFromNow = milliseconds - now;
+//            dateView.setText(DateUtils.getRelativeDateTimeString(getActivity(), milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
+//            if (item.getPostText() != null && !item.getPostText().isEmpty()){
+//                postTextView.setText(item.getPostText());
+//            }
 
 
             /*try {
@@ -345,113 +345,113 @@ public class Home extends Fragment {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }*/
-            String likeString = getActivity().getResources().getString(R.string.like);
-            if (item.getLikes() != null && item.getLikes().length > 0){
-
-                likeButton.setText(item.getLikes().length + " " + likeString);
-                Log.e("post_like ->> " + item.getPostText(), item.getLikes().length + " " + likeString);
-
-                //Log.e("loggedInUserId", userId);
-                for (int id : item.getLikes()) {
-                    //Log.e("likesUserId", String.valueOf(id));
-                    if (String.valueOf(id).contentEquals(String.valueOf(userId))){
-                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
-                        break;
-                    } else {
-                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
-                    }
-                }
-            } else {
-                likeButton.setText(likeString);
-                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
-            }
-            String commentString = getActivity().getResources().getString(R.string.comment);
-            if (item.getCommentSize() > 0){
-
-                commentButton.setText(item.getCommentSize() + " " + commentString);
-                Log.e("post_comment ->> " + item.getPostText(), (item.getCommentSize() + " " + commentString));
-            } else {
-                commentButton.setText(commentString);
-            }
-
-            commentButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = CommentActivity.createIntent(item.getLikes(), item.getId(), now, item.getOwnerId(),
-                            getActivity());
-
-                    //adapterPos = pos;
-                    startActivityForResult(intent, COMMENT_ACTIVITY_RESULT);
-                    getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
-
-                }
-            });
-
-            //todo
-            likeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    String likeString = getActivity().getResources().getString(R.string.like);
-
-                    if (item.getLikes() != null) {
-                        for (int i = 0; i < item.getLikes().length; i++) {
-                            if (item.getLikes()[i] == Integer.parseInt(userId)) {
-
-                                if (item.getLikes().length > 1) {
-                                    likeButton.setText((item.getLikes().length - 1) + " " + likeString);
-                                } else {
-                                    likeButton.setText(likeString);
-                                }
-                                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
-                                reverseLike(item, pos);
-                                return;
-                            }
-                        }
-                    }
-
-
-                    likeButton.setText((item.getLikes().length + 1) + " " + likeString);
-                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
-                    performLike(item, pos);
-
-                }
-            });
-
-            usernameView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (item.getOwnerId() == Integer.parseInt(userId)) {
-                        mListener.onProfile();
-                    } else if (item.getType() == NewsFeedItem.POST_TYPE) {
-                        startOtherProfile(item);
-                    }
-                }
-            });
-
-            ppView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (item.getOwnerId() == Integer.parseInt(userId)) {
-                        mListener.onProfile();
-                    } else if (item.getType() == NewsFeedItem.POST_TYPE) {
-                        startOtherProfile(item);
-                        //Log.i("IMAGE", "onClick: " + item.getItemImage());
-                    }
-                }
-            });
-
-
-            postSideMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(userId))) {
-                        showPostPopupWindow(postSideMenu, true, item.getId(), item.getOwnerId());
-                    } else {
-                        showPostPopupWindow(postSideMenu, false, item.getId(), item.getOwnerId());
-                    }
-                }
-            });
+//            String likeString = getActivity().getResources().getString(R.string.like);
+//            if (item.getLikes() != null && item.getLikes().length > 0){
+//
+//                likeButton.setText(item.getLikes().length + " " + likeString);
+//                Log.e("post_like ->> " + item.getPostText(), item.getLikes().length + " " + likeString);
+//
+//                //Log.e("loggedInUserId", userId);
+//                for (int id : item.getLikes()) {
+//                    //Log.e("likesUserId", String.valueOf(id));
+//                    if (String.valueOf(id).contentEquals(String.valueOf(userId))){
+//                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
+//                        break;
+//                    } else {
+//                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
+//                    }
+//                }
+//            } else {
+//                likeButton.setText(likeString);
+//                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
+//            }
+//            String commentString = getActivity().getResources().getString(R.string.comment);
+//            if (item.getCommentSize() > 0){
+//
+//                commentButton.setText(item.getCommentSize() + " " + commentString);
+//                Log.e("post_comment ->> " + item.getPostText(), (item.getCommentSize() + " " + commentString));
+//            } else {
+//                commentButton.setText(commentString);
+//            }
+//
+//            commentButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = CommentActivity.createIntent(item.getLikes(), item.getId(), now, item.getOwnerId(),
+//                            getActivity());
+//
+//                    //adapterPos = pos;
+//                    startActivityForResult(intent, COMMENT_ACTIVITY_RESULT);
+//                    getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+//
+//                }
+//            });
+//
+//            //todo
+//            likeButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    String likeString = getActivity().getResources().getString(R.string.like);
+//
+//                    if (item.getLikes() != null) {
+//                        for (int i = 0; i < item.getLikes().length; i++) {
+//                            if (item.getLikes()[i] == Integer.parseInt(userId)) {
+//
+//                                if (item.getLikes().length > 1) {
+//                                    likeButton.setText((item.getLikes().length - 1) + " " + likeString);
+//                                } else {
+//                                    likeButton.setText(likeString);
+//                                }
+//                                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
+//                                reverseLike(item, pos);
+//                                return;
+//                            }
+//                        }
+//                    }
+//
+//
+//                    likeButton.setText((item.getLikes().length + 1) + " " + likeString);
+//                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star_holo_green,  0, 0, 0);
+//                    performLike(item, pos);
+//
+//                }
+//            });
+//
+//            usernameView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (item.getOwnerId() == Integer.parseInt(userId)) {
+//                        mListener.onProfile();
+//                    } else if (item.getType() == NewsFeedItem.POST_TYPE) {
+//                        startOtherProfile(item);
+//                    }
+//                }
+//            });
+//
+//            ppView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (item.getOwnerId() == Integer.parseInt(userId)) {
+//                        mListener.onProfile();
+//                    } else if (item.getType() == NewsFeedItem.POST_TYPE) {
+//                        startOtherProfile(item);
+//                        //Log.i("IMAGE", "onClick: " + item.getItemImage());
+//                    }
+//                }
+//            });
+//
+//
+//            postSideMenu.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(userId))) {
+//                        showPostPopupWindow(postSideMenu, true, item.getId(), item.getOwnerId());
+//                    } else {
+//                        showPostPopupWindow(postSideMenu, false, item.getId(), item.getOwnerId());
+//                    }
+//                }
+//            });
         }
 
         private void startOtherProfile(NewsFeedItem item){
