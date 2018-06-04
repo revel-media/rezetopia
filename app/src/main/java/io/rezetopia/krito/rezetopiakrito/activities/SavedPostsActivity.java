@@ -434,7 +434,7 @@ public class SavedPostsActivity extends AppCompatActivity {
         }
 
 
-        ListAdapter adapter = new ListPopupWindowAdapter(SavedPostsActivity.this, itemList);
+        ListAdapter adapter = new ListPopupWindowAdapter(SavedPostsActivity.this, itemList, R.layout.custom_menu);
         popupWindow.setAnchorView(anchor);
         popupWindow.setAdapter(adapter);
         popupWindow.setWidth(400);

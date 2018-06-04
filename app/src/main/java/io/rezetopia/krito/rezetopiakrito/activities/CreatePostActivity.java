@@ -180,8 +180,8 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
                     encodedImages.add(encodedImage);
                 }
 
-                HashMap<String, ArrayList<String>> jsonMap = new HashMap<>();
-                jsonMap.put("imageList", encodedImages);
+//                HashMap<String, ArrayList<String>> jsonMap = new HashMap<>();
+//                jsonMap.put("imageList", encodedImages);
             }
         }
 
@@ -191,42 +191,58 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onResponse(String response) {
                         Log.i("create_post_response", "onResponse: " + response);
+                        PostResponse postResponse = new PostResponse();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            PostResponse postResponse = new PostResponse();
-                            //todo add
-                            postResponse.setUsername(jsonObject.getString("username"));
-                            postResponse.setCreatedAt(jsonObject.getString("createdAt"));
-                            postResponse.setText(jsonObject.getString("text"));
-                            postResponse.setPostId(jsonObject.getInt("post_id"));
-                            postResponse.setCreatedAt(jsonObject.getString("createdAt"));
-                            JSONArray urls = jsonObject.getJSONArray("urls");
-                            MediaResponse media = new MediaResponse();
-                            media.setPath(urls.getString(0));
-                            AttachmentResponse attachmentResponse = new AttachmentResponse();
-                            attachmentResponse.setImages(new MediaResponse[]{media});
-                            postResponse.setAttachment(attachmentResponse);
-                            postResponse.setUserId(userId);
+
+
+
+                            if (jsonObject.getInt("post_id") > 0){
+                                postResponse.setUserId(userId);
+                                postResponse.setPostId(jsonObject.getInt("post_id"));
+                                postResponse.setUsername(jsonObject.getString("username"));
+                                postResponse.setCreatedAt(jsonObject.getString("createdAt"));
+                                if (jsonObject.getString("text") != null && !jsonObject.getString("text").isEmpty()){
+                                    postResponse.setText(jsonObject.getString("text"));
+                                }
+
+                                if (jsonObject.getJSONArray("urls") != null && jsonObject.getJSONArray("urls").length() > 0){
+                                    JSONArray urls = jsonObject.getJSONArray("urls");
+                                    MediaResponse media = new MediaResponse();
+                                    media.setPath(urls.getString(0));
+                                    AttachmentResponse attachmentResponse = new AttachmentResponse();
+                                    attachmentResponse.setImages(new MediaResponse[]{media});
+                                    postResponse.setAttachment(attachmentResponse);
+                                }
+                            } else {
+                                dialog.dismiss();
+                            }
+
+                        } catch (JSONException e) {
+                            Log.i("create_post_response", "onResponse: " + e.toString());
+                            e.printStackTrace();
+                        }
+
+                        if (postResponse.getPostId() > 0){
                             Intent intent = new Intent();
                             intent.putExtra("post", postResponse);
                             setResult(RESULT_OK, intent);
                             onBackPressed();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            dialog.dismiss();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("volley error", "onErrorResponse: " + error.getMessage());
-                dialog.dismiss();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
 
-                if (encodedImages.size() > 0) {
+                if (encodedImages != null && encodedImages.size() > 0) {
                     for (String value : encodedImages) {
                         map.put(String.valueOf(encodedImages.indexOf(value)), value);
                     }

@@ -12,6 +12,14 @@ public class NewsFeed {
     int nextCursor;
     long now;
 
+    public void addAllItems(ArrayList<NewsFeedItem> s){
+        if (items != null){
+            items.addAll(s);
+        } else {
+            items = s;
+        }
+    }
+
     public ArrayList<NewsFeedItem> getItems() {
         return items;
     }

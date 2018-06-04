@@ -626,7 +626,7 @@ public class GroupHome extends Fragment {
         }
 
 
-        ListAdapter adapter = new ListPopupWindowAdapter(getActivity(), itemList);
+        ListAdapter adapter = new ListPopupWindowAdapter(getActivity(), itemList, R.layout.custom_menu);
         popupWindow.setAnchorView(anchor);
         popupWindow.setAdapter(adapter);
         popupWindow.setWidth(400);

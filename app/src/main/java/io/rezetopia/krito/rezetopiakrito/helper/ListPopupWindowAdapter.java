@@ -11,18 +11,22 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import io.rezetopia.krito.rezetopiakrito.R;
+
 /**
- * Created by Mona Abdallh on 4/26/2018.
+ * Created by Ahmed Ali on 4/26/2018.
  */
 
 public class ListPopupWindowAdapter extends BaseAdapter {
 
     LayoutInflater mLayoutInflater;
     List<MenuCustomItem> mItemList;
+    int mLayout;
 
-    public ListPopupWindowAdapter(Context context, List<MenuCustomItem> itemList) {
+    public ListPopupWindowAdapter(Context context, List<MenuCustomItem> itemList, int layout) {
         mLayoutInflater = LayoutInflater.from(context);
         mItemList = itemList;
+        mLayout = layout;
     }
 
     @Override
@@ -44,7 +48,7 @@ public class ListPopupWindowAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(io.rezetopia.krito.rezetopiakrito.R.layout.menu_image_custom, parent, false);
+            convertView = mLayoutInflater.inflate(mLayout, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -62,9 +66,11 @@ public class ListPopupWindowAdapter extends BaseAdapter {
         ImageView ivImage;
 
         ViewHolder(View view) {
-            tvTitle = view.findViewById(io.rezetopia.krito.rezetopiakrito.R.id.menuTextCustom);
-            ivImage = view.findViewById(io.rezetopia.krito.rezetopiakrito.R.id.menuImageCustom);
+            tvTitle = view.findViewById(R.id.menuTextCustom);
+            ivImage = view.findViewById(R.id.menuImageCustom);
         }
     }
 }
+
+
 
